@@ -1142,55 +1142,137 @@ function LoginScreen({ onLogin, onBack, tweaks }) {
   );
 }
 
-// ─── Screen 3: Avatar Selection ───────────────────────────────────────────────
+// ─── Screen 3: Avatar + Name Selection ────────────────────────────────────────
 
 function AvatarScreen({ username, onContinue, tweaks }) {
   const [selected, setSelected] = React.useState(null);
+  const [nickname, setNickname] = React.useState('');
   const [show, setShow] = React.useState(false);
+  const [nameFocused, setNameFocused] = React.useState(false);
   React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
-  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+
   const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+  const textMuted = tweaks.darkMode ? '#8A9A90' : '#7A6050';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const inputBg = tweaks.darkMode ? '#162820' : 'white';
+  const borderNormal = tweaks.darkMode ? '#2E4A40' : '#E0D5C0';
+
+  const canContinue = selected && nickname.trim().length >= 2;
 
   return (
-    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:24}}>
+    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'24px 20px'}}>
       <div style={{maxWidth:520, width:'100%', opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(24px)', transition:'all 0.6s cubic-bezier(0.34,1.56,0.64,1)'}}>
-        <div style={{textAlign:'center', marginBottom:28}}>
-          <div style={{fontSize:36, marginBottom:8}}>🗺️</div>
-          <h2 style={{fontFamily:'Fredoka One', fontSize:26, color: tweaks.darkMode ? '#E8D5C0' : tweaks.primaryColor, margin:'0 0 6px'}}>¡Hola, {displayName}!</h2>
-          <p style={{fontFamily:'Nunito', fontSize:15, color: tweaks.darkMode ? '#8A9A90' : '#7A6050', margin:0, fontWeight:600}}>Elige tu avatar de explorador/a</p>
+
+        {/* Header */}
+        <div style={{textAlign:'center', marginBottom:24}}>
+          <div style={{fontSize:34, marginBottom:8}}>🗺️</div>
+          <h2 style={{fontFamily:'Fredoka One', fontSize:26, color: tweaks.darkMode ? '#E8D5C0' : tweaks.primaryColor, margin:'0 0 6px'}}>
+            ¡Crea tu perfil de explorador/a!
+          </h2>
+          <p style={{fontFamily:'Nunito', fontSize:14, color: textMuted, margin:0, fontWeight:600}}>
+            Elige tu avatar y escribe tu nombre
+          </p>
         </div>
 
-        <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:12, marginBottom:24}}>
+        {/* Name input — FIRST */}
+        <div style={{marginBottom:20}}>
+          <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color: textMuted, display:'block', marginBottom:7, textTransform:'uppercase', letterSpacing:0.8}}>
+            ¿Cómo te llamamos?
+          </label>
+          <div style={{position:'relative'}}>
+            {/* Avatar preview inside input */}
+            {selected && (
+              <div style={{position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', width:32, height:32, borderRadius:'50%', overflow:'hidden', background: USER_AVATARS[selected-1]?.bg + '20', border:`1.5px solid ${USER_AVATARS[selected-1]?.bg}40`}}>
+                <UserAvatarSVG avatarId={selected} size={32}/>
+              </div>
+            )}
+            <input
+              value={nickname}
+              onChange={e => setNickname(e.target.value)}
+              placeholder="Tu nombre de explorador/a..."
+              maxLength={20}
+              style={{
+                width:'100%', padding: selected ? '13px 16px 13px 52px' : '13px 16px',
+                borderRadius:14, border:`2px solid ${nameFocused ? tweaks.primaryColor : borderNormal}`,
+                fontFamily:'Fredoka One', fontSize:18, outline:'none',
+                background: inputBg, color: textMain,
+                boxSizing:'border-box', transition:'border 0.2s, padding 0.2s',
+                caretColor: tweaks.primaryColor,
+              }}
+              onFocus={() => setNameFocused(true)}
+              onBlur={() => setNameFocused(false)}
+            />
+          </div>
+          {nickname.trim().length === 1 && (
+            <p style={{fontFamily:'Nunito', fontSize:12, color:'#E8A200', fontWeight:700, margin:'5px 0 0'}}>Escribe al menos 2 letras</p>
+          )}
+        </div>
+
+        {/* Avatar grid */}
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color: textMuted, display:'block', marginBottom:10, textTransform:'uppercase', letterSpacing:0.8}}>
+          Elige tu avatar
+        </label>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:10, marginBottom:22}}>
           {USER_AVATARS.map(av => (
             <button key={av.id} onClick={() => setSelected(av.id)} style={{
-              background: selected === av.id ? (tweaks.darkMode ? '#ffffff14' : 'white') : (tweaks.darkMode ? '#0D2018' : '#F5EAD8AA'),
+              background: selected === av.id ? (tweaks.darkMode ? '#ffffff14' : 'white') : (tweaks.darkMode ? '#0D2018' : '#F5EAD8CC'),
               border:`3px solid ${selected === av.id ? tweaks.primaryColor : (tweaks.darkMode ? '#2E4A40' : '#E0D5C0')}`,
-              borderRadius:18, padding:'14px 8px', cursor:'pointer',
+              borderRadius:18, padding:'14px 8px 10px', cursor:'pointer',
               display:'flex', flexDirection:'column', alignItems:'center', gap:5,
               transition:'all 0.2s',
               transform: selected === av.id ? 'scale(1.05)' : 'scale(1)',
-              boxShadow: selected === av.id ? `0 8px 24px ${tweaks.primaryColor}38` : 'none',
+              boxShadow: selected === av.id ? `0 8px 22px ${tweaks.primaryColor}35` : 'none',
               position:'relative',
             }}>
               {selected === av.id && (
-                <div style={{position:'absolute', top:6, right:6, width:18, height:18, borderRadius:'50%', background:tweaks.primaryColor, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'white', zIndex:1}}>✓</div>
+                <div style={{position:'absolute', top:6, right:6, width:18, height:18, borderRadius:'50%', background:tweaks.primaryColor, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'white'}}>✓</div>
               )}
-              <div style={{width:68, height:68, borderRadius:'50%', background: av.bg+'18', border:`2px solid ${av.bg}38`, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden'}}>
-                <UserAvatarSVG avatarId={av.id} size={68}/>
+              <div style={{width:64, height:64, borderRadius:'50%', background: av.bg+'18', border:`2px solid ${av.bg}38`, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', transition:'transform 0.2s', transform: selected === av.id ? 'scale(1.08)' : 'scale(1)'}}>
+                <UserAvatarSVG avatarId={av.id} size={64}/>
               </div>
-              <span style={{fontFamily:'Fredoka One', fontSize:13, color: selected === av.id ? tweaks.primaryColor : (tweaks.darkMode ? '#D0C0B0' : '#3D2A1A')}}>{av.label}</span>
-              <span style={{fontFamily:'Nunito', fontSize:10, fontWeight:700, color: tweaks.darkMode ? '#5A7A70' : '#A09080'}}>{av.desc}</span>
+              <span style={{fontFamily:'Nunito', fontSize:10, fontWeight:700, color: selected === av.id ? tweaks.primaryColor : (tweaks.darkMode ? '#5A7A70' : '#A09080')}}>{av.desc}</span>
             </button>
           ))}
         </div>
 
-        <button onClick={() => selected && onContinue(selected)} disabled={!selected} style={{
-          width:'100%', padding:'15px', borderRadius:100,
-          background: selected ? tweaks.primaryColor : '#C8BA9A',
-          color:'white', border:'none', fontFamily:'Fredoka One', fontSize:19,
-          cursor: selected ? 'pointer' : 'default',
-          boxShadow: selected ? `0 8px 24px ${tweaks.primaryColor}48` : 'none', transition:'all 0.3s',
-        }}>{selected ? '¡Soy explorador/a! →' : 'Elige tu avatar primero'}</button>
+        {/* Preview of name + avatar */}
+        {canContinue && (
+          <div style={{
+            background: tweaks.darkMode ? '#0D2018' : `${tweaks.primaryColor}12`,
+            border:`2px solid ${tweaks.primaryColor}30`,
+            borderRadius:16, padding:'12px 16px', marginBottom:16,
+            display:'flex', alignItems:'center', gap:12,
+            animation:'fadeSlideUp 0.3s ease',
+          }}>
+            <div style={{width:44, height:44, borderRadius:'50%', overflow:'hidden', background: USER_AVATARS[selected-1]?.bg+'20', border:`2px solid ${tweaks.primaryColor}40`, flexShrink:0}}>
+              <UserAvatarSVG avatarId={selected} size={44}/>
+            </div>
+            <div>
+              <div style={{fontFamily:'Nunito', fontSize:11, fontWeight:800, color:tweaks.primaryColor, textTransform:'uppercase', letterSpacing:0.8}}>Tu perfil</div>
+              <div style={{fontFamily:'Fredoka One', fontSize:18, color: tweaks.darkMode ? '#E8D5C0' : '#3D2A1A'}}>
+                ¡Hola, {nickname.trim().charAt(0).toUpperCase() + nickname.trim().slice(1)}! 👋
+              </div>
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={() => canContinue && onContinue(selected, nickname.trim())}
+          disabled={!canContinue}
+          style={{
+            width:'100%', padding:'15px', borderRadius:100,
+            background: canContinue ? tweaks.primaryColor : '#C8BA9A',
+            color:'white', border:'none', fontFamily:'Fredoka One', fontSize:19,
+            cursor: canContinue ? 'pointer' : 'default',
+            boxShadow: canContinue ? `0 8px 24px ${tweaks.primaryColor}48` : 'none',
+            transition:'all 0.3s',
+          }}
+        >
+          {!selected && !nickname ? 'Escribe tu nombre y elige avatar' :
+           !selected ? 'Ahora elige tu avatar' :
+           nickname.trim().length < 2 ? 'Escribe tu nombre' :
+           '¡Listo! Comenzar aventura →'}
+        </button>
       </div>
     </div>
   );
@@ -1837,6 +1919,7 @@ function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [screen, setScreen] = React.useState('landing');
   const [username, setUsername] = React.useState('');
+  const [nickname, setNickname] = React.useState('');
   const [avatarId, setAvatarId] = React.useState(null);
   const [ageGroup, setAgeGroup] = React.useState(null);
   const [isFirstLogin, setIsFirstLogin] = React.useState(true);
@@ -1845,13 +1928,14 @@ function App() {
     try {
       const s = JSON.parse(localStorage.getItem('eh_state') || '{}');
       if (s.username) setUsername(s.username);
+      if (s.nickname) setNickname(s.nickname);
       if (s.avatarId) setAvatarId(s.avatarId);
       if (s.ageGroup) { setAgeGroup(s.ageGroup); setIsFirstLogin(false); }
     } catch(e) {}
   }, []);
 
-  function persist(u, a, ag) {
-    localStorage.setItem('eh_state', JSON.stringify({ username: u, avatarId: a, ageGroup: ag }));
+  function persist(u, nick, a, ag) {
+    localStorage.setItem('eh_state', JSON.stringify({ username: u, nickname: nick, avatarId: a, ageGroup: ag }));
   }
 
   function handleLogin(u) {
@@ -1859,26 +1943,32 @@ function App() {
     setScreen(isFirstLogin || !avatarId ? 'avatar' : 'dashboard');
   }
 
-  function handleAvatar(id) { setAvatarId(id); setScreen('age'); }
+  function handleAvatar(id, nick) {
+    setAvatarId(id);
+    setNickname(nick);
+    setScreen('age');
+  }
 
   function handleAge(ag) {
     setAgeGroup(ag); setIsFirstLogin(false);
-    persist(username, avatarId, ag);
+    persist(username, nickname, avatarId, ag);
     setScreen('dashboard');
   }
 
   const nav = setScreen;
+  // Use nickname if set, otherwise fall back to username
+  const displayName = nickname || username;
 
   return (
     <div style={{minHeight:'100vh', position:'relative'}}>
       {screen === 'landing'   && <LandingScreen     tweaks={tweaks} onEnter={() => nav('login')}/>}
       {screen === 'login'     && <LoginScreen        tweaks={tweaks} onLogin={handleLogin} onBack={() => nav('landing')}/>}
       {screen === 'avatar'    && <AvatarScreen       tweaks={tweaks} username={username} onContinue={handleAvatar}/>}
-      {screen === 'age'       && <AgeScreen          tweaks={tweaks} username={username} avatarId={avatarId} onContinue={handleAge}/>}
-      {screen === 'dashboard' && <DashboardScreen    tweaks={tweaks} username={username} avatarId={avatarId} ageGroup={ageGroup} onMission={() => nav('mission')}/>}
-      {screen === 'mission'   && <MissionIntroScreen tweaks={tweaks} username={username} ageGroup={ageGroup} onStart={() => nav('activity')} onBack={() => nav('dashboard')}/>}
-      {screen === 'activity'  && <ActivityScreen     tweaks={tweaks} username={username} ageGroup={ageGroup} onFinish={() => nav('complete')}/>}
-      {screen === 'complete'  && <CompleteScreen     tweaks={tweaks} username={username} ageGroup={ageGroup} onHome={() => nav('dashboard')}/>}
+      {screen === 'age'       && <AgeScreen          tweaks={tweaks} username={displayName} avatarId={avatarId} onContinue={handleAge}/>}
+      {screen === 'dashboard' && <DashboardScreen    tweaks={tweaks} username={displayName} avatarId={avatarId} ageGroup={ageGroup} onMission={() => nav('mission')}/>}
+      {screen === 'mission'   && <MissionIntroScreen tweaks={tweaks} username={displayName} ageGroup={ageGroup} onStart={() => nav('activity')} onBack={() => nav('dashboard')}/>}
+      {screen === 'activity'  && <ActivityScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onFinish={() => nav('complete')}/>}
+      {screen === 'complete'  && <CompleteScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onHome={() => nav('dashboard')}/>}
 
       <TweaksPanel>
         <TweakSection title="Colores">
