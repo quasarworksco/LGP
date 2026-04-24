@@ -1067,11 +1067,16 @@ function LandingScreen({ onEnter, tweaks }) {
 // ─── Screen 2: Login ──────────────────────────────────────────────────────────
 
 function LoginScreen({ onLogin, onBack, tweaks, loginError = '' }) {
+  const [mode, setMode] = React.useState('login'); // login | setup-pin | forgot | reset
   const [user, setUser] = React.useState('');
   const [pass, setPass] = React.useState('');
+  const [pin, setPin] = React.useState('');
+  const [newPass, setNewPass] = React.useState('');
   const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [show, setShow] = React.useState(false);
+  const [pendingUser, setPendingUser] = React.useState('');
   React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
   React.useEffect(() => { if (loginError) { setError(loginError); setLoading(false); } }, [loginError]);
 
@@ -1079,65 +1084,207 @@ function LoginScreen({ onLogin, onBack, tweaks, loginError = '' }) {
     e.preventDefault();
     if (!user || !pass) { setError('Por favor ingresa tus datos.'); return; }
     setLoading(true); setError('');
-    await onLogin(user, pass);
+    const result = await onLogin(user, pass);
+    if (result && result.isNew) {
+      setPendingUser(user);
+      setLoading(false);
+      setMode('setup-pin');
+    }
+  }
+
+  async function handleSetupPin(e) {
+    e.preventDefault();
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { setError('El PIN debe ser exactamente 4 números.'); return; }
+    setLoading(true); setError('');
+    await onLogin(pendingUser, pass, pin);
+  }
+
+  async function handleForgot(e) {
+    e.preventDefault();
+    if (!user) { setError('Ingresa tu nombre de usuario.'); return; }
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { setError('Ingresa tu PIN de 4 dígitos.'); return; }
+    setLoading(true); setError('');
+    // Verify PIN against Firebase
+    try {
+      const hash = await hashPin(pin);
+      const doc = await db.collection('usuarios').doc(user).get();
+      if (!doc.exists) { setError('Usuario no encontrado.'); setLoading(false); return; }
+      if (doc.data().pinHash !== hash) { setError('PIN incorrecto. Inténtalo de nuevo.'); setLoading(false); return; }
+      setPendingUser(user);
+      setLoading(false);
+      setMode('reset');
+    } catch(e) { setError('Error de conexión.'); setLoading(false); }
+  }
+
+  async function handleReset(e) {
+    e.preventDefault();
+    if (!newPass || newPass.length < 3) { setError('La contraseña debe tener al menos 3 caracteres.'); return; }
+    setLoading(true); setError('');
+    try {
+      const hash = await hashPassword(newPass);
+      await db.collection('usuarios').doc(pendingUser).update({ passwordHash: hash });
+      try { const cached = JSON.parse(localStorage.getItem('eh_' + pendingUser) || '{}'); cached.passwordHash = hash; localStorage.setItem('eh_' + pendingUser, JSON.stringify(cached)); } catch(e) {}
+      setSuccess('¡Contraseña cambiada! Ya puedes iniciar sesión.');
+      setLoading(false);
+      setTimeout(() => { setMode('login'); setSuccess(''); setUser(pendingUser); setPass(''); }, 2000);
+    } catch(e) { setError('Error al guardar. Intenta de nuevo.'); setLoading(false); }
   }
 
   const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
   const cardBg = tweaks.darkMode ? '#1E3028' : 'white';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
   const textMuted = tweaks.darkMode ? '#8A9A90' : '#8A7A68';
   const inputBg = tweaks.darkMode ? '#162820' : 'white';
   const inputText = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
   const borderNormal = tweaks.darkMode ? '#2E4A40' : '#E0D5C0';
 
+  function InputField({label, value, onChange, type='text', placeholder}) {
+    const [focused, setFocused] = React.useState(false);
+    return (
+      <div>
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, display:'block', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5}}>{label}</label>
+        <input value={value} onChange={e=>onChange(e.target.value)} type={type} placeholder={placeholder}
+          style={{width:'100%', padding:'12px 15px', borderRadius:12, border:`2px solid ${focused ? tweaks.primaryColor : borderNormal}`, fontFamily:'Nunito', fontSize:15, outline:'none', background:inputBg, color:inputText, boxSizing:'border-box', transition:'border 0.2s'}}
+          onFocus={()=>setFocused(true)} onBlur={()=>setFocused(false)}/>
+      </div>
+    );
+  }
+
+  function PinField({value, onChange}) {
+    return (
+      <div>
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, display:'block', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5}}>PIN de recuperación (4 dígitos)</label>
+        <div style={{display:'flex', gap:10, justifyContent:'center'}}>
+          {[0,1,2,3].map(i => (
+            <input key={i} type="tel" inputMode="numeric" maxLength={1}
+              value={value[i] || ''}
+              onChange={e => {
+                const v = e.target.value.replace(/\D/,'');
+                const arr = value.split('');
+                arr[i] = v;
+                onChange(arr.join(''));
+                if (v && i < 3) document.getElementById('pin-' + (i+1))?.focus();
+              }}
+              onKeyDown={e => { if (e.key==='Backspace' && !value[i] && i>0) document.getElementById('pin-' + (i-1))?.focus(); }}
+              id={'pin-' + i}
+              style={{
+                width:52, height:56, textAlign:'center', fontSize:24, fontFamily:'Fredoka One',
+                borderRadius:12, border:`2.5px solid ${value[i] ? tweaks.primaryColor : borderNormal}`,
+                background:inputBg, color:inputText, outline:'none', transition:'border 0.2s',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background: bg, padding:24}}>
-      <button onClick={onBack} style={{position:'absolute', top:20, left:20, background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:14, fontWeight:700, color: tweaks.darkMode ? '#B0A090' : '#8A7060', display:'flex', alignItems:'center', gap:6}}>
-        ← Volver
+    <div style={{minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:bg, padding:24}}>
+      <button onClick={() => mode === 'login' ? onBack() : setMode('login')} style={{position:'absolute', top:20, left:20, background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:14, fontWeight:700, color:textMuted, display:'flex', alignItems:'center', gap:6}}>
+        ← {mode === 'login' ? 'Volver' : 'Iniciar sesión'}
       </button>
 
-      <div style={{
-        background: cardBg, borderRadius:28, padding:'clamp(26px,5vw,44px)',
-        boxShadow:'0 20px 60px rgba(0,0,0,0.13)', width:'100%', maxWidth:420,
-        opacity: show ? 1 : 0, transform: show ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.96)',
-        transition:'all 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-      }}>
-        <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:16}}>
-          <CocoAvatar size={48}/>
-          <div>
-            <h2 style={{fontFamily:'Fredoka One', fontSize:26, color: tweaks.darkMode ? '#E8D5C0' : tweaks.primaryColor, margin:0}}>¡Bienvenido/a!</h2>
-            <p style={{fontFamily:'Nunito', fontSize:13, color: textMuted, margin:0, fontWeight:600}}>Ingresa tus datos para acceder a tu misión</p>
-          </div>
-        </div>
+      <div style={{background:cardBg, borderRadius:28, padding:'clamp(26px,5vw,44px)', boxShadow:'0 20px 60px rgba(0,0,0,0.13)', width:'100%', maxWidth:420, opacity:show?1:0, transform:show?'translateY(0) scale(1)':'translateY(30px) scale(0.96)', transition:'all 0.5s cubic-bezier(0.34,1.56,0.64,1)'}}>
 
-        <div style={{background: tweaks.darkMode ? '#ffffff08' : `${tweaks.primaryColor}12`, border:`1.5px solid ${tweaks.primaryColor}28`, borderRadius:12, padding:'9px 14px', marginBottom:22, fontFamily:'Nunito', fontSize:13, color: tweaks.darkMode ? '#7AC5B8' : '#4A8A7A', fontWeight:700}}>
-          🗺️ Tu misión de esta semana ya está lista
-        </div>
-
-        <form onSubmit={handleLogin} style={{display:'flex', flexDirection:'column', gap:14}}>
-          {[{label:'Usuario', val:user, set:setUser, type:'text', ph:'Tu nombre de usuario'}, {label:'Contraseña', val:pass, set:setPass, type:'password', ph:'••••••••'}].map(f => (
-            <div key={f.label}>
-              <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color: tweaks.darkMode ? '#9AB0A8' : '#6A5A48', display:'block', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5}}>{f.label}</label>
-              <input value={f.val} onChange={e=>f.set(e.target.value)} type={f.type} placeholder={f.ph}
-                style={{width:'100%', padding:'12px 15px', borderRadius:12, border:`2px solid ${borderNormal}`, fontFamily:'Nunito', fontSize:15, outline:'none', background:inputBg, color:inputText, boxSizing:'border-box', transition:'border 0.2s'}}
-                onFocus={e=>e.target.style.border=`2px solid ${tweaks.primaryColor}`}
-                onBlur={e=>e.target.style.border=`2px solid ${borderNormal}`}
-              />
+        {/* ── LOGIN ── */}
+        {mode === 'login' && (
+          <>
+            <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:16}}>
+              <CocoAvatar size={48}/>
+              <div>
+                <h2 style={{fontFamily:'Fredoka One', fontSize:26, color:tweaks.primaryColor, margin:0}}>¡Bienvenido/a!</h2>
+                <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>Ingresa tus datos para acceder</p>
+              </div>
             </div>
-          ))}
-          {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700}}>{error}</p>}
-          <button type="submit" disabled={loading} style={{
-            background: loading ? '#A0C8C0' : tweaks.primaryColor,
-            color:'white', border:'none', borderRadius:100,
-            fontFamily:'Fredoka One', fontSize:19, padding:'13px',
-            cursor: loading ? 'default' : 'pointer',
-            boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s', marginTop:4,
-          }}>{loading ? '✨ Entrando...' : 'Iniciar sesión'}</button>
-        </form>
-        <p style={{fontFamily:'Nunito', fontSize:11, color: tweaks.darkMode ? '#3A5A50' : '#C8B8A0', textAlign:'center', marginTop:14, marginBottom:0}}>Primera vez usando la plataforma — crea tu cuenta con cualquier usuario y contraseña</p>
+            <div style={{background:`${tweaks.primaryColor}12`, border:`1.5px solid ${tweaks.primaryColor}28`, borderRadius:12, padding:'9px 14px', marginBottom:20, fontFamily:'Nunito', fontSize:13, color:`${tweaks.darkMode?'#7AC5B8':'#4A8A7A'}`, fontWeight:700}}>
+              🗺️ Tu misión de esta semana ya está lista
+            </div>
+            <form onSubmit={handleLogin} style={{display:'flex', flexDirection:'column', gap:14}}>
+              <InputField label="Usuario" value={user} onChange={setUser} placeholder="Tu nombre de usuario"/>
+              <InputField label="Contraseña" value={pass} onChange={setPass} type="password" placeholder="••••••••"/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700}}>{error}</p>}
+              <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:loading?'default':'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s', marginTop:4}}>
+                {loading ? '✨ Entrando...' : 'Iniciar sesión'}
+              </button>
+            </form>
+            <button onClick={() => { setMode('forgot'); setError(''); setPin(''); setUser(''); }} style={{background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:13, fontWeight:700, color:tweaks.primaryColor, marginTop:14, display:'block', width:'100%', textAlign:'center'}}>
+              ¿Olvidaste tu contraseña? →
+            </button>
+            <p style={{fontFamily:'Nunito', fontSize:11, color:tweaks.darkMode?'#3A5A50':'#C8B8A0', textAlign:'center', marginTop:8, marginBottom:0}}>
+              Primera vez — crea tu cuenta con usuario y contraseña
+            </p>
+          </>
+        )}
+
+        {/* ── SETUP PIN (new user) ── */}
+        {mode === 'setup-pin' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🔐</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>¡Elige tu PIN!</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600, lineHeight:1.5}}>
+                Si alguna vez olvidas tu contraseña,<br/>este PIN te ayudará a recuperarla.
+              </p>
+            </div>
+            <form onSubmit={handleSetupPin} style={{display:'flex', flexDirection:'column', gap:20}}>
+              <PinField value={pin} onChange={setPin}/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700, textAlign:'center'}}>{error}</p>}
+              <button type="submit" disabled={loading || pin.length !== 4} style={{background: pin.length===4 ? tweaks.primaryColor : '#C8BA9A', color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor: pin.length===4 ? 'pointer' : 'default', boxShadow: pin.length===4 ? `0 6px 20px ${tweaks.primaryColor}45` : 'none', transition:'all 0.3s'}}>
+                {loading ? '✨ Guardando...' : '¡Listo! Guardar PIN →'}
+              </button>
+            </form>
+          </>
+        )}
+
+        {/* ── FORGOT PASSWORD ── */}
+        {mode === 'forgot' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🦜</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>Recuperar contraseña</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>Ingresa tu usuario y tu PIN secreto</p>
+            </div>
+            <form onSubmit={handleForgot} style={{display:'flex', flexDirection:'column', gap:16}}>
+              <InputField label="Usuario" value={user} onChange={setUser} placeholder="Tu nombre de usuario"/>
+              <PinField value={pin} onChange={setPin}/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700, textAlign:'center'}}>{error}</p>}
+              <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s'}}>
+                {loading ? 'Verificando...' : 'Verificar PIN →'}
+              </button>
+            </form>
+          </>
+        )}
+
+        {/* ── RESET PASSWORD ── */}
+        {mode === 'reset' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🔑</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>Nueva contraseña</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>PIN correcto ✅ — Elige una nueva contraseña</p>
+            </div>
+            {success ? (
+              <div style={{background:'#22C5A815', border:'2px solid #22C5A8', borderRadius:14, padding:16, textAlign:'center', fontFamily:'Nunito', fontSize:14, fontWeight:700, color:'#22C5A8'}}>
+                {success}
+              </div>
+            ) : (
+              <form onSubmit={handleReset} style={{display:'flex', flexDirection:'column', gap:14}}>
+                <InputField label="Nueva contraseña" value={newPass} onChange={setNewPass} type="password" placeholder="Mínimo 3 caracteres"/>
+                {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700}}>{error}</p>}
+                <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s'}}>
+                  {loading ? 'Guardando...' : '¡Cambiar contraseña! →'}
+                </button>
+              </form>
+            )}
+          </>
+        )}
+
       </div>
     </div>
   );
 }
+
 
 // ─── Screen 3: Avatar + Name Selection ────────────────────────────────────────
 
@@ -1924,37 +2071,53 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 async function hashPassword(password) {
-  const msgBuffer = new TextEncoder().encode(password + 'eh-salt-2024');
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password + 'eh-salt-2024'));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-async function loginUser(username, password) {
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin + 'eh-pin-2024'));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function loginUser(username, password, pin) {
   const hash = await hashPassword(password);
   try {
     const doc = await db.collection('usuarios').doc(username).get();
     if (!doc.exists) {
+      // New user — create with password hash (PIN saved later)
       await db.collection('usuarios').doc(username).set({
         username, passwordHash: hash,
         createdAt: new Date().toISOString(),
         points: 0, missionsCompleted: [],
       });
+      // If pin provided (from setup-pin step), save it
+      if (pin) {
+        const pinHash = await hashPin(pin);
+        await db.collection('usuarios').doc(username).update({ pinHash });
+      }
       return { status: 'new', data: null };
     }
     const data = doc.data();
+    // If called with a PIN to save (after setup-pin)
+    if (pin) {
+      const pinHash = await hashPin(pin);
+      await db.collection('usuarios').doc(username).update({ pinHash });
+      return { status: 'pin-saved', data };
+    }
     if (data.passwordHash !== hash) return { status: 'wrong_password', data: null };
     return { status: 'ok', data };
   } catch(e) {
     console.warn('Firebase error:', e);
     const cached = JSON.parse(localStorage.getItem('eh_' + username) || 'null');
-    if (cached && cached.passwordHash === hash) return { status: 'ok', data: cached };
     if (!cached) return { status: 'new', data: null };
+    if (cached.passwordHash === hash) return { status: 'ok', data: cached };
     return { status: 'wrong_password', data: null };
   }
 }
 
 async function saveUserData(username, data) {
-  try { localStorage.setItem('eh_' + username, JSON.stringify(data)); } catch(e) {}
+  try { localStorage.setItem('eh_' + username, JSON.stringify({...JSON.parse(localStorage.getItem('eh_' + username)||'{}'), ...data})); } catch(e) {}
   try { await db.collection('usuarios').doc(username).set(data, { merge: true }); } catch(e) { console.warn('Save error:', e); }
 }
 
@@ -1968,20 +2131,36 @@ function App() {
   const [syncStatus, setSyncStatus] = React.useState('idle');
   const [loginError, setLoginError] = React.useState('');
 
-  async function handleLogin(u, p) {
+  // Called from LoginScreen with (user, pass) or (user, pass, pin) after PIN setup
+  async function handleLogin(u, p, pin) {
     setLoginError('');
-    const result = await loginUser(u, p);
+    const result = await loginUser(u, p, pin);
+
     if (result.status === 'wrong_password') {
       setLoginError('Contraseña incorrecta. Inténtalo de nuevo.');
-      return;
+      return { isNew: false };
     }
+
     setUsername(u);
-    if (result.status === 'new') { setScreen('avatar'); return; }
-    const d = result.data;
+
+    if (result.status === 'new') {
+      // Signal to LoginScreen to ask for PIN setup
+      return { isNew: true };
+    }
+
+    if (result.status === 'pin-saved') {
+      // PIN saved, proceed to onboarding
+      setScreen('avatar');
+      return { isNew: false };
+    }
+
+    // Existing user — restore profile
+    const d = result.data || {};
     if (d.nickname) setNickname(d.nickname);
     if (d.avatarId) setAvatarId(d.avatarId);
     if (d.ageGroup) setAgeGroup(d.ageGroup);
     setScreen(d.avatarId && d.ageGroup ? 'dashboard' : 'avatar');
+    return { isNew: false };
   }
 
   async function handleAvatar(id, nick) { setAvatarId(id); setNickname(nick); setScreen('age'); }
@@ -2015,16 +2194,9 @@ function App() {
       {screen === 'complete'  && <CompleteScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onHome={() => nav('dashboard')}/>}
 
       {syncStatus !== 'idle' && (
-        <div style={{
-          position:'fixed', bottom:20, left:'50%', transform:'translateX(-50%)',
-          background: syncStatus === 'error' ? '#E74C3C' : syncStatus === 'saved' ? '#22C5A8' : '#8A9A90',
-          color:'white', fontFamily:'Nunito', fontSize:13, fontWeight:700,
-          padding:'8px 20px', borderRadius:100, boxShadow:'0 4px 16px rgba(0,0,0,0.2)',
-          zIndex:9999, display:'flex', alignItems:'center', gap:8, whiteSpace:'nowrap',
-        }}>
+        <div style={{position:'fixed', bottom:20, left:'50%', transform:'translateX(-50%)', background: syncStatus==='saved'?'#22C5A8':'#8A9A90', color:'white', fontFamily:'Nunito', fontSize:13, fontWeight:700, padding:'8px 20px', borderRadius:100, boxShadow:'0 4px 16px rgba(0,0,0,0.2)', zIndex:9999, display:'flex', alignItems:'center', gap:8, whiteSpace:'nowrap'}}>
           {syncStatus === 'saving' && '☁️ Guardando progreso...'}
           {syncStatus === 'saved'  && '✅ Progreso guardado en la nube'}
-          {syncStatus === 'error'  && '⚠️ Sin conexión — guardado local'}
         </div>
       )}
 
@@ -2043,12 +2215,7 @@ function App() {
         <TweakSection title="Ir a pantalla">
           <div style={{display:'flex', flexDirection:'column', gap:5}}>
             {['landing','login','avatar','age','dashboard','mission','activity','complete'].map(s => (
-              <button key={s} onClick={() => nav(s)} style={{
-                background: screen === s ? '#22C5A8' : '#f0f0f0', color: screen === s ? 'white' : '#333',
-                border:'none', borderRadius:7, padding:'5px 10px',
-                fontFamily:'Nunito', fontSize:12, fontWeight:700, cursor:'pointer',
-                textAlign:'left', transition:'all 0.2s',
-              }}>{s}</button>
+              <button key={s} onClick={() => nav(s)} style={{background: screen===s?'#22C5A8':'#f0f0f0', color: screen===s?'white':'#333', border:'none', borderRadius:7, padding:'5px 10px', fontFamily:'Nunito', fontSize:12, fontWeight:700, cursor:'pointer', textAlign:'left', transition:'all 0.2s'}}>{s}</button>
             ))}
           </div>
         </TweakSection>
