@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Español de Herencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #F5EAD8; }
+  input { -webkit-appearance: none; }
+  button { -webkit-tap-highlight-color: transparent; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+  @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #C8B89A; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;height:22px;
+    border-radius:6px;cursor:default;padding:0}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((key, val) => {
+    setValues((prev) => ({ ...prev, [key]: val }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel"
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+function TweakColor({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <input type="color" className="twk-swatch" value={value}
+             onChange={(e) => onChange(e.target.value)} />
+    </div>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+
+// Shared components for Español de Herencia prototype
+
+// ─── Character SVG Avatars ────────────────────────────────────────────────────
+
+function ValentinaAvatar({ size = 80, animate = false }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style={animate ? {animation: 'float 3s ease-in-out infinite'} : {}}>
+      {/* Body */}
+      <ellipse cx="40" cy="62" rx="18" ry="14" fill="#C1623F" opacity="0.9"/>
+      {/* Head */}
+      <circle cx="40" cy="36" r="22" fill="#E8956D"/>
+      {/* Hair */}
+      <ellipse cx="40" cy="18" rx="22" ry="10" fill="#5C2D0E"/>
+      <ellipse cx="20" cy="36" rx="5" ry="14" fill="#5C2D0E"/>
+      <ellipse cx="60" cy="36" rx="5" ry="14" fill="#5C2D0E"/>
+      {/* Braids */}
+      <rect x="17" y="46" width="6" height="18" rx="3" fill="#5C2D0E"/>
+      <rect x="57" y="46" width="6" height="18" rx="3" fill="#5C2D0E"/>
+      {/* Eyes */}
+      <circle cx="32" cy="36" r="4" fill="#3D1A08"/>
+      <circle cx="48" cy="36" r="4" fill="#3D1A08"/>
+      <circle cx="33" cy="35" r="1.5" fill="white"/>
+      <circle cx="49" cy="35" r="1.5" fill="white"/>
+      {/* Smile */}
+      <path d="M33 44 Q40 50 47 44" stroke="#3D1A08" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Collar */}
+      <path d="M26 68 Q40 74 54 68" stroke="#9B4620" strokeWidth="3" strokeLinecap="round" fill="none"/>
+    </svg>
+  );
+}
+
+function TomasAvatar({ size = 80, animate = false }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style={animate ? {animation: 'float 3s ease-in-out infinite 0.5s'} : {}}>
+      {/* Body */}
+      <ellipse cx="40" cy="63" rx="18" ry="13" fill="#E8A200" opacity="0.9"/>
+      {/* Shirt stripe */}
+      <ellipse cx="40" cy="63" rx="10" ry="13" fill="#F5BC00" opacity="0.7"/>
+      {/* Head */}
+      <circle cx="40" cy="36" r="22" fill="#F4C87C"/>
+      {/* Hair */}
+      <ellipse cx="40" cy="17" rx="20" ry="8" fill="#3D2800"/>
+      <rect x="19" y="17" width="8" height="12" rx="4" fill="#3D2800"/>
+      <rect x="53" y="17" width="8" height="12" rx="4" fill="#3D2800"/>
+      {/* Eyes */}
+      <circle cx="32" cy="37" r="4" fill="#3D2800"/>
+      <circle cx="48" cy="37" r="4" fill="#3D2800"/>
+      <circle cx="33" cy="36" r="1.5" fill="white"/>
+      <circle cx="49" cy="36" r="1.5" fill="white"/>
+      {/* Big grin */}
+      <path d="M30 45 Q40 54 50 45" stroke="#3D2800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      {/* Freckles */}
+      <circle cx="28" cy="42" r="1.5" fill="#C8860A" opacity="0.5"/>
+      <circle cx="52" cy="42" r="1.5" fill="#C8860A" opacity="0.5"/>
+    </svg>
+  );
+}
+
+function CocoAvatar({ size = 80, animate = false }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style={animate ? {animation: 'float 3s ease-in-out infinite 1s'} : {}}>
+      {/* Tail */}
+      <ellipse cx="40" cy="74" rx="8" ry="10" fill="#1A7A6A" transform="rotate(-10 40 74)"/>
+      <ellipse cx="44" cy="74" rx="5" ry="10" fill="#0D9C84" transform="rotate(10 44 74)"/>
+      {/* Body */}
+      <ellipse cx="40" cy="55" rx="18" ry="20" fill="#1A9E8A"/>
+      {/* Wing left */}
+      <ellipse cx="22" cy="52" rx="8" ry="14" fill="#15866E" transform="rotate(-20 22 52)"/>
+      {/* Wing right */}
+      <ellipse cx="58" cy="52" rx="8" ry="14" fill="#15866E" transform="rotate(20 58 52)"/>
+      {/* Head */}
+      <circle cx="40" cy="28" r="20" fill="#22C5A8"/>
+      {/* Forehead feathers */}
+      <ellipse cx="35" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(-15 35 10)"/>
+      <ellipse cx="40" cy="8" rx="5" ry="9" fill="#FF7A50"/>
+      <ellipse cx="45" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(15 45 10)"/>
+      {/* Eyes */}
+      <circle cx="31" cy="28" r="5" fill="white"/>
+      <circle cx="49" cy="28" r="5" fill="white"/>
+      <circle cx="32" cy="28" r="3" fill="#1A2E28"/>
+      <circle cx="50" cy="28" r="3" fill="#1A2E28"/>
+      <circle cx="32.5" cy="27" r="1" fill="white"/>
+      <circle cx="50.5" cy="27" r="1" fill="white"/>
+      {/* Beak */}
+      <path d="M36 36 L44 36 L40 42 Z" fill="#F5A800"/>
+      <path d="M36 36 L44 36 L40 39 Z" fill="#3D2800" opacity="0.2"/>
+      {/* Cheek spots */}
+      <circle cx="26" cy="32" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="54" cy="32" r="4" fill="#FF6B6B" opacity="0.5"/>
+    </svg>
+  );
+}
+
+// ─── User Avatar Options ───────────────────────────────────────────────────────
+
+const USER_AVATARS = [
+  { id: 1, label: "Lucía", bg: "#4A90D9", desc: "Con vinchas" },
+  { id: 2, label: "Mateo", bg: "#E8956D", desc: "Con gorra" },
+  { id: 3, label: "Sofía", bg: "#22C5A8", desc: "Trenzas largas" },
+  { id: 4, label: "Diego", bg: "#9B59B6", desc: "Con lentes" },
+  { id: 5, label: "Valentía", bg: "#E8A200", desc: "Pelo afro" },
+  { id: 6, label: "Andrés", bg: "#E74C3C", desc: "Con sombrero" },
+];
+
+function UserAvatarSVG({ avatarId, size = 64 }) {
+  const id = ((avatarId - 1) % 6) + 1;
+
+  // Avatar 1 — Lucía: piel clara, pelo negro con vincha rosada, camisa azul, sonrisa grande
+  if (id === 1) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Shirt */}
+      <path d="M16 80 Q16 60 40 58 Q64 60 64 80Z" fill="#4A90D9"/>
+      <path d="M30 58 Q40 64 50 58 L50 70 Q40 74 30 70Z" fill="#3A78C0" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#F5C9A0"/>
+      {/* Head */}
+      <circle cx="40" cy="34" r="22" fill="#F5C9A0"/>
+      {/* Hair back */}
+      <ellipse cx="40" cy="20" rx="22" ry="12" fill="#1A1A2E"/>
+      {/* Ears */}
+      <circle cx="18" cy="36" r="5" fill="#F5C9A0"/>
+      <circle cx="62" cy="36" r="5" fill="#F5C9A0"/>
+      <circle cx="18" cy="36" r="3" fill="#EAB090"/>
+      <circle cx="62" cy="36" r="3" fill="#EAB090"/>
+      {/* Hair front */}
+      <path d="M18 28 Q22 14 40 13 Q58 14 62 28 Q58 20 40 19 Q22 20 18 28Z" fill="#1A1A2E"/>
+      {/* Sidelocks */}
+      <ellipse cx="20" cy="38" rx="4" ry="10" fill="#1A1A2E"/>
+      <ellipse cx="60" cy="38" rx="4" ry="10" fill="#1A1A2E"/>
+      {/* Vincha */}
+      <path d="M16 26 Q40 18 64 26" stroke="#FF6B9D" strokeWidth="5" strokeLinecap="round" fill="none"/>
+      <circle cx="40" cy="19" r="4" fill="#FF6B9D"/>
+      {/* Eyes */}
+      <ellipse cx="32" cy="36" rx="4.5" ry="5" fill="white"/>
+      <ellipse cx="48" cy="36" rx="4.5" ry="5" fill="white"/>
+      <circle cx="33" cy="37" r="3" fill="#2C1800"/>
+      <circle cx="49" cy="37" r="3" fill="#2C1800"/>
+      <circle cx="34" cy="36" r="1" fill="white"/>
+      <circle cx="50" cy="36" r="1" fill="white"/>
+      {/* Eyebrows */}
+      <path d="M28 30 Q32 28 36 30" stroke="#1A1A2E" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M44 30 Q48 28 52 30" stroke="#1A1A2E" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <circle cx="40" cy="43" r="1.5" fill="#D4956A"/>
+      {/* Big smile */}
+      <path d="M30 48 Q40 56 50 48" stroke="#1A1A2E" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M30 48 Q40 54 50 48" fill="#FF8FA0" opacity="0.4"/>
+      {/* Cheeks */}
+      <circle cx="26" cy="44" r="5" fill="#FFB0A0" opacity="0.4"/>
+      <circle cx="54" cy="44" r="5" fill="#FFB0A0" opacity="0.4"/>
+    </svg>
+  );
+
+  // Avatar 2 — Mateo: piel morena clara, pelo corto, gorra azul, camisa naranja
+  if (id === 2) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Shirt */}
+      <path d="M14 80 Q14 60 40 57 Q66 60 66 80Z" fill="#E8956D"/>
+      <path d="M28 57 Q40 63 52 57 L53 68 Q40 72 27 68Z" fill="#C1623F" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#D4925A"/>
+      {/* Head */}
+      <circle cx="40" cy="35" r="22" fill="#D4925A"/>
+      {/* Ears */}
+      <circle cx="18" cy="37" r="5" fill="#D4925A"/>
+      <circle cx="62" cy="37" r="5" fill="#D4925A"/>
+      <circle cx="18" cy="37" r="2.5" fill="#C07840"/>
+      <circle cx="62" cy="37" r="2.5" fill="#C07840"/>
+      {/* Hair under cap */}
+      <path d="M19 32 Q22 22 40 20 Q58 22 61 32" fill="#2C1800"/>
+      {/* Cap brim */}
+      <path d="M12 31 Q40 24 68 31" stroke="#2855A0" strokeWidth="3" strokeLinecap="round" fill="none"/>
+      {/* Cap body */}
+      <path d="M18 31 Q22 12 40 11 Q58 12 62 31 Q50 27 40 27 Q30 27 18 31Z" fill="#3A6FD0"/>
+      {/* Cap button */}
+      <circle cx="40" cy="12" r="3" fill="#2855A0"/>
+      {/* Cap logo */}
+      <text x="40" y="23" textAnchor="middle" fontSize="8" fill="#FFD700" fontFamily="Arial" fontWeight="bold">EH</text>
+      {/* Eyes */}
+      <ellipse cx="32" cy="38" rx="4" ry="4.5" fill="white"/>
+      <ellipse cx="48" cy="38" rx="4" ry="4.5" fill="white"/>
+      <circle cx="33" cy="39" r="2.8" fill="#2C1800"/>
+      <circle cx="49" cy="39" r="2.8" fill="#2C1800"/>
+      <circle cx="34" cy="38" r="1" fill="white"/>
+      <circle cx="50" cy="38" r="1" fill="white"/>
+      {/* Eyebrows */}
+      <path d="M28 33 Q32 31 36 33" stroke="#2C1800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M44 33 Q48 31 52 33" stroke="#2C1800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <path d="M38 43 Q40 46 42 43" stroke="#A06030" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+      {/* Grin */}
+      <path d="M31 50 Q40 58 49 50" stroke="#2C1800" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Cheeks */}
+      <circle cx="26" cy="45" r="5" fill="#E07050" opacity="0.3"/>
+      <circle cx="54" cy="45" r="5" fill="#E07050" opacity="0.3"/>
+    </svg>
+  );
+
+  // Avatar 3 — Sofía: piel oscura, trenzas largas con moñitos, camisa teal
+  if (id === 3) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Trenzas */}
+      <rect x="20" y="44" width="8" height="30" rx="4" fill="#1A0A00"/>
+      <rect x="52" y="44" width="8" height="30" rx="4" fill="#1A0A00"/>
+      {/* Moñitos */}
+      <circle cx="24" cy="44" r="6" fill="#FF6B9D"/>
+      <circle cx="56" cy="44" r="6" fill="#FF6B9D"/>
+      <circle cx="24" cy="44" r="3" fill="#FF9DC0"/>
+      <circle cx="56" cy="44" r="3" fill="#FF9DC0"/>
+      {/* Shirt */}
+      <path d="M14 80 Q14 60 40 57 Q66 60 66 80Z" fill="#22C5A8"/>
+      <path d="M28 57 Q40 63 52 57 L52 68 Q40 72 28 68Z" fill="#199E86" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#7A4520"/>
+      {/* Head */}
+      <circle cx="40" cy="34" r="22" fill="#8B5A2B"/>
+      {/* Ears */}
+      <circle cx="18" cy="36" r="5" fill="#8B5A2B"/>
+      <circle cx="62" cy="36" r="5" fill="#8B5A2B"/>
+      <circle cx="18" cy="36" r="2.5" fill="#6B3E18"/>
+      <circle cx="62" cy="36" r="2.5" fill="#6B3E18"/>
+      {/* Hair */}
+      <ellipse cx="40" cy="19" rx="22" ry="11" fill="#1A0A00"/>
+      <path d="M18 28 Q20 14 40 12 Q60 14 62 28" fill="#1A0A00"/>
+      {/* Parted hair */}
+      <path d="M40 12 L40 22" stroke="#2A1000" strokeWidth="2"/>
+      {/* Eyes */}
+      <ellipse cx="32" cy="36" rx="4.5" ry="5" fill="white"/>
+      <ellipse cx="48" cy="36" rx="4.5" ry="5" fill="white"/>
+      <circle cx="33" cy="37" r="3" fill="#1A0800"/>
+      <circle cx="49" cy="37" r="3" fill="#1A0800"/>
+      <circle cx="34" cy="36" r="1" fill="white"/>
+      <circle cx="50" cy="36" r="1" fill="white"/>
+      {/* Eyebrows */}
+      <path d="M28 30 Q32 28 36 30" stroke="#1A0800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M44 30 Q48 28 52 30" stroke="#1A0800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <ellipse cx="40" cy="43" rx="3" ry="2" fill="#6B3E18" opacity="0.5"/>
+      {/* Smile */}
+      <path d="M31 48 Q40 55 49 48" stroke="#1A0800" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Cheeks */}
+      <circle cx="26" cy="43" r="5" fill="#C07840" opacity="0.3"/>
+      <circle cx="54" cy="43" r="5" fill="#C07840" opacity="0.3"/>
+      {/* Earrings */}
+      <circle cx="18" cy="43" r="3" fill="#FFD700"/>
+      <circle cx="62" cy="43" r="3" fill="#FFD700"/>
+    </svg>
+  );
+
+  // Avatar 4 — Diego: piel clara, pelo castaño, lentes redondos, camisa morada
+  if (id === 4) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Shirt */}
+      <path d="M14 80 Q14 60 40 57 Q66 60 66 80Z" fill="#9B59B6"/>
+      <path d="M28 57 Q40 63 52 57 L52 68 Q40 72 28 68Z" fill="#7D3F9E" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#FDDBB4"/>
+      {/* Head */}
+      <circle cx="40" cy="34" r="22" fill="#FDDBB4"/>
+      {/* Ears */}
+      <circle cx="18" cy="36" r="5" fill="#FDDBB4"/>
+      <circle cx="62" cy="36" r="5" fill="#FDDBB4"/>
+      <circle cx="18" cy="36" r="2.5" fill="#EAC090"/>
+      <circle cx="62" cy="36" r="2.5" fill="#EAC090"/>
+      {/* Hair */}
+      <path d="M18 28 Q20 12 40 11 Q60 12 62 28 Q55 22 40 21 Q25 22 18 28Z" fill="#8B4513"/>
+      <ellipse cx="40" cy="16" rx="22" ry="8" fill="#8B4513"/>
+      {/* Fringe */}
+      <path d="M22 26 Q28 20 36 24" fill="#8B4513"/>
+      <path d="M44 24 Q52 20 58 26" fill="#8B4513"/>
+      {/* Eyes with glasses */}
+      <ellipse cx="32" cy="37" rx="4" ry="4.5" fill="white"/>
+      <ellipse cx="48" cy="37" rx="4" ry="4.5" fill="white"/>
+      <circle cx="33" cy="38" r="2.8" fill="#1A3A6B"/>
+      <circle cx="49" cy="38" r="2.8" fill="#1A3A6B"/>
+      <circle cx="34" cy="37" r="1" fill="white"/>
+      <circle cx="50" cy="37" r="1" fill="white"/>
+      {/* Glasses frames */}
+      <circle cx="32" cy="37" r="7" stroke="#2C1800" strokeWidth="2.5" fill="none"/>
+      <circle cx="48" cy="37" r="7" stroke="#2C1800" strokeWidth="2.5" fill="none"/>
+      <path d="M39 37 L41 37" stroke="#2C1800" strokeWidth="2.5"/>
+      <path d="M25 37 L20 35" stroke="#2C1800" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M55 37 L60 35" stroke="#2C1800" strokeWidth="2" strokeLinecap="round"/>
+      {/* Eyebrows */}
+      <path d="M26 29 Q32 27 38 29" stroke="#8B4513" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M42 29 Q48 27 54 29" stroke="#8B4513" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <path d="M38 44 Q40 47 42 44" stroke="#C09060" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+      {/* Thoughtful smile */}
+      <path d="M33 50 Q40 55 47 50" stroke="#2C1800" strokeWidth="2" strokeLinecap="round" fill="none"/>
+    </svg>
+  );
+
+  // Avatar 5 — Valentía: piel canela, pelo afro con flor, camisa amarilla
+  if (id === 5) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Shirt */}
+      <path d="M12 80 Q12 60 40 57 Q68 60 68 80Z" fill="#E8A200"/>
+      <path d="M28 57 Q40 63 52 57 L53 68 Q40 73 27 68Z" fill="#C08000" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#C87840"/>
+      {/* Afro hair */}
+      <ellipse cx="40" cy="26" rx="27" ry="24" fill="#1A0A00"/>
+      {/* Head */}
+      <circle cx="40" cy="36" r="20" fill="#C87840"/>
+      {/* Ears */}
+      <circle cx="20" cy="38" r="5" fill="#C87840"/>
+      <circle cx="60" cy="38" r="5" fill="#C87840"/>
+      <circle cx="20" cy="38" r="2.5" fill="#A06030"/>
+      <circle cx="60" cy="38" r="2.5" fill="#A06030"/>
+      {/* Afro texture dots */}
+      {[[30,14],[50,14],[22,22],[58,22],[18,30],[62,30],[20,38],[60,38]].map(([cx,cy],i) => (
+        <circle key={i} cx={cx} cy={cy} r="2.5" fill="#2A1200" opacity="0.4"/>
+      ))}
+      {/* Flower decoration */}
+      <circle cx="58" cy="14" r="7" fill="#FF6B9D" opacity="0.9"/>
+      {[0,60,120,180,240,300].map((deg,i) => (
+        <ellipse key={i} cx={58 + Math.cos(deg*Math.PI/180)*7} cy={14 + Math.sin(deg*Math.PI/180)*7} rx="3" ry="5"
+          fill="#FF9DC0" transform={`rotate(${deg} ${58 + Math.cos(deg*Math.PI/180)*7} ${14 + Math.sin(deg*Math.PI/180)*7})`}/>
+      ))}
+      <circle cx="58" cy="14" r="4" fill="#FFD700"/>
+      {/* Eyes */}
+      <ellipse cx="33" cy="37" rx="4.5" ry="5" fill="white"/>
+      <ellipse cx="47" cy="37" rx="4.5" ry="5" fill="white"/>
+      <circle cx="34" cy="38" r="3" fill="#1A0800"/>
+      <circle cx="48" cy="38" r="3" fill="#1A0800"/>
+      <circle cx="35" cy="37" r="1" fill="white"/>
+      <circle cx="49" cy="37" r="1" fill="white"/>
+      {/* Eyebrows bold */}
+      <path d="M29 31 Q33 29 37 31" stroke="#1A0800" strokeWidth="3" strokeLinecap="round" fill="none"/>
+      <path d="M43 31 Q47 29 51 31" stroke="#1A0800" strokeWidth="3" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <ellipse cx="40" cy="44" rx="3.5" ry="2.5" fill="#A06030" opacity="0.5"/>
+      {/* Wide smile */}
+      <path d="M29 50 Q40 60 51 50" stroke="#1A0800" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M29 50 Q40 57 51 50" fill="#FF8FA0" opacity="0.4"/>
+      {/* Cheeks */}
+      <circle cx="25" cy="46" r="5" fill="#E08850" opacity="0.3"/>
+      <circle cx="55" cy="46" r="5" fill="#E08850" opacity="0.3"/>
+    </svg>
+  );
+
+  // Avatar 6 — Andrés: piel morena, pelo rizado, sombrero de explorador, camisa roja
+  if (id === 6) return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
+      {/* Shirt */}
+      <path d="M14 80 Q14 60 40 57 Q66 60 66 80Z" fill="#E74C3C"/>
+      <path d="M28 57 Q40 63 52 57 L52 68 Q40 72 28 68Z" fill="#C0392B" opacity="0.5"/>
+      {/* Neck */}
+      <rect x="34" y="50" width="12" height="10" rx="4" fill="#A0622A"/>
+      {/* Head */}
+      <circle cx="40" cy="36" r="21" fill="#A0622A"/>
+      {/* Ears */}
+      <circle cx="19" cy="38" r="5" fill="#A0622A"/>
+      <circle cx="61" cy="38" r="5" fill="#A0622A"/>
+      <circle cx="19" cy="38" r="2.5" fill="#7A4415"/>
+      <circle cx="61" cy="38" r="2.5" fill="#7A4415"/>
+      {/* Curly hair */}
+      <path d="M19 32 Q20 18 40 16 Q60 18 61 32" fill="#2C1000"/>
+      {[24,32,40,48,56].map((cx,i) => (
+        <circle key={i} cx={cx} cy={i%2===0?20:18} r={5+i%2} fill="#2C1000"/>
+      ))}
+      {/* Explorer hat brim */}
+      <ellipse cx="40" cy="20" rx="28" ry="6" fill="#8B6914"/>
+      {/* Hat body */}
+      <path d="M20 20 Q22 4 40 3 Q58 4 60 20Z" fill="#C8A020"/>
+      {/* Hat band */}
+      <path d="M20 20 Q40 17 60 20" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" fill="none"/>
+      {/* Hat deco */}
+      <circle cx="40" cy="5" r="3" fill="#8B6914"/>
+      {/* Eyes */}
+      <ellipse cx="32" cy="38" rx="4.5" ry="5" fill="white"/>
+      <ellipse cx="48" cy="38" rx="4.5" ry="5" fill="white"/>
+      <circle cx="33" cy="39" r="3" fill="#1A0800"/>
+      <circle cx="49" cy="39" r="3" fill="#1A0800"/>
+      <circle cx="34" cy="38" r="1" fill="white"/>
+      <circle cx="50" cy="38" r="1" fill="white"/>
+      {/* Eyebrows */}
+      <path d="M28 32 Q32 30 36 32" stroke="#2C1000" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M44 32 Q48 30 52 32" stroke="#2C1000" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      {/* Nose */}
+      <path d="M37 45 Q40 48 43 45" stroke="#7A4415" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+      {/* Confident smile */}
+      <path d="M32 50 Q40 57 48 50" stroke="#2C1000" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      {/* Cheeks */}
+      <circle cx="26" cy="45" r="5" fill="#C07030" opacity="0.25"/>
+      <circle cx="54" cy="45" r="5" fill="#C07030" opacity="0.25"/>
+    </svg>
+  );
+
+  return null;
+}
+
+// ─── Stars ────────────────────────────────────────────────────────────────────
+
+function Stars({ count = 0, max = 3, size = 20 }) {
+  return (
+    <div style={{display:'flex', gap: 4}}>
+      {Array.from({length: max}).map((_, i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 20 20">
+          <polygon
+            points="10,2 12.4,7.5 18.5,8 14,12.2 15.5,18.2 10,15 4.5,18.2 6,12.2 1.5,8 7.6,7.5"
+            fill={i < count ? '#F5BC00' : '#E0D5C0'}
+            stroke={i < count ? '#E8A200' : '#C8BA9A'}
+            strokeWidth="0.5"
+          />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+// ─── Progress Bar ─────────────────────────────────────────────────────────────
+
+function ProgressBar({ value = 0, max = 100, color = '#22C5A8', label }) {
+  const pct = Math.min(100, Math.round((value / max) * 100));
+  return (
+    <div>
+      {label && <div style={{fontSize:12, fontFamily:'Nunito', fontWeight:700, color:'#7A6A55', marginBottom:4}}>{label}</div>}
+      <div style={{background:'#E0D5C0', borderRadius:100, height:10, overflow:'hidden'}}>
+        <div style={{
+          width: pct + '%', height: '100%', background: color,
+          borderRadius: 100, transition: 'width 1s ease',
+        }}/>
+      </div>
+    </div>
+  );
+}
+
+// ─── Speech Bubble ────────────────────────────────────────────────────────────
+
+function SpeechBubble({ text, character = 'coco', style = {} }) {
+  const colors = { valentina: '#C1623F', tomas: '#E8A200', coco: '#22C5A8' };
+  const color = colors[character] || colors.coco;
+  return (
+    <div style={{
+      background: 'white',
+      border: `3px solid ${color}`,
+      borderRadius: 20,
+      padding: '14px 18px',
+      position: 'relative',
+      maxWidth: 320,
+      fontFamily: 'Nunito',
+      fontSize: 15,
+      color: '#3D2A1A',
+      lineHeight: 1.5,
+      boxShadow: `0 4px 16px ${color}33`,
+      ...style
+    }}>
+      {text}
+      <div style={{
+        position:'absolute', bottom:-16, left:28,
+        width:0, height:0,
+        borderLeft:'10px solid transparent',
+        borderRight:'10px solid transparent',
+        borderTop: `16px solid ${color}`,
+      }}/>
+      <div style={{
+        position:'absolute', bottom:-11, left:31,
+        width:0, height:0,
+        borderLeft:'7px solid transparent',
+        borderRight:'7px solid transparent',
+        borderTop: '13px solid white',
+      }}/>
+    </div>
+  );
+}
+
+// ─── Mission Card ─────────────────────────────────────────────────────────────
+
+function MissionBadge({ title, unit = "Misión 1", color = '#22C5A8', locked = false }) {
+  return (
+    <div style={{
+      background: locked ? '#E0D5C0' : `linear-gradient(135deg, ${color}22, ${color}44)`,
+      border: `2px solid ${locked ? '#C8BA9A' : color}`,
+      borderRadius: 16,
+      padding: '12px 16px',
+      display: 'flex', alignItems: 'center', gap: 12,
+      opacity: locked ? 0.6 : 1,
+    }}>
+      <div style={{
+        width: 40, height: 40, borderRadius: 10,
+        background: locked ? '#C8BA9A' : color,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        fontSize: 20, flexShrink: 0,
+      }}>
+        {locked ? '🔒' : '⭐'}
+      </div>
+      <div>
+        <div style={{fontSize:11, fontFamily:'Nunito', fontWeight:800, color: locked ? '#A09080' : color, textTransform:'uppercase', letterSpacing:1}}>{unit}</div>
+        <div style={{fontSize:14, fontFamily:'Nunito', fontWeight:700, color: locked ? '#A09080' : '#3D2A1A'}}>{title}</div>
+      </div>
+    </div>
+  );
+}
+
+// Export everything to window
+Object.assign(window, {
+  ValentinaAvatar, TomasAvatar, CocoAvatar,
+  UserAvatarSVG, USER_AVATARS,
+  Stars, ProgressBar, SpeechBubble, MissionBadge
+});
+
+
+// ─── Screen 1: Landing ────────────────────────────────────────────────────────
+
+function LandingScreen({ onEnter, tweaks }) {
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+
+  const bg = tweaks.darkMode
+    ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)'
+    : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+
+  return (
+    <div style={{ minHeight:'100vh', display:'flex', flexDirection:'column', background: bg, position:'relative', overflow:'hidden' }}>
+      {/* Decorative dots */}
+      <svg style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',pointerEvents:'none'}} preserveAspectRatio="xMidYMid slice">
+        {[...Array(28)].map((_,i) => (
+          <circle key={i} cx={`${(i*37+13)%100}%`} cy={`${(i*53+7)%100}%`}
+            r={3+i%5} fill={tweaks.darkMode ? '#ffffff06' : '#00000006'} />
+        ))}
+      </svg>
+
+      {/* Pilot badge */}
+      <div style={{
+        position:'absolute', top:18, right:18,
+        background: tweaks.darkMode ? '#ffffff12' : '#00000010',
+        border: `1px solid ${tweaks.darkMode ? '#ffffff18' : '#00000012'}`,
+        borderRadius:100, padding:'5px 12px',
+        fontSize:10, fontFamily:'Nunito', fontWeight:800,
+        color: tweaks.darkMode ? '#ffffff70' : '#5C4030AA',
+        letterSpacing:1.2, textTransform:'uppercase',
+      }}>✦ Prueba piloto</div>
+
+      {/* Characters */}
+      <div style={{
+        flex:1, display:'flex', flexDirection:'column', alignItems:'center',
+        justifyContent:'center', padding:'60px 24px 0', gap:20,
+      }}>
+        <div style={{
+          display:'flex', gap:16, alignItems:'flex-end',
+          opacity: loaded ? 1 : 0,
+          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 0.8s cubic-bezier(0.34,1.56,0.64,1)',
+        }}>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:6}}>
+            <div style={{background:'#C1623F20', border:'3px solid #C1623F40', borderRadius:'50% 50% 50% 50%/60% 60% 40% 40%', padding:'10px 10px 6px', boxShadow:'0 8px 24px #C1623F30'}}>
+              <ValentinaAvatar size={84} animate={true}/>
+            </div>
+            <span style={{fontFamily:'Fredoka One', fontSize:12, color:'#C1623F', background:'#C1623F15', padding:'2px 10px', borderRadius:100}}>Valentina</span>
+          </div>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:6, transform:'translateY(-14px)'}}>
+            <div style={{background:'#22C5A820', border:'3px solid #22C5A840', borderRadius:'50% 50% 50% 50%/60% 60% 40% 40%', padding:'12px 12px 8px', boxShadow:'0 8px 32px #22C5A838'}}>
+              <CocoAvatar size={104} animate={true}/>
+            </div>
+            <span style={{fontFamily:'Fredoka One', fontSize:12, color:'#22C5A8', background:'#22C5A815', padding:'2px 10px', borderRadius:100}}>Coco</span>
+          </div>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:6}}>
+            <div style={{background:'#E8A20020', border:'3px solid #E8A20040', borderRadius:'50% 50% 50% 50%/60% 60% 40% 40%', padding:'10px 10px 6px', boxShadow:'0 8px 24px #E8A20030'}}>
+              <TomasAvatar size={84} animate={true}/>
+            </div>
+            <span style={{fontFamily:'Fredoka One', fontSize:12, color:'#E8A200', background:'#E8A20015', padding:'2px 10px', borderRadius:100}}>Tomás</span>
+          </div>
+        </div>
+
+        <div style={{
+          textAlign:'center', maxWidth:480,
+          opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+          transition:'all 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s',
+        }}>
+          <h1 style={{
+            fontFamily:'Fredoka One', fontSize:'clamp(30px,8vw,52px)',
+            color: tweaks.darkMode ? '#F5EAD8' : tweaks.primaryColor,
+            margin:'0 0 8px', lineHeight:1.1,
+          }}>Español de Herencia</h1>
+          <p style={{
+            fontFamily:'Nunito', fontSize:'clamp(13px,3.5vw,16px)',
+            color: tweaks.darkMode ? '#B0A090' : '#7A5C44',
+            margin:'0 0 10px', fontWeight:600, lineHeight:1.5,
+          }}>{tweaks.tagline}</p>
+          <p style={{
+            fontFamily:'Nunito', fontSize:'clamp(15px,4vw,19px)',
+            color: tweaks.darkMode ? '#E8D5C0' : '#4A3020',
+            margin:0, fontWeight:800,
+          }}>Juega, aprende y mantén viva tu lengua familiar ✨</p>
+        </div>
+      </div>
+
+      <div style={{
+        padding:'28px 24px 44px', display:'flex', flexDirection:'column', alignItems:'center', gap:10,
+        opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
+        transition:'all 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.4s',
+      }}>
+        <button onClick={onEnter} style={{
+          background: tweaks.primaryColor, color:'white', border:'none',
+          fontFamily:'Fredoka One', fontSize:21,
+          padding:'15px 52px', borderRadius:100, cursor:'pointer',
+          boxShadow:`0 8px 28px ${tweaks.primaryColor}55`,
+          transition:'transform 0.15s, box-shadow 0.15s',
+        }}
+          onMouseEnter={e=>{e.target.style.transform='scale(1.06)';}}
+          onMouseLeave={e=>{e.target.style.transform='scale(1)';}}
+        >Entrar</button>
+        <p style={{fontFamily:'Nunito', fontSize:11, fontWeight:600, color: tweaks.darkMode ? '#ffffff38' : '#00000025', textAlign:'center', margin:0}}>
+          Acceso exclusivo para familias participantes
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 2: Login ──────────────────────────────────────────────────────────
+
+function LoginScreen({ onLogin, onBack, tweaks, loginError = '' }) {
+  const [mode, setMode] = React.useState('login'); // login | setup-pin | forgot | reset
+  const [user, setUser] = React.useState('');
+  const [pass, setPass] = React.useState('');
+  const [pin, setPin] = React.useState('');
+  const [newPass, setNewPass] = React.useState('');
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [show, setShow] = React.useState(false);
+  const [pendingUser, setPendingUser] = React.useState('');
+  React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
+  React.useEffect(() => { if (loginError) { setError(loginError); setLoading(false); } }, [loginError]);
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    if (!user || !pass) { setError('Por favor ingresa tus datos.'); return; }
+    setLoading(true); setError('');
+    const result = await onLogin(user, pass);
+    if (result && result.isNew) {
+      setPendingUser(user);
+      setLoading(false);
+      setMode('setup-pin');
+    }
+  }
+
+  async function handleSetupPin(e) {
+    e.preventDefault();
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { setError('El PIN debe ser exactamente 4 números.'); return; }
+    setLoading(true); setError('');
+    await onLogin(pendingUser, pass, pin);
+  }
+
+  async function handleForgot(e) {
+    e.preventDefault();
+    if (!user) { setError('Ingresa tu nombre de usuario.'); return; }
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { setError('Ingresa tu PIN de 4 dígitos.'); return; }
+    setLoading(true); setError('');
+    // Verify PIN against Firebase
+    try {
+      const hash = await hashPin(pin);
+      const doc = await db.collection('usuarios').doc(user).get();
+      if (!doc.exists) { setError('Usuario no encontrado.'); setLoading(false); return; }
+      if (doc.data().pinHash !== hash) { setError('PIN incorrecto. Inténtalo de nuevo.'); setLoading(false); return; }
+      setPendingUser(user);
+      setLoading(false);
+      setMode('reset');
+    } catch(e) { setError('Error de conexión.'); setLoading(false); }
+  }
+
+  async function handleReset(e) {
+    e.preventDefault();
+    if (!newPass || newPass.length < 3) { setError('La contraseña debe tener al menos 3 caracteres.'); return; }
+    setLoading(true); setError('');
+    try {
+      const hash = await hashPassword(newPass);
+      await db.collection('usuarios').doc(pendingUser).update({ passwordHash: hash });
+      try { const cached = JSON.parse(localStorage.getItem('eh_' + pendingUser) || '{}'); cached.passwordHash = hash; localStorage.setItem('eh_' + pendingUser, JSON.stringify(cached)); } catch(e) {}
+      setSuccess('¡Contraseña cambiada! Ya puedes iniciar sesión.');
+      setLoading(false);
+      setTimeout(() => { setMode('login'); setSuccess(''); setUser(pendingUser); setPass(''); }, 2000);
+    } catch(e) { setError('Error al guardar. Intenta de nuevo.'); setLoading(false); }
+  }
+
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+  const cardBg = tweaks.darkMode ? '#1E3028' : 'white';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const textMuted = tweaks.darkMode ? '#8A9A90' : '#8A7A68';
+  const inputBg = tweaks.darkMode ? '#162820' : 'white';
+  const inputText = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const borderNormal = tweaks.darkMode ? '#2E4A40' : '#E0D5C0';
+
+  function InputField({label, value, onChange, type='text', placeholder}) {
+    const [focused, setFocused] = React.useState(false);
+    return (
+      <div>
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, display:'block', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5}}>{label}</label>
+        <input value={value} onChange={e=>onChange(e.target.value)} type={type} placeholder={placeholder}
+          style={{width:'100%', padding:'12px 15px', borderRadius:12, border:`2px solid ${focused ? tweaks.primaryColor : borderNormal}`, fontFamily:'Nunito', fontSize:15, outline:'none', background:inputBg, color:inputText, boxSizing:'border-box', transition:'border 0.2s'}}
+          onFocus={()=>setFocused(true)} onBlur={()=>setFocused(false)}/>
+      </div>
+    );
+  }
+
+  function PinField({value, onChange}) {
+    return (
+      <div>
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, display:'block', marginBottom:5, textTransform:'uppercase', letterSpacing:0.5}}>PIN de recuperación (4 dígitos)</label>
+        <div style={{display:'flex', gap:10, justifyContent:'center'}}>
+          {[0,1,2,3].map(i => (
+            <input key={i} type="tel" inputMode="numeric" maxLength={1}
+              value={value[i] || ''}
+              onChange={e => {
+                const v = e.target.value.replace(/\D/,'');
+                const arr = value.split('');
+                arr[i] = v;
+                onChange(arr.join(''));
+                if (v && i < 3) document.getElementById('pin-' + (i+1))?.focus();
+              }}
+              onKeyDown={e => { if (e.key==='Backspace' && !value[i] && i>0) document.getElementById('pin-' + (i-1))?.focus(); }}
+              id={'pin-' + i}
+              style={{
+                width:52, height:56, textAlign:'center', fontSize:24, fontFamily:'Fredoka One',
+                borderRadius:12, border:`2.5px solid ${value[i] ? tweaks.primaryColor : borderNormal}`,
+                background:inputBg, color:inputText, outline:'none', transition:'border 0.2s',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:bg, padding:24}}>
+      <button onClick={() => mode === 'login' ? onBack() : setMode('login')} style={{position:'absolute', top:20, left:20, background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:14, fontWeight:700, color:textMuted, display:'flex', alignItems:'center', gap:6}}>
+        ← {mode === 'login' ? 'Volver' : 'Iniciar sesión'}
+      </button>
+
+      <div style={{background:cardBg, borderRadius:28, padding:'clamp(26px,5vw,44px)', boxShadow:'0 20px 60px rgba(0,0,0,0.13)', width:'100%', maxWidth:420, opacity:show?1:0, transform:show?'translateY(0) scale(1)':'translateY(30px) scale(0.96)', transition:'all 0.5s cubic-bezier(0.34,1.56,0.64,1)'}}>
+
+        {/* ── LOGIN ── */}
+        {mode === 'login' && (
+          <>
+            <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:16}}>
+              <CocoAvatar size={48}/>
+              <div>
+                <h2 style={{fontFamily:'Fredoka One', fontSize:26, color:tweaks.primaryColor, margin:0}}>¡Bienvenido/a!</h2>
+                <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>Ingresa tus datos para acceder</p>
+              </div>
+            </div>
+            <div style={{background:`${tweaks.primaryColor}12`, border:`1.5px solid ${tweaks.primaryColor}28`, borderRadius:12, padding:'9px 14px', marginBottom:20, fontFamily:'Nunito', fontSize:13, color:`${tweaks.darkMode?'#7AC5B8':'#4A8A7A'}`, fontWeight:700}}>
+              🗺️ Tu misión de esta semana ya está lista
+            </div>
+            <form onSubmit={handleLogin} style={{display:'flex', flexDirection:'column', gap:14}}>
+              <InputField label="Usuario" value={user} onChange={setUser} placeholder="Tu nombre de usuario"/>
+              <InputField label="Contraseña" value={pass} onChange={setPass} type="password" placeholder="••••••••"/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700}}>{error}</p>}
+              <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:loading?'default':'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s', marginTop:4}}>
+                {loading ? '✨ Entrando...' : 'Iniciar sesión'}
+              </button>
+            </form>
+            <button onClick={() => { setMode('forgot'); setError(''); setPin(''); setUser(''); }} style={{background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:13, fontWeight:700, color:tweaks.primaryColor, marginTop:14, display:'block', width:'100%', textAlign:'center'}}>
+              ¿Olvidaste tu contraseña? →
+            </button>
+            <p style={{fontFamily:'Nunito', fontSize:11, color:tweaks.darkMode?'#3A5A50':'#C8B8A0', textAlign:'center', marginTop:8, marginBottom:0}}>
+              Primera vez — crea tu cuenta con usuario y contraseña
+            </p>
+          </>
+        )}
+
+        {/* ── SETUP PIN (new user) ── */}
+        {mode === 'setup-pin' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🔐</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>¡Elige tu PIN!</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600, lineHeight:1.5}}>
+                Si alguna vez olvidas tu contraseña,<br/>este PIN te ayudará a recuperarla.
+              </p>
+            </div>
+            <form onSubmit={handleSetupPin} style={{display:'flex', flexDirection:'column', gap:20}}>
+              <PinField value={pin} onChange={setPin}/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700, textAlign:'center'}}>{error}</p>}
+              <button type="submit" disabled={loading || pin.length !== 4} style={{background: pin.length===4 ? tweaks.primaryColor : '#C8BA9A', color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor: pin.length===4 ? 'pointer' : 'default', boxShadow: pin.length===4 ? `0 6px 20px ${tweaks.primaryColor}45` : 'none', transition:'all 0.3s'}}>
+                {loading ? '✨ Guardando...' : '¡Listo! Guardar PIN →'}
+              </button>
+            </form>
+          </>
+        )}
+
+        {/* ── FORGOT PASSWORD ── */}
+        {mode === 'forgot' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🦜</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>Recuperar contraseña</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>Ingresa tu usuario y tu PIN secreto</p>
+            </div>
+            <form onSubmit={handleForgot} style={{display:'flex', flexDirection:'column', gap:16}}>
+              <InputField label="Usuario" value={user} onChange={setUser} placeholder="Tu nombre de usuario"/>
+              <PinField value={pin} onChange={setPin}/>
+              {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700, textAlign:'center'}}>{error}</p>}
+              <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s'}}>
+                {loading ? 'Verificando...' : 'Verificar PIN →'}
+              </button>
+            </form>
+          </>
+        )}
+
+        {/* ── RESET PASSWORD ── */}
+        {mode === 'reset' && (
+          <>
+            <div style={{textAlign:'center', marginBottom:20}}>
+              <div style={{fontSize:36, marginBottom:8}}>🔑</div>
+              <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:tweaks.primaryColor, margin:'0 0 6px'}}>Nueva contraseña</h2>
+              <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:0, fontWeight:600}}>PIN correcto ✅ — Elige una nueva contraseña</p>
+            </div>
+            {success ? (
+              <div style={{background:'#22C5A815', border:'2px solid #22C5A8', borderRadius:14, padding:16, textAlign:'center', fontFamily:'Nunito', fontSize:14, fontWeight:700, color:'#22C5A8'}}>
+                {success}
+              </div>
+            ) : (
+              <form onSubmit={handleReset} style={{display:'flex', flexDirection:'column', gap:14}}>
+                <InputField label="Nueva contraseña" value={newPass} onChange={setNewPass} type="password" placeholder="Mínimo 3 caracteres"/>
+                {error && <p style={{color:'#E74C3C', fontFamily:'Nunito', fontSize:13, margin:0, fontWeight:700}}>{error}</p>}
+                <button type="submit" disabled={loading} style={{background:loading?'#A0C8C0':tweaks.primaryColor, color:'white', border:'none', borderRadius:100, fontFamily:'Fredoka One', fontSize:19, padding:'13px', cursor:'pointer', boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s'}}>
+                  {loading ? 'Guardando...' : '¡Cambiar contraseña! →'}
+                </button>
+              </form>
+            )}
+          </>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+
+// ─── Screen 3: Avatar + Name Selection ────────────────────────────────────────
+
+function AvatarScreen({ username, onContinue, tweaks }) {
+  const [selected, setSelected] = React.useState(null);
+  const [nickname, setNickname] = React.useState('');
+  const [show, setShow] = React.useState(false);
+  const [nameFocused, setNameFocused] = React.useState(false);
+  React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
+
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+  const textMuted = tweaks.darkMode ? '#8A9A90' : '#7A6050';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const inputBg = tweaks.darkMode ? '#162820' : 'white';
+  const borderNormal = tweaks.darkMode ? '#2E4A40' : '#E0D5C0';
+
+  const canContinue = selected && nickname.trim().length >= 2;
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'24px 20px'}}>
+      <div style={{maxWidth:520, width:'100%', opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(24px)', transition:'all 0.6s cubic-bezier(0.34,1.56,0.64,1)'}}>
+
+        {/* Header */}
+        <div style={{textAlign:'center', marginBottom:24}}>
+          <div style={{fontSize:34, marginBottom:8}}>🗺️</div>
+          <h2 style={{fontFamily:'Fredoka One', fontSize:26, color: tweaks.darkMode ? '#E8D5C0' : tweaks.primaryColor, margin:'0 0 6px'}}>
+            ¡Crea tu perfil de explorador/a!
+          </h2>
+          <p style={{fontFamily:'Nunito', fontSize:14, color: textMuted, margin:0, fontWeight:600}}>
+            Elige tu avatar y escribe tu nombre
+          </p>
+        </div>
+
+        {/* Name input — FIRST */}
+        <div style={{marginBottom:20}}>
+          <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color: textMuted, display:'block', marginBottom:7, textTransform:'uppercase', letterSpacing:0.8}}>
+            ¿Cómo te llamamos?
+          </label>
+          <div style={{position:'relative'}}>
+            {/* Avatar preview inside input */}
+            {selected && (
+              <div style={{position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', width:32, height:32, borderRadius:'50%', overflow:'hidden', background: USER_AVATARS[selected-1]?.bg + '20', border:`1.5px solid ${USER_AVATARS[selected-1]?.bg}40`}}>
+                <UserAvatarSVG avatarId={selected} size={32}/>
+              </div>
+            )}
+            <input
+              value={nickname}
+              onChange={e => setNickname(e.target.value)}
+              placeholder="Tu nombre de explorador/a..."
+              maxLength={20}
+              style={{
+                width:'100%', padding: selected ? '13px 16px 13px 52px' : '13px 16px',
+                borderRadius:14, border:`2px solid ${nameFocused ? tweaks.primaryColor : borderNormal}`,
+                fontFamily:'Fredoka One', fontSize:18, outline:'none',
+                background: inputBg, color: textMain,
+                boxSizing:'border-box', transition:'border 0.2s, padding 0.2s',
+                caretColor: tweaks.primaryColor,
+              }}
+              onFocus={() => setNameFocused(true)}
+              onBlur={() => setNameFocused(false)}
+            />
+          </div>
+          {nickname.trim().length === 1 && (
+            <p style={{fontFamily:'Nunito', fontSize:12, color:'#E8A200', fontWeight:700, margin:'5px 0 0'}}>Escribe al menos 2 letras</p>
+          )}
+        </div>
+
+        {/* Avatar grid */}
+        <label style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color: textMuted, display:'block', marginBottom:10, textTransform:'uppercase', letterSpacing:0.8}}>
+          Elige tu avatar
+        </label>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:10, marginBottom:22}}>
+          {USER_AVATARS.map(av => (
+            <button key={av.id} onClick={() => setSelected(av.id)} style={{
+              background: selected === av.id ? (tweaks.darkMode ? '#ffffff14' : 'white') : (tweaks.darkMode ? '#0D2018' : '#F5EAD8CC'),
+              border:`3px solid ${selected === av.id ? tweaks.primaryColor : (tweaks.darkMode ? '#2E4A40' : '#E0D5C0')}`,
+              borderRadius:18, padding:'14px 8px 10px', cursor:'pointer',
+              display:'flex', flexDirection:'column', alignItems:'center', gap:5,
+              transition:'all 0.2s',
+              transform: selected === av.id ? 'scale(1.05)' : 'scale(1)',
+              boxShadow: selected === av.id ? `0 8px 22px ${tweaks.primaryColor}35` : 'none',
+              position:'relative',
+            }}>
+              {selected === av.id && (
+                <div style={{position:'absolute', top:6, right:6, width:18, height:18, borderRadius:'50%', background:tweaks.primaryColor, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'white'}}>✓</div>
+              )}
+              <div style={{width:64, height:64, borderRadius:'50%', background: av.bg+'18', border:`2px solid ${av.bg}38`, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', transition:'transform 0.2s', transform: selected === av.id ? 'scale(1.08)' : 'scale(1)'}}>
+                <UserAvatarSVG avatarId={av.id} size={64}/>
+              </div>
+              <span style={{fontFamily:'Nunito', fontSize:10, fontWeight:700, color: selected === av.id ? tweaks.primaryColor : (tweaks.darkMode ? '#5A7A70' : '#A09080')}}>{av.desc}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Preview of name + avatar */}
+        {canContinue && (
+          <div style={{
+            background: tweaks.darkMode ? '#0D2018' : `${tweaks.primaryColor}12`,
+            border:`2px solid ${tweaks.primaryColor}30`,
+            borderRadius:16, padding:'12px 16px', marginBottom:16,
+            display:'flex', alignItems:'center', gap:12,
+            animation:'fadeSlideUp 0.3s ease',
+          }}>
+            <div style={{width:44, height:44, borderRadius:'50%', overflow:'hidden', background: USER_AVATARS[selected-1]?.bg+'20', border:`2px solid ${tweaks.primaryColor}40`, flexShrink:0}}>
+              <UserAvatarSVG avatarId={selected} size={44}/>
+            </div>
+            <div>
+              <div style={{fontFamily:'Nunito', fontSize:11, fontWeight:800, color:tweaks.primaryColor, textTransform:'uppercase', letterSpacing:0.8}}>Tu perfil</div>
+              <div style={{fontFamily:'Fredoka One', fontSize:18, color: tweaks.darkMode ? '#E8D5C0' : '#3D2A1A'}}>
+                ¡Hola, {nickname.trim().charAt(0).toUpperCase() + nickname.trim().slice(1)}! 👋
+              </div>
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={() => canContinue && onContinue(selected, nickname.trim())}
+          disabled={!canContinue}
+          style={{
+            width:'100%', padding:'15px', borderRadius:100,
+            background: canContinue ? tweaks.primaryColor : '#C8BA9A',
+            color:'white', border:'none', fontFamily:'Fredoka One', fontSize:19,
+            cursor: canContinue ? 'pointer' : 'default',
+            boxShadow: canContinue ? `0 8px 24px ${tweaks.primaryColor}48` : 'none',
+            transition:'all 0.3s',
+          }}
+        >
+          {!selected && !nickname ? 'Escribe tu nombre y elige avatar' :
+           !selected ? 'Ahora elige tu avatar' :
+           nickname.trim().length < 2 ? 'Escribe tu nombre' :
+           '¡Listo! Comenzar aventura →'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 3b: Age/Level Selection ──────────────────────────────────────────
+
+function AgeScreen({ username, avatarId, onContinue, tweaks }) {
+  const [selected, setSelected] = React.useState(null);
+  const [show, setShow] = React.useState(false);
+  React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+
+  const groups = [
+    {
+      id: 'junior', label: '6 – 8 años', emoji: '🌱',
+      desc: 'Juegos, imágenes y aventuras cortas', color: '#E8A200',
+      traits: ['Actividades con imágenes', 'Audio y repetición', 'Tareas breves y divertidas'],
+    },
+    {
+      id: 'explorer', label: '9 – 12 años', emoji: '🧭',
+      desc: 'Misiones, lectura y retos culturales', color: tweaks.primaryColor,
+      traits: ['Lectura y escritura', 'Variantes del español', 'Reflexión cultural'],
+    },
+  ];
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:24}}>
+      <div style={{maxWidth:480, width:'100%', opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(24px)', transition:'all 0.6s cubic-bezier(0.34,1.56,0.64,1)'}}>
+        <div style={{textAlign:'center', marginBottom:28}}>
+          <div style={{display:'flex', justifyContent:'center', marginBottom:10}}>
+            <div style={{background:'#22C5A820', border:'2px solid #22C5A840', borderRadius:'50%', padding:8}}>
+              <CocoAvatar size={52}/>
+            </div>
+          </div>
+          <SpeechBubble text={`¡${displayName}, cuántos años tienes? Así te preparo las misiones perfectas. 🦜`} character="coco" style={{margin:'0 auto 16px', maxWidth:340}}/>
+        </div>
+
+        <div style={{display:'flex', flexDirection:'column', gap:12, marginBottom:24}}>
+          {groups.map(g => (
+            <button key={g.id} onClick={() => setSelected(g.id)} style={{
+              background: selected === g.id ? (tweaks.darkMode ? g.color+'20' : g.color+'15') : (tweaks.darkMode ? '#0D2018' : 'white'),
+              border:`3px solid ${selected === g.id ? g.color : (tweaks.darkMode ? '#2E4A40' : '#E0D5C0')}`,
+              borderRadius:20, padding:'18px 20px', cursor:'pointer', textAlign:'left',
+              transition:'all 0.2s', transform: selected === g.id ? 'scale(1.02)' : 'scale(1)',
+              boxShadow: selected === g.id ? `0 6px 20px ${g.color}30` : 'none',
+            }}>
+              <div style={{display:'flex', alignItems:'center', gap:14}}>
+                <div style={{fontSize:36}}>{g.emoji}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:'Fredoka One', fontSize:20, color: selected === g.id ? g.color : (tweaks.darkMode ? '#E8D5C0' : '#3D2A1A'), marginBottom:3}}>{g.label}</div>
+                  <div style={{fontFamily:'Nunito', fontSize:13, color: tweaks.darkMode ? '#7A9A90' : '#8A7060', fontWeight:600, marginBottom:8}}>{g.desc}</div>
+                  <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
+                    {g.traits.map(t => (
+                      <span key={t} style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, background: g.color+'18', color: g.color, padding:'2px 8px', borderRadius:100}}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+                {selected === g.id && <div style={{width:22, height:22, borderRadius:'50%', background:g.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, color:'white', flexShrink:0}}>✓</div>}
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <button onClick={() => selected && onContinue(selected)} disabled={!selected} style={{
+          width:'100%', padding:'15px', borderRadius:100,
+          background: selected ? tweaks.primaryColor : '#C8BA9A',
+          color:'white', border:'none', fontFamily:'Fredoka One', fontSize:19,
+          cursor: selected ? 'pointer' : 'default',
+          boxShadow: selected ? `0 8px 24px ${tweaks.primaryColor}48` : 'none', transition:'all 0.3s',
+        }}>{selected ? '¡Estoy listo/a para explorar! →' : 'Selecciona tu grupo'}</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 4: Dashboard with Mission Map ─────────────────────────────────────
+
+function getMissions(progress) { return [
+  { id:1, title:'La maleta de las palabras', emoji:'🧳', color:'#22C5A8', unlocked:true, progress:0, stars:0 },
+  { id:2, title:'El mercado de los acentos', emoji:'🏪', color:'#E8A200', unlocked:false, progress:0, stars:0 },
+  { id:3, title:'El secreto del Caribe', emoji:'🌴', color:'#C1623F', unlocked:false, progress:0, stars:0 },
+  { id:4, title:'El mapa de las palabras', emoji:'🗺️', color:'#9B59B6', unlocked:false, progress:0, stars:0 },
+  { id:5, title:'Historias que viven en familia', emoji:'👨‍👩‍👧', color:'#E74C3C', unlocked:false, progress:0, stars:0 },
+].map((m,i) => i===0 ? {...m, progress: progress.mission1Activity ? Math.round((progress.mission1Activity/5)*100) : 0, stars: progress.mission1Stars || 0} : m); }
+
+function DashboardScreen({ username, avatarId, ageGroup, onMission, tweaks, progress = {} }) {
+  const [show, setShow] = React.useState(false);
+  React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+  const isJunior = ageGroup === 'junior';
+
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
+  const cardBg = tweaks.darkMode ? '#162820' : 'white';
+  const textMuted = tweaks.darkMode ? '#7A9A90' : '#8A7060';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, padding:'22px 18px 40px', boxSizing:'border-box'}}>
+      <div style={{maxWidth:520, margin:'0 auto'}}>
+
+        {/* Header */}
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20, opacity: show ? 1 : 0, transition:'opacity 0.5s'}}>
+          <div style={{fontFamily:'Fredoka One', fontSize:20, color: tweaks.darkMode ? '#E8D5C0' : tweaks.primaryColor}}>
+            Español de Herencia
+          </div>
+          <div style={{display:'flex', alignItems:'center', gap:10}}>
+            <div style={{background: tweaks.darkMode ? '#1E3028' : '#F5EAD8', border:`1.5px solid ${tweaks.darkMode ? '#2E4A40' : '#E0D5C0'}`, borderRadius:100, padding:'4px 11px 4px 5px', display:'flex', alignItems:'center', gap:5, fontFamily:'Nunito', fontSize:13, fontWeight:800, color:textMuted}}>
+              <Stars count={2} max={3} size={13}/>120 pts
+            </div>
+            <div style={{width:34, height:34, borderRadius:'50%', overflow:'hidden', background:tweaks.primaryColor+'22', border:`2px solid ${tweaks.primaryColor}44`}}>
+              <UserAvatarSVG avatarId={avatarId||1} size={34}/>
+            </div>
+          </div>
+        </div>
+
+        {/* Greeting */}
+        <div style={{marginBottom:18, opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(16px)', transition:'all 0.6s ease 0.1s'}}>
+          <h1 style={{fontFamily:'Fredoka One', fontSize:'clamp(24px,6vw,34px)', color:textMain, margin:'0 0 3px'}}>¡Hola, {displayName}! 👋</h1>
+          <p style={{fontFamily:'Nunito', fontSize:14, color:textMuted, margin:0, fontWeight:600}}>
+            {isJunior ? 'Valentina, Tomás y Coco te esperan' : 'Tus compañeros exploradores te esperan para continuar'}
+          </p>
+        </div>
+
+        {/* Active Mission Card */}
+        <div style={{
+          background:`linear-gradient(135deg, ${tweaks.primaryColor}18, ${tweaks.primaryColor}2C)`,
+          border:`2px solid ${tweaks.primaryColor}48`, borderRadius:22, padding:20, marginBottom:16,
+          position:'relative', overflow:'hidden',
+          opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(20px)',
+          transition:'all 0.6s ease 0.2s', boxShadow:`0 8px 28px ${tweaks.primaryColor}20`,
+        }}>
+          <div style={{position:'absolute', right:-16, top:-16, opacity:0.07}}><CocoAvatar size={110}/></div>
+          <div style={{display:'inline-block', background:tweaks.primaryColor, color:'white', fontFamily:'Nunito', fontSize:10, fontWeight:800, letterSpacing:1, textTransform:'uppercase', borderRadius:100, padding:'3px 11px', marginBottom:10}}>Misión activa</div>
+          <h3 style={{fontFamily:'Fredoka One', fontSize:20, color:textMain, margin:'0 0 5px'}}>🧳 La maleta de las palabras</h3>
+          <p style={{fontFamily:'Nunito', fontSize:13, color:textMuted, margin:'0 0 10px', fontWeight:600, lineHeight:1.5}}>
+            {isJunior
+              ? 'Ayuda a los exploradores a encontrar palabras misteriosas'
+              : 'Descubre cómo las mismas cosas tienen distintos nombres según el país hispanohablante'
+            }
+          </p>
+
+          {/* Progress mini */}
+          <ProgressBar value={progress.mission1Activity ? (progress.mission1Activity / 5) * 100 : 0} max={100} color={tweaks.primaryColor}/>
+          <div style={{display:'flex', justifyContent:'space-between', marginTop:4, marginBottom:12}}>
+            <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, color:textMuted}}>Actividad {progress.mission1Activity || 0} de 5</span>
+            <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, color:tweaks.primaryColor}}>{progress.mission1Activity ? Math.round((progress.mission1Activity/5)*100) : 0}%</span>
+          </div>
+
+          <div style={{display:'flex', gap:8, alignItems:'center', marginBottom:16}}>
+            <div style={{display:'flex'}}>
+              {[<ValentinaAvatar size={24}/>, <TomasAvatar size={24}/>, <CocoAvatar size={24}/>].map((c,i) => (
+                <div key={i} style={{background:'white', border:`2px solid ${tweaks.primaryColor}30`, borderRadius:'50%', padding:3, marginLeft: i ? -6 : 0}}>{c}</div>
+              ))}
+            </div>
+            <span style={{fontFamily:'Nunito', fontSize:12, fontWeight:700, color:textMuted}}>+ tú = equipo completo</span>
+          </div>
+
+          <button onClick={onMission} style={{
+            background:tweaks.primaryColor, color:'white', border:'none',
+            fontFamily:'Fredoka One', fontSize:17, padding:'12px 24px', borderRadius:100,
+            cursor:'pointer', width:'100%', boxShadow:`0 5px 18px ${tweaks.primaryColor}45`, transition:'transform 0.15s',
+          }}
+            onMouseEnter={e=>e.target.style.transform='scale(1.03)'}
+            onMouseLeave={e=>e.target.style.transform='scale(1)'}
+          >{(progress.mission1Activity || 0) === 0 ? '¡Comenzar misión! →' : '¡Continuar misión! →'}</button>
+        </div>
+
+        {/* Mission Map */}
+        <div style={{opacity: show ? 1 : 0, transition:'opacity 0.6s ease 0.35s'}}>
+          <p style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, marginBottom:12, textTransform:'uppercase', letterSpacing:1}}>🗺️ Mapa de misiones</p>
+          <div style={{background:cardBg, borderRadius:20, padding:16, boxShadow:'0 4px 16px rgba(0,0,0,0.06)', position:'relative'}}>
+            {/* Path line */}
+            <div style={{position:'absolute', left:36, top:40, bottom:40, width:3, background:'linear-gradient(to bottom, #22C5A8, #E0D5C0)', borderRadius:2, zIndex:0}}/>
+
+            <div style={{display:'flex', flexDirection:'column', gap:0}}>
+              {getMissions(progress).map((m, i) => (
+                <div key={m.id} style={{display:'flex', alignItems:'center', gap:14, padding:'10px 0', position:'relative', zIndex:1}}>
+                  {/* Node */}
+                  <div style={{
+                    width:42, height:42, borderRadius:'50%', flexShrink:0,
+                    background: m.unlocked ? m.color : (tweaks.darkMode ? '#1E3028' : '#E8E0D0'),
+                    border:`3px solid ${m.unlocked ? m.color+'80' : (tweaks.darkMode ? '#2E4040' : '#C8C0B0')}`,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontSize: m.unlocked ? 20 : 16,
+                    boxShadow: m.unlocked ? `0 4px 12px ${m.color}40` : 'none',
+                    transition:'all 0.3s',
+                  }}>
+                    {m.unlocked ? m.emoji : '🔒'}
+                  </div>
+                  {/* Info */}
+                  <div style={{flex:1, opacity: m.unlocked ? 1 : 0.5}}>
+                    <div style={{fontFamily:'Nunito', fontSize:10, fontWeight:800, color: m.unlocked ? m.color : textMuted, textTransform:'uppercase', letterSpacing:0.8, marginBottom:2}}>Misión {m.id}</div>
+                    <div style={{fontFamily:'Nunito', fontSize:13, fontWeight:700, color: m.unlocked ? textMain : textMuted}}>{m.title}</div>
+                    {m.unlocked && m.progress > 0 && (
+                      <div style={{marginTop:4}}>
+                        <ProgressBar value={m.progress} max={100} color={m.color}/>
+                      </div>
+                    )}
+                  </div>
+                  {/* Stars */}
+                  {m.unlocked && <Stars count={m.stars} max={3} size={14}/>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Badges row */}
+        <div style={{marginTop:16, opacity: show ? 1 : 0, transition:'opacity 0.6s ease 0.45s'}}>
+          <p style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, marginBottom:10, textTransform:'uppercase', letterSpacing:1}}>🏅 Colección</p>
+          <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+            {[{e:'🌍', l:'Viajero de palabras', c:tweaks.primaryColor}, {e:'👂', l:'Buen oyente', c:'#9B59B6'}].map(b => (
+              <div key={b.l} style={{background:cardBg, border:`2px solid ${b.c}30`, borderRadius:14, padding:'8px 12px', display:'flex', alignItems:'center', gap:8, boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
+                <span style={{fontSize:20}}>{b.e}</span>
+                <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, color:textMuted}}>{b.l}</span>
+              </div>
+            ))}
+            <div style={{background: tweaks.darkMode ? '#1E2820' : '#F0E8DC', border:`2px dashed ${tweaks.darkMode ? '#3A5040' : '#C8B89A'}`, borderRadius:14, padding:'8px 12px', display:'flex', alignItems:'center', gap:8}}>
+              <span style={{fontSize:20}}>🔒</span>
+              <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, color:textMuted}}>Próxima insignia</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 5: Mission Intro ──────────────────────────────────────────────────
+
+function MissionIntroScreen({ username, ageGroup, onStart, onBack, tweaks }) {
+  const [phase, setPhase] = React.useState(0);
+  const [show, setShow] = React.useState(false);
+  React.useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+  const isJunior = ageGroup === 'junior';
+
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : 'linear-gradient(160deg, #FFF4E6 0%, #F5EAD8 100%)';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const textMuted = tweaks.darkMode ? '#7A9A90' : '#8A7060';
+  const cardBg = tweaks.darkMode ? '#162820' : 'white';
+
+  const phases = [
+    {
+      title: '¡Llegamos a México!',
+      icon: '🇲🇽',
+      desc: isJunior
+        ? 'En el mercado hay palabras raras y divertidas. ¡Ayúdanos a descubrirlas!'
+        : 'Los exploradores han llegado a un mercado en Ciudad de México. Aquí las palabras suenan diferente...',
+      speaker: <ValentinaAvatar size={52}/>, speakerName:'Valentina', speakerColor:'#C1623F',
+      bubble: isJunior ? `¡${displayName}! ¡Mira cuántas cosas raras! ¿Me ayudas?` : `¡${displayName}, encontré palabras que no entiendo! En este mercado todo suena distinto. ¿Vienes?`,
+      btn:'¿Cuál es el reto? →',
+    },
+    {
+      title: 'El reto de la misión',
+      icon: '🧳',
+      desc: isJunior
+        ? 'Hay objetos con nombres diferentes según el país. ¡Ayúdanos a llenar la maleta!'
+        : 'En el mundo hispanohablante, muchos objetos tienen nombres distintos según el país. Debes ayudar a los exploradores a comunicarse correctamente.',
+      speaker: <CocoAvatar size={52}/>, speakerName:'Coco', speakerColor:'#22C5A8',
+      bubble: `¡Cronac! Sin ti, ${displayName}, ninguna misión puede completarse. ¿Empezamos juntos?`,
+      btn:'¡Entendido! Vamos →',
+    },
+    {
+      title: '¡El equipo está listo!',
+      icon: '🌟',
+      desc: null,
+      speaker: <TomasAvatar size={52}/>, speakerName:'Tomás', speakerColor:'#E8A200',
+      bubble: `¡Increíble, ${displayName}! Valentina + Coco + Tomás + tú = equipo invencible. ¡A explorar!`,
+      btn: '¡Comenzar misión!',
+    },
+  ];
+
+  const current = phases[phase];
+
+  function next() {
+    if (phase < phases.length - 1) {
+      setShow(false);
+      setTimeout(() => { setPhase(p=>p+1); setShow(true); }, 280);
+    } else { onStart(); }
+  }
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', padding:'22px 18px 36px', boxSizing:'border-box'}}>
+      <div style={{maxWidth:520, margin:'0 auto', width:'100%', flex:1, display:'flex', flexDirection:'column'}}>
+        <button onClick={onBack} style={{background:'transparent', border:'none', cursor:'pointer', fontFamily:'Nunito', fontSize:13, fontWeight:700, color:textMuted, display:'flex', alignItems:'center', gap:5, marginBottom:20, alignSelf:'flex-start'}}>← Volver</button>
+
+        {/* Phase dots */}
+        <div style={{display:'flex', gap:6, marginBottom:22, justifyContent:'center'}}>
+          {phases.map((_,i) => (
+            <div key={i} style={{height:6, borderRadius:3, width: i===phase ? 28 : 14, background: i<=phase ? tweaks.primaryColor : '#E0D5C0', transition:'all 0.3s'}}/>
+          ))}
+        </div>
+
+        <div style={{textAlign:'center', marginBottom:20, opacity: show ? 1 : 0, transform: show ? 'none' : 'translateY(16px)', transition:'all 0.45s ease'}}>
+          <div style={{fontSize:44, marginBottom:6}}>{current.icon}</div>
+          <h2 style={{fontFamily:'Fredoka One', fontSize:24, color:textMain, margin:0}}>{current.title}</h2>
+        </div>
+
+        {/* Character + bubble */}
+        <div style={{display:'flex', gap:10, alignItems:'flex-start', marginBottom:18, opacity: show ? 1 : 0, transition:'opacity 0.45s ease 0.1s'}}>
+          <div style={{background:current.speakerColor+'1E', border:`2px solid ${current.speakerColor}38`, borderRadius:'50%', padding:8, flexShrink:0}}>
+            {current.speaker}
+          </div>
+          <div>
+            <div style={{fontFamily:'Nunito', fontSize:10, fontWeight:800, color:current.speakerColor, marginBottom:5, textTransform:'uppercase', letterSpacing:1}}>{current.speakerName}</div>
+            <SpeechBubble text={current.bubble} character={current.speakerName.toLowerCase()} style={{fontSize:14}}/>
+          </div>
+        </div>
+
+        {current.desc && (
+          <div style={{background:cardBg, borderRadius:14, padding:14, marginBottom:20, fontFamily:'Nunito', fontSize:13, color:textMuted, fontWeight:600, lineHeight:1.6, boxShadow:'0 3px 12px rgba(0,0,0,0.06)', opacity: show ? 1 : 0, transition:'opacity 0.45s ease 0.15s'}}>
+            {current.desc}
+          </div>
+        )}
+
+        {phase === 2 && (
+          <div style={{display:'flex', justifyContent:'center', gap:14, marginBottom:20, opacity: show ? 1 : 0, transition:'opacity 0.45s ease 0.15s'}}>
+            {[<ValentinaAvatar size={60}/>, <CocoAvatar size={70}/>, <TomasAvatar size={60}/>].map((ch,i) => (
+              <div key={i} style={{background:'white', borderRadius:18, padding:10, boxShadow:'0 4px 14px rgba(0,0,0,0.09)', display:'flex', flexDirection:'column', alignItems:'center', gap:4}}>
+                {ch}<Stars count={3} max={3} size={12}/>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{flex:1}}/>
+
+        <button onClick={next} style={{
+          background:tweaks.primaryColor, color:'white', border:'none',
+          fontFamily:'Fredoka One', fontSize:19, padding:'14px', borderRadius:100,
+          cursor:'pointer', boxShadow:`0 7px 22px ${tweaks.primaryColor}48`, transition:'transform 0.15s', width:'100%',
+        }}
+          onMouseEnter={e=>e.target.style.transform='scale(1.03)'}
+          onMouseLeave={e=>e.target.style.transform='scale(1)'}
+        >{current.btn}</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 6: Activity ───────────────────────────────────────────────────────
+
+const ACTIVITIES_JUNIOR = [
+  {
+    phase: 'Descubrimiento',
+    phaseIcon: '👀',
+    instruction: '¿Cómo se llama esto en México?',
+    image: '🚌', imageLabel: 'vehículo de transporte',
+    options: ['Autobús', 'Camión', 'Bus', 'Micro'],
+    correct: 1,
+    explanation: '¡Muy bien! En México se dice "camión". ¡Qué interesante!',
+  },
+  {
+    phase: 'Comprensión',
+    phaseIcon: '💡',
+    instruction: '¿Cuál es la palabra correcta?',
+    image: '🍌', imageLabel: 'fruta amarilla',
+    options: ['Banana', 'Plátano', 'Guineo', 'Cambur'],
+    correct: 1,
+    explanation: '¡Genial! En España y México se dice "plátano". En Venezuela y Cuba, "cambur" o "guineo".',
+  },
+  {
+    phase: 'Práctica',
+    phaseIcon: '🎯',
+    instruction: '¿Qué diría Valentina en Argentina?',
+    image: '👟', imageLabel: 'zapatos deportivos',
+    options: ['Tenis', 'Zapatillas', 'Deportivas', 'Championes'],
+    correct: 1,
+    explanation: '¡Excelente! En Argentina se dice "zapatillas". ¡Aprendiste mucho hoy!',
+  },
+];
+
+const ACTIVITIES_EXPLORER = [
+  {
+    phase: 'Descubrimiento',
+    phaseIcon: '👀',
+    instruction: 'En México, ¿cómo se llama este vehículo de transporte urbano?',
+    image: '🚌', imageLabel: 'autobús urbano',
+    options: ['Autobús', 'Camión', 'Bus', 'Colectivo'],
+    correct: 1,
+    explanation: '¡Correcto! En México "camión" se usa para el autobús urbano. En Argentina sería "colectivo" y en España "autobús". ¡La misma realidad, distintas palabras!',
+  },
+  {
+    phase: 'Comprensión',
+    phaseIcon: '💡',
+    instruction: 'Valentina escucha a alguien pedir un "guineo". ¿De qué país puede ser esa persona?',
+    image: '🍌', imageLabel: 'plátano / banana',
+    options: ['México', 'España', 'Venezuela', 'Argentina'],
+    correct: 2,
+    explanation: '¡Muy bien! "Guineo" es la palabra usada en Venezuela y algunas zonas del Caribe. En Argentina dirían "banana" y en España "plátano".',
+  },
+  {
+    phase: 'Práctica guiada',
+    phaseIcon: '🎯',
+    instruction: 'Tomás quiere comprar algo de tomar. ¿Qué pide si está en España?',
+    image: '🥤', imageLabel: 'refresco / gaseosa',
+    options: ['Una soda', 'Una gaseosa', 'Una bebida', 'Un refresco'],
+    correct: 3,
+    explanation: '¡Excelente! En España se dice "refresco". En Argentina "gaseosa", en México "refresco" también, aunque "soda" se usa en algunas regiones.',
+  },
+  {
+    phase: 'Uso en contexto',
+    phaseIcon: '💬',
+    instruction: 'Coco necesita comunicarse en un mercado porteño (Buenos Aires). ¿Cómo pide las papas fritas?',
+    image: '🍟', imageLabel: 'papas / patatas fritas',
+    options: ['Patatas fritas', 'Papas fritas', 'Chips', 'Frituras'],
+    correct: 1,
+    explanation: '¡Perfecto! En Argentina se dice "papas fritas". En España "patatas fritas". ¡Conocer la variante local ayuda a comunicarse mejor!',
+  },
+  {
+    phase: 'Reto final',
+    phaseIcon: '🏆',
+    instruction: '¿Qué expresión usaría alguien del Río de la Plata para decir "¿Cómo estás?"?',
+    image: '👋', imageLabel: 'saludo',
+    options: ['¿Qué tal?', '¿Cómo estás?', '¿Cómo andás?', '¿Qué hubo?'],
+    correct: 2,
+    explanation: '¡Brillante! En Argentina y Uruguay se usa "vos" y la forma "andás" en lugar de "estás". Esta variante se llama voseo y es una característica del español rioplatense.',
+  },
+];
+
+function ActivityScreen({ username, ageGroup, onFinish, tweaks }) {
+  const isJunior = ageGroup === 'junior';
+  const activities = isJunior ? ACTIVITIES_JUNIOR : ACTIVITIES_EXPLORER;
+
+  const [step, setStep] = React.useState(0);
+  const [selected, setSelected] = React.useState(null);
+  const [feedback, setFeedback] = React.useState(null);
+  const [show, setShow] = React.useState(true);
+
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : 'linear-gradient(160deg, #FFF4E6 0%, #F5EAD8 100%)';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const textMuted = tweaks.darkMode ? '#7A9A90' : '#8A7060';
+  const optBg = tweaks.darkMode ? '#162820' : 'white';
+  const borderNormal = tweaks.darkMode ? '#2E4A40' : '#E0D5C0';
+
+  const act = activities[step];
+
+  function choose(i) {
+    if (feedback) return;
+    setSelected(i);
+    setFeedback(i === act.correct ? 'correct' : 'wrong');
+  }
+
+  function next() {
+    if (step < activities.length - 1) {
+      setShow(false);
+      setTimeout(() => { setStep(s=>s+1); setSelected(null); setFeedback(null); setShow(true); }, 350);
+    } else { onFinish(); }
+  }
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, padding:'22px 18px 36px', boxSizing:'border-box'}}>
+      <div style={{maxWidth:520, margin:'0 auto'}}>
+
+        {/* Phase progress bar */}
+        <div style={{marginBottom:16}}>
+          <div style={{display:'flex', gap:4, marginBottom:6}}>
+            {activities.map((_,i) => (
+              <div key={i} style={{flex:1, height:6, borderRadius:3, background: i<=step ? tweaks.primaryColor : (tweaks.darkMode ? '#2A4038' : '#E0D5C0'), transition:'background 0.3s'}}/>
+            ))}
+          </div>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:800, color:textMuted, textTransform:'uppercase', letterSpacing:0.8}}>
+              {act.phaseIcon} {act.phase}
+            </span>
+            <span style={{fontFamily:'Nunito', fontSize:11, fontWeight:700, color:tweaks.primaryColor}}>{step+1}/{activities.length}</span>
+          </div>
+        </div>
+
+        {/* Instruction with character */}
+        <div style={{display:'flex', gap:10, alignItems:'flex-start', marginBottom:16, opacity: show ? 1 : 0, transform: show ? 'none' : 'translateY(12px)', transition:'all 0.35s ease'}}>
+          <div style={{background:'#22C5A818', border:'2px solid #22C5A838', borderRadius:'50%', padding:7, flexShrink:0}}>
+            <CocoAvatar size={40}/>
+          </div>
+          <SpeechBubble text={act.instruction} character="coco" style={{fontSize: isJunior ? 16 : 14, flex:1}}/>
+        </div>
+
+        {/* Visual */}
+        <div style={{textAlign:'center', marginBottom:16, opacity: show ? 1 : 0, transition:'opacity 0.35s ease 0.08s'}}>
+          <div style={{fontSize: isJunior ? 80 : 64, lineHeight:1}}>{act.image}</div>
+          <div style={{fontFamily:'Nunito', fontSize:11, color:textMuted, fontWeight:600, marginTop:4}}>[{act.imageLabel}]</div>
+        </div>
+
+        {/* Options */}
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:16, opacity: show ? 1 : 0, transition:'opacity 0.35s ease 0.12s'}}>
+          {act.options.map((opt,i) => {
+            let bg2=optBg, border=borderNormal, color=textMain;
+            if (feedback && i===act.correct) { bg2='#22C5A818'; border='#22C5A8'; color='#22C5A8'; }
+            if (feedback==='wrong' && i===selected) { bg2='#E74C3C12'; border='#E74C3C'; color='#E74C3C'; }
+            return (
+              <button key={i} onClick={() => choose(i)} style={{
+                background:bg2, border:`2.5px solid ${border}`, borderRadius:14,
+                padding: isJunior ? '16px 12px' : '13px 12px',
+                fontFamily:'Nunito', fontSize: isJunior ? 16 : 14, fontWeight:700, color,
+                cursor: feedback ? 'default' : 'pointer', transition:'all 0.2s',
+                transform: (feedback && i===act.correct) ? 'scale(1.04)' : 'scale(1)',
+              }}>{opt}</button>
+            );
+          })}
+        </div>
+
+        {/* Feedback */}
+        {feedback && (
+          <div style={{
+            background: feedback==='correct' ? '#22C5A812' : '#E8A20012',
+            border:`2px solid ${feedback==='correct' ? '#22C5A8' : '#E8A200'}`,
+            borderRadius:16, padding:14, marginBottom:16,
+            display:'flex', gap:10, alignItems:'flex-start',
+            animation:'fadeSlideUp 0.3s ease',
+          }}>
+            <div style={{fontSize:22}}>{feedback==='correct' ? '🎉' : '🦜'}</div>
+            <div>
+              <div style={{fontFamily:'Nunito', fontSize:13, fontWeight:800, color: feedback==='correct' ? '#22C5A8' : '#E8A200', marginBottom:3}}>
+                {feedback==='correct' ? '¡Muy bien!' : 'Casi lo logramos...'}
+              </div>
+              <div style={{fontFamily:'Nunito', fontSize:13, color:textMuted, lineHeight:1.5}}>{act.explanation}</div>
+            </div>
+          </div>
+        )}
+
+        {feedback && (
+          <button onClick={next} style={{
+            background:tweaks.primaryColor, color:'white', border:'none',
+            fontFamily:'Fredoka One', fontSize:18, padding:'13px', borderRadius:100,
+            cursor:'pointer', width:'100%', boxShadow:`0 6px 18px ${tweaks.primaryColor}48`,
+          }}>
+            {step < activities.length-1 ? 'Siguiente →' : '¡Misión completada! 🌟'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen 7: Mission Complete ───────────────────────────────────────────────
+
+const COLLECTIBLES = [
+  {e:'🌮', l:'Taco', c:'México'},
+  {e:'🧉', l:'Mate', c:'Argentina'},
+  {e:'🥘', l:'Paella', c:'España'},
+];
+
+function CompleteScreen({ username, ageGroup, onHome, tweaks }) {
+  const [show, setShow] = React.useState(false);
+  const [collectedIdx, setCollectedIdx] = React.useState(-1);
+  React.useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+    // Animate collectibles appearing one by one
+    COLLECTIBLES.forEach((_,i) => setTimeout(() => setCollectedIdx(i), 800 + i*400));
+  }, []);
+
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
+  const isJunior = ageGroup === 'junior';
+  const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : 'linear-gradient(160deg, #FFF4E6 0%, #F5EAD8 100%)';
+  const textMain = tweaks.darkMode ? '#E8D5C0' : '#3D2A1A';
+  const textMuted = tweaks.darkMode ? '#8A9A90' : '#8A7060';
+
+  return (
+    <div style={{minHeight:'100vh', background: bg, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:24, textAlign:'center'}}>
+      <div style={{maxWidth:480, opacity: show ? 1 : 0, transform: show ? 'scale(1)' : 'scale(0.92)', transition:'all 0.6s cubic-bezier(0.34,1.56,0.64,1)'}}>
+        <div style={{fontSize:72, marginBottom:12}}>🌟</div>
+        <h1 style={{fontFamily:'Fredoka One', fontSize:'clamp(26px,7vw,38px)', color:textMain, margin:'0 0 8px'}}>
+          ¡Misión cumplida, {displayName}!
+        </h1>
+        <p style={{fontFamily:'Nunito', fontSize:15, color:textMuted, margin:'0 0 24px', fontWeight:600, lineHeight:1.5}}>
+          {isJunior
+            ? '¡Lo hiciste genial! Gracias a ti completamos la aventura.'
+            : 'Gracias a ti pudimos completar la misión. ¡El equipo explorador lo celebra!'}
+        </p>
+
+        {/* Characters */}
+        <div style={{display:'flex', justifyContent:'center', gap:10, marginBottom:24}}>
+          {[<ValentinaAvatar size={64} animate/>, <CocoAvatar size={80} animate/>, <TomasAvatar size={64} animate/>].map((ch,i) => (
+            <div key={i} style={{background:'white', borderRadius:18, padding:12, boxShadow:'0 6px 20px rgba(0,0,0,0.1)'}}>{ch}</div>
+          ))}
+        </div>
+
+        {/* Stars + points */}
+        <div style={{background:'white', borderRadius:18, padding:16, marginBottom:16, boxShadow:'0 4px 16px rgba(0,0,0,0.07)', display:'inline-flex', flexDirection:'column', alignItems:'center', gap:6}}>
+          <Stars count={3} max={3} size={28}/>
+          <div style={{fontFamily:'Fredoka One', fontSize:17, color:'#E8A200'}}>+30 puntos ✨</div>
+        </div>
+
+        {/* Badge */}
+        <div style={{background:`linear-gradient(135deg, ${tweaks.primaryColor}15, ${tweaks.primaryColor}28)`, border:`2px solid ${tweaks.primaryColor}60`, borderRadius:14, padding:'11px 18px', marginBottom:20, fontFamily:'Nunito', fontSize:14, fontWeight:700, color: tweaks.darkMode ? tweaks.primaryColor : '#0D7A68'}}>
+          🏅 Insignia desbloqueada: "Viajero de palabras"
+        </div>
+
+        {/* Cultural collectibles */}
+        <div style={{background:'white', borderRadius:18, padding:16, marginBottom:24, boxShadow:'0 4px 16px rgba(0,0,0,0.07)'}}>
+          <p style={{fontFamily:'Nunito', fontSize:12, fontWeight:800, color:textMuted, textTransform:'uppercase', letterSpacing:1, marginBottom:12}}>
+            🌎 Coleccionables culturales desbloqueados
+          </p>
+          <div style={{display:'flex', justifyContent:'center', gap:10}}>
+            {COLLECTIBLES.map((c,i) => (
+              <div key={i} style={{
+                opacity: i <= collectedIdx ? 1 : 0.2,
+                transform: i <= collectedIdx ? 'scale(1)' : 'scale(0.7)',
+                transition:'all 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+                textAlign:'center',
+              }}>
+                <div style={{fontSize:36, background:`${tweaks.primaryColor}15`, borderRadius:14, padding:'10px 14px', marginBottom:4}}>{c.e}</div>
+                <div style={{fontFamily:'Nunito', fontSize:10, fontWeight:700, color:textMuted}}>{c.l}</div>
+                <div style={{fontFamily:'Nunito', fontSize:9, color:textMuted+'80'}}>{c.c}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button onClick={onHome} style={{
+          background:tweaks.primaryColor, color:'white', border:'none',
+          fontFamily:'Fredoka One', fontSize:19, padding:'14px 36px', borderRadius:100,
+          cursor:'pointer', boxShadow:`0 8px 26px ${tweaks.primaryColor}48`, transition:'transform 0.15s',
+        }}
+          onMouseEnter={e=>e.target.style.transform='scale(1.05)'}
+          onMouseLeave={e=>e.target.style.transform='scale(1)'}
+        >Volver al inicio →</button>
+      </div>
+    </div>
+  );
+}
+
+// Export
+Object.assign(window, {
+  LandingScreen, LoginScreen, AvatarScreen, AgeScreen,
+  DashboardScreen, MissionIntroScreen, ActivityScreen, CompleteScreen,
+  getMissions,
+});
+
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryColor": "#22C5A8",
+  "bgFrom": "#FFF4E6",
+  "bgTo": "#F5EAD8",
+  "tagline": "Un programa para fortalecer el español de los hijos de familias hispanohablantes que viven fuera de su país",
+  "darkMode": false
+}/*EDITMODE-END*/;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCsk94BexKljEus9IZJ_B8UQhDUb8dS_jc",
+  authDomain: "espanol-herencia.firebaseapp.com",
+  projectId: "espanol-herencia",
+  storageBucket: "espanol-herencia.firebasestorage.app",
+  messagingSenderId: "106510189513",
+  appId: "1:106510189513:web:e3f2f7a74a40298ae55e18"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function hashPassword(password) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password + 'eh-salt-2024'));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin + 'eh-pin-2024'));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function loginUser(username, password, pin) {
+  const hash = await hashPassword(password);
+  try {
+    const doc = await db.collection('usuarios').doc(username).get();
+    if (!doc.exists) {
+      await db.collection('usuarios').doc(username).set({ username, passwordHash: hash, createdAt: new Date().toISOString(), points: 0, missionsCompleted: [] });
+      if (pin) { const pinHash = await hashPin(pin); await db.collection('usuarios').doc(username).update({ pinHash }); }
+      return { status: 'new', data: null };
+    }
+    const data = doc.data();
+    if (pin) { const pinHash = await hashPin(pin); await db.collection('usuarios').doc(username).update({ pinHash }); return { status: 'pin-saved', data }; }
+    if (data.passwordHash !== hash) return { status: 'wrong_password', data: null };
+    return { status: 'ok', data };
+  } catch(e) {
+    console.warn('Firebase error:', e);
+    const cached = JSON.parse(localStorage.getItem('eh_' + username) || 'null');
+    if (!cached) return { status: 'new', data: null };
+    if (cached.passwordHash === hash) return { status: 'ok', data: cached };
+    return { status: 'wrong_password', data: null };
+  }
+}
+
+async function saveUserData(username, data) {
+  try { const e = JSON.parse(localStorage.getItem('eh_' + username)||'{}'); localStorage.setItem('eh_' + username, JSON.stringify({...e,...data})); } catch(e) {}
+  try { await db.collection('usuarios').doc(username).set(data, { merge: true }); } catch(e) { console.warn('Save error:', e); }
+}
+
+const DEFAULT_PROGRESS = { points: 0, stars: 0, mission1Activity: 0, mission1Stars: 0, missionsCompleted: [] };
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [screen, setScreen] = React.useState('landing');
+  const [username, setUsername] = React.useState('');
+  const [nickname, setNickname] = React.useState('');
+  const [avatarId, setAvatarId] = React.useState(null);
+  const [ageGroup, setAgeGroup] = React.useState(null);
+  const [progress, setProgress] = React.useState(DEFAULT_PROGRESS);
+  const [syncStatus, setSyncStatus] = React.useState('idle');
+  const [loginError, setLoginError] = React.useState('');
+
+  async function handleLogin(u, p, pin) {
+    setLoginError('');
+    const result = await loginUser(u, p, pin);
+    if (result.status === 'wrong_password') { setLoginError('Contraseña incorrecta. Inténtalo de nuevo.'); return { isNew: false }; }
+    setUsername(u);
+    if (result.status === 'new') return { isNew: true };
+    if (result.status === 'pin-saved') { setScreen('avatar'); return { isNew: false }; }
+    const d = result.data || {};
+    if (d.nickname) setNickname(d.nickname);
+    if (d.avatarId) setAvatarId(d.avatarId);
+    if (d.ageGroup) setAgeGroup(d.ageGroup);
+    setProgress({ points: d.points||0, stars: d.stars||0, mission1Activity: d.mission1Activity||0, mission1Stars: d.mission1Stars||0, missionsCompleted: d.missionsCompleted||[] });
+    setScreen(d.avatarId && d.ageGroup ? 'dashboard' : 'avatar');
+    return { isNew: false };
+  }
+
+  async function handleAvatar(id, nick) { setAvatarId(id); setNickname(nick); setScreen('age'); }
+
+  async function handleAge(ag) {
+    setAgeGroup(ag); setSyncStatus('saving');
+    await saveUserData(username, { nickname, avatarId, ageGroup: ag, updatedAt: new Date().toISOString() });
+    setSyncStatus('saved'); setTimeout(() => setSyncStatus('idle'), 2500);
+    setScreen('dashboard');
+  }
+
+  async function handleActivityStep(stepNum) {
+    const newProgress = { ...progress, mission1Activity: stepNum };
+    setProgress(newProgress);
+    await saveUserData(username, { mission1Activity: stepNum, lastActive: new Date().toISOString() });
+  }
+
+  async function handleMissionComplete() {
+    const isJunior = ageGroup === 'junior';
+    const totalSteps = isJunior ? 3 : 5;
+    const newPoints = (progress.points||0) + 30;
+    const newStars = Math.min(3, (progress.stars||0) + 1);
+    const newProgress = { ...progress, points: newPoints, stars: newStars, mission1Activity: totalSteps, mission1Stars: 3, missionsCompleted: [...(progress.missionsCompleted||[]), 1] };
+    setProgress(newProgress);
+    setSyncStatus('saving');
+    await saveUserData(username, { points: newPoints, stars: newStars, mission1Activity: totalSteps, mission1Stars: 3, missionsCompleted: newProgress.missionsCompleted, lastActive: new Date().toISOString() });
+    setSyncStatus('saved'); setTimeout(() => setSyncStatus('idle'), 2500);
+    setScreen('complete');
+  }
+
+  const nav = setScreen;
+  const displayName = nickname || username;
+
+  return (
+    <div style={{minHeight:'100vh', position:'relative'}}>
+      {screen === 'landing'   && <LandingScreen     tweaks={tweaks} onEnter={() => nav('login')}/>}
+      {screen === 'login'     && <LoginScreen        tweaks={tweaks} onLogin={handleLogin} onBack={() => nav('landing')} loginError={loginError}/>}
+      {screen === 'avatar'    && <AvatarScreen       tweaks={tweaks} username={username} onContinue={handleAvatar}/>}
+      {screen === 'age'       && <AgeScreen          tweaks={tweaks} username={displayName} avatarId={avatarId} onContinue={handleAge}/>}
+      {screen === 'dashboard' && <DashboardScreen    tweaks={tweaks} username={displayName} avatarId={avatarId} ageGroup={ageGroup} progress={progress} onMission={() => nav('mission')}/>}
+      {screen === 'mission'   && <MissionIntroScreen tweaks={tweaks} username={displayName} ageGroup={ageGroup} onStart={() => nav('activity')} onBack={() => nav('dashboard')}/>}
+      {screen === 'activity'  && <ActivityScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onStepComplete={handleActivityStep} onFinish={handleMissionComplete}/>}
+      {screen === 'complete'  && <CompleteScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} progress={progress} onHome={() => nav('dashboard')}/>}
+
+      {syncStatus !== 'idle' && (
+        <div style={{position:'fixed', bottom:20, left:'50%', transform:'translateX(-50%)', background: syncStatus==='saved'?'#22C5A8':'#8A9A90', color:'white', fontFamily:'Nunito', fontSize:13, fontWeight:700, padding:'8px 20px', borderRadius:100, boxShadow:'0 4px 16px rgba(0,0,0,0.2)', zIndex:9999, display:'flex', alignItems:'center', gap:8, whiteSpace:'nowrap'}}>
+          {syncStatus === 'saving' && '☁️ Guardando progreso...'}
+          {syncStatus === 'saved'  && '✅ Progreso guardado en la nube'}
+        </div>
+      )}
+
+      <TweaksPanel>
+        <TweakSection title="Colores">
+          <TweakColor id="primaryColor" label="Color principal" value={tweaks.primaryColor} onChange={v => setTweak('primaryColor', v)}/>
+          <TweakColor id="bgFrom" label="Fondo inicio" value={tweaks.bgFrom} onChange={v => setTweak('bgFrom', v)}/>
+          <TweakColor id="bgTo" label="Fondo final" value={tweaks.bgTo} onChange={v => setTweak('bgTo', v)}/>
+        </TweakSection>
+        <TweakSection title="Apariencia">
+          <TweakToggle id="darkMode" label="Modo oscuro" value={tweaks.darkMode} onChange={v => setTweak('darkMode', v)}/>
+        </TweakSection>
+        <TweakSection title="Contenido">
+          <TweakText id="tagline" label="Subtítulo de portada" value={tweaks.tagline} onChange={v => setTweak('tagline', v)}/>
+        </TweakSection>
+        <TweakSection title="Ir a pantalla">
+          <div style={{display:'flex', flexDirection:'column', gap:5}}>
+            {['landing','login','avatar','age','dashboard','mission','activity','complete'].map(s => (
+              <button key={s} onClick={() => nav(s)} style={{background: screen===s?'#22C5A8':'#f0f0f0', color: screen===s?'white':'#333', border:'none', borderRadius:7, padding:'5px 10px', fontFamily:'Nunito', fontSize:12, fontWeight:700, cursor:'pointer', textAlign:'left', transition:'all 0.2s'}}>{s}</button>
+            ))}
+          </div>
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
+
+</script>
+</body>
+</html>
