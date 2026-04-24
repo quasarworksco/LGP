@@ -10,20 +10,16 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body { background: #F5EAD8; }
   input { -webkit-appearance: none; }
   button { -webkit-tap-highlight-color: transparent; }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-  }
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+  @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #C8B89A; border-radius: 3px; }
@@ -1070,19 +1066,20 @@ function LandingScreen({ onEnter, tweaks }) {
 
 // ─── Screen 2: Login ──────────────────────────────────────────────────────────
 
-function LoginScreen({ onLogin, onBack, tweaks }) {
+function LoginScreen({ onLogin, onBack, tweaks, loginError = '' }) {
   const [user, setUser] = React.useState('');
   const [pass, setPass] = React.useState('');
   const [error, setError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [show, setShow] = React.useState(false);
   React.useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
+  React.useEffect(() => { if (loginError) { setError(loginError); setLoading(false); } }, [loginError]);
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     if (!user || !pass) { setError('Por favor ingresa tus datos.'); return; }
     setLoading(true); setError('');
-    setTimeout(() => { setLoading(false); onLogin(user); }, 1100);
+    await onLogin(user, pass);
   }
 
   const bg = tweaks.darkMode ? 'linear-gradient(160deg, #1A2E28 0%, #0D1F1A 100%)' : `linear-gradient(160deg, ${tweaks.bgFrom} 0%, ${tweaks.bgTo} 100%)`;
@@ -1136,7 +1133,7 @@ function LoginScreen({ onLogin, onBack, tweaks }) {
             boxShadow:`0 6px 20px ${tweaks.primaryColor}45`, transition:'all 0.2s', marginTop:4,
           }}>{loading ? '✨ Entrando...' : 'Iniciar sesión'}</button>
         </form>
-        <p style={{fontFamily:'Nunito', fontSize:11, color: tweaks.darkMode ? '#3A5A50' : '#C8B8A0', textAlign:'center', marginTop:14, marginBottom:0}}>Demo: cualquier usuario y contraseña</p>
+        <p style={{fontFamily:'Nunito', fontSize:11, color: tweaks.darkMode ? '#3A5A50' : '#C8B8A0', textAlign:'center', marginTop:14, marginBottom:0}}>Primera vez usando la plataforma — crea tu cuenta con cualquier usuario y contraseña</p>
       </div>
     </div>
   );
@@ -1915,6 +1912,52 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "darkMode": false
 }/*EDITMODE-END*/;
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCsk94BexKljEus9IZJ_B8UQhDUb8dS_jc",
+  authDomain: "espanol-herencia.firebaseapp.com",
+  projectId: "espanol-herencia",
+  storageBucket: "espanol-herencia.firebasestorage.app",
+  messagingSenderId: "106510189513",
+  appId: "1:106510189513:web:e3f2f7a74a40298ae55e18"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function hashPassword(password) {
+  const msgBuffer = new TextEncoder().encode(password + 'eh-salt-2024');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function loginUser(username, password) {
+  const hash = await hashPassword(password);
+  try {
+    const doc = await db.collection('usuarios').doc(username).get();
+    if (!doc.exists) {
+      await db.collection('usuarios').doc(username).set({
+        username, passwordHash: hash,
+        createdAt: new Date().toISOString(),
+        points: 0, missionsCompleted: [],
+      });
+      return { status: 'new', data: null };
+    }
+    const data = doc.data();
+    if (data.passwordHash !== hash) return { status: 'wrong_password', data: null };
+    return { status: 'ok', data };
+  } catch(e) {
+    console.warn('Firebase error:', e);
+    const cached = JSON.parse(localStorage.getItem('eh_' + username) || 'null');
+    if (cached && cached.passwordHash === hash) return { status: 'ok', data: cached };
+    if (!cached) return { status: 'new', data: null };
+    return { status: 'wrong_password', data: null };
+  }
+}
+
+async function saveUserData(username, data) {
+  try { localStorage.setItem('eh_' + username, JSON.stringify(data)); } catch(e) {}
+  try { await db.collection('usuarios').doc(username).set(data, { merge: true }); } catch(e) { console.warn('Save error:', e); }
+}
+
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [screen, setScreen] = React.useState('landing');
@@ -1922,53 +1965,68 @@ function App() {
   const [nickname, setNickname] = React.useState('');
   const [avatarId, setAvatarId] = React.useState(null);
   const [ageGroup, setAgeGroup] = React.useState(null);
-  const [isFirstLogin, setIsFirstLogin] = React.useState(true);
+  const [syncStatus, setSyncStatus] = React.useState('idle');
+  const [loginError, setLoginError] = React.useState('');
 
-  React.useEffect(() => {
-    try {
-      const s = JSON.parse(localStorage.getItem('eh_state') || '{}');
-      if (s.username) setUsername(s.username);
-      if (s.nickname) setNickname(s.nickname);
-      if (s.avatarId) setAvatarId(s.avatarId);
-      if (s.ageGroup) { setAgeGroup(s.ageGroup); setIsFirstLogin(false); }
-    } catch(e) {}
-  }, []);
-
-  function persist(u, nick, a, ag) {
-    localStorage.setItem('eh_state', JSON.stringify({ username: u, nickname: nick, avatarId: a, ageGroup: ag }));
-  }
-
-  function handleLogin(u) {
+  async function handleLogin(u, p) {
+    setLoginError('');
+    const result = await loginUser(u, p);
+    if (result.status === 'wrong_password') {
+      setLoginError('Contraseña incorrecta. Inténtalo de nuevo.');
+      return;
+    }
     setUsername(u);
-    setScreen(isFirstLogin || !avatarId ? 'avatar' : 'dashboard');
+    if (result.status === 'new') { setScreen('avatar'); return; }
+    const d = result.data;
+    if (d.nickname) setNickname(d.nickname);
+    if (d.avatarId) setAvatarId(d.avatarId);
+    if (d.ageGroup) setAgeGroup(d.ageGroup);
+    setScreen(d.avatarId && d.ageGroup ? 'dashboard' : 'avatar');
   }
 
-  function handleAvatar(id, nick) {
-    setAvatarId(id);
-    setNickname(nick);
-    setScreen('age');
-  }
+  async function handleAvatar(id, nick) { setAvatarId(id); setNickname(nick); setScreen('age'); }
 
-  function handleAge(ag) {
-    setAgeGroup(ag); setIsFirstLogin(false);
-    persist(username, nickname, avatarId, ag);
+  async function handleAge(ag) {
+    setAgeGroup(ag); setSyncStatus('saving');
+    await saveUserData(username, { nickname, avatarId, ageGroup: ag, updatedAt: new Date().toISOString() });
+    setSyncStatus('saved'); setTimeout(() => setSyncStatus('idle'), 2500);
     setScreen('dashboard');
   }
 
+  async function handleMissionComplete() {
+    setSyncStatus('saving');
+    await saveUserData(username, { points: 150, lastMission: 1, lastActive: new Date().toISOString() });
+    setSyncStatus('saved'); setTimeout(() => setSyncStatus('idle'), 2500);
+    setScreen('complete');
+  }
+
   const nav = setScreen;
-  // Use nickname if set, otherwise fall back to username
   const displayName = nickname || username;
 
   return (
     <div style={{minHeight:'100vh', position:'relative'}}>
       {screen === 'landing'   && <LandingScreen     tweaks={tweaks} onEnter={() => nav('login')}/>}
-      {screen === 'login'     && <LoginScreen        tweaks={tweaks} onLogin={handleLogin} onBack={() => nav('landing')}/>}
+      {screen === 'login'     && <LoginScreen        tweaks={tweaks} onLogin={handleLogin} onBack={() => nav('landing')} loginError={loginError}/>}
       {screen === 'avatar'    && <AvatarScreen       tweaks={tweaks} username={username} onContinue={handleAvatar}/>}
       {screen === 'age'       && <AgeScreen          tweaks={tweaks} username={displayName} avatarId={avatarId} onContinue={handleAge}/>}
       {screen === 'dashboard' && <DashboardScreen    tweaks={tweaks} username={displayName} avatarId={avatarId} ageGroup={ageGroup} onMission={() => nav('mission')}/>}
       {screen === 'mission'   && <MissionIntroScreen tweaks={tweaks} username={displayName} ageGroup={ageGroup} onStart={() => nav('activity')} onBack={() => nav('dashboard')}/>}
-      {screen === 'activity'  && <ActivityScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onFinish={() => nav('complete')}/>}
+      {screen === 'activity'  && <ActivityScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onFinish={handleMissionComplete}/>}
       {screen === 'complete'  && <CompleteScreen     tweaks={tweaks} username={displayName} ageGroup={ageGroup} onHome={() => nav('dashboard')}/>}
+
+      {syncStatus !== 'idle' && (
+        <div style={{
+          position:'fixed', bottom:20, left:'50%', transform:'translateX(-50%)',
+          background: syncStatus === 'error' ? '#E74C3C' : syncStatus === 'saved' ? '#22C5A8' : '#8A9A90',
+          color:'white', fontFamily:'Nunito', fontSize:13, fontWeight:700,
+          padding:'8px 20px', borderRadius:100, boxShadow:'0 4px 16px rgba(0,0,0,0.2)',
+          zIndex:9999, display:'flex', alignItems:'center', gap:8, whiteSpace:'nowrap',
+        }}>
+          {syncStatus === 'saving' && '☁️ Guardando progreso...'}
+          {syncStatus === 'saved'  && '✅ Progreso guardado en la nube'}
+          {syncStatus === 'error'  && '⚠️ Sin conexión — guardado local'}
+        </div>
+      )}
 
       <TweaksPanel>
         <TweakSection title="Colores">
@@ -1986,8 +2044,7 @@ function App() {
           <div style={{display:'flex', flexDirection:'column', gap:5}}>
             {['landing','login','avatar','age','dashboard','mission','activity','complete'].map(s => (
               <button key={s} onClick={() => nav(s)} style={{
-                background: screen === s ? '#22C5A8' : '#f0f0f0',
-                color: screen === s ? 'white' : '#333',
+                background: screen === s ? '#22C5A8' : '#f0f0f0', color: screen === s ? 'white' : '#333',
                 border:'none', borderRadius:7, padding:'5px 10px',
                 fontFamily:'Nunito', fontSize:12, fontWeight:700, cursor:'pointer',
                 textAlign:'left', transition:'all 0.2s',
