@@ -3,525 +3,1019 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Español de Herencia — Para las familias</title>
+<title>Español de Herencia — Que tu hijo no pierda su español</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
+/* ─── RESET ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Nunito', sans-serif; background: #FFFBF5; color: #2D1E0E; }
+body { font-family: 'Nunito', sans-serif; background: #fff; color: #1B2F6B; overflow-x: hidden; }
 
-/* ── Tokens ── */
+/* ─── TOKENS ─── */
 :root {
-  --teal:   #22C5A8;
-  --terra:  #C1623F;
-  --yellow: #E8A200;
-  --cream:  #FFF4E6;
-  --cream2: #F5EAD8;
-  --dark:   #2D1E0E;
-  --muted:  #7A5C44;
-  --card:   #FFFFFF;
+  --blue:    #1B2F6B;
+  --blue-m:  #2E4DAE;
+  --blue-l:  #4169D4;
+  --green:   #16C553;
+  --green-d: #0FA046;
+  --green-l: #4ADE80;
+  --green-bg:#F0FDF4;
+  --yellow:  #FBBF24;
+  --cream:   #F8FAFF;
+  --gray:    #F1F4FC;
+  --text:    #1B2F6B;
+  --text-m:  #5A6A9A;
+  --text-l:  #8898CC;
+  --white:   #FFFFFF;
+  --shadow:  0 4px 32px rgba(27,47,107,0.10);
+  --shadow-l:0 2px 12px rgba(27,47,107,0.07);
 }
 
-/* ── Nav ── */
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F1F4FC; }
+::-webkit-scrollbar-thumb { background: var(--blue-l); border-radius: 3px; }
+
+/* ─── NAV ─── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,251,245,0.92); backdrop-filter: blur(12px);
-  border-bottom: 1px solid #E0D5C020;
-  padding: 0 clamp(20px,5vw,60px);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(27,47,107,0.08);
+  padding: 0 clamp(16px,4vw,64px); height: 66px;
   display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
+  box-shadow: 0 2px 20px rgba(27,47,107,0.06);
+  transition: box-shadow 0.3s;
 }
-.nav-logo { font-family: 'Fredoka One'; font-size: 22px; color: var(--teal); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.nav-logo span { font-size: 11px; font-family: 'Nunito'; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-img { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--blue-m)); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(27,47,107,0.25); }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-logo-top { font-family: 'Montserrat'; font-weight: 900; font-size: 14px; color: var(--blue); line-height: 1; letter-spacing: -0.5px; }
+.nav-logo-sub { font-size: 10px; font-weight: 600; color: var(--text-m); letter-spacing: 0.5px; text-transform: uppercase; }
 .nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-family: 'Nunito'; font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.nav-links a:hover { color: var(--teal); }
-.btn-primary {
-  background: var(--teal); color: white; border: none;
-  font-family: 'Fredoka One'; font-size: 16px;
-  padding: 10px 24px; border-radius: 100px; cursor: pointer;
-  box-shadow: 0 4px 16px #22C5A840; transition: transform 0.15s, box-shadow 0.15s;
-  text-decoration: none; display: inline-block;
+.nav-links > a { font-size: 13px; font-weight: 700; color: var(--text-m); text-decoration: none; transition: color 0.2s; }
+.nav-links > a:hover { color: var(--blue); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-btn { background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text-m); display: flex; align-items: center; gap: 4px; font-family: 'Nunito'; transition: color 0.2s; }
+.nav-dropdown-btn:hover { color: var(--blue); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--green), var(--green-d));
+  color: white; font-family: 'Montserrat'; font-weight: 800; font-size: 13px;
+  padding: 10px 22px; border-radius: 100px; text-decoration: none;
+  box-shadow: 0 4px 16px rgba(22,197,83,0.35); transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
 }
-.btn-primary:hover { transform: scale(1.05); box-shadow: 0 6px 24px #22C5A860; }
-.btn-secondary {
-  background: transparent; color: var(--teal);
-  border: 2.5px solid var(--teal);
-  font-family: 'Fredoka One'; font-size: 16px;
-  padding: 10px 24px; border-radius: 100px; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; display: inline-block;
-}
-.btn-secondary:hover { background: var(--teal); color: white; }
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,197,83,0.45); }
 
-/* ── Hero ── */
+/* ─── HERO ─── */
 .hero {
-  min-height: 100vh; padding: 100px clamp(20px,5vw,80px) 60px;
-  background: linear-gradient(160deg, var(--cream) 0%, var(--cream2) 100%);
-  display: flex; align-items: center; position: relative; overflow: hidden;
+  min-height: 100vh; padding: 80px clamp(16px,4vw,64px) 0;
+  background:
+    linear-gradient(180deg, rgba(27,47,107,0.0) 0%, rgba(27,47,107,0.0) 60%, #fff 100%),
+    linear-gradient(160deg, #0A1F5C 0%, #1B3B8A 35%, #1E7A3E 70%, #15A040 100%);
+  position: relative; overflow: hidden; display: flex; align-items: center;
 }
-.hero-content { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.hero-tag { display: inline-block; background: var(--teal); color: white; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 14px; border-radius: 100px; margin-bottom: 16px; }
-.hero h1 { font-family: 'Fredoka One'; font-size: clamp(36px,5vw,58px); line-height: 1.1; color: var(--dark); margin-bottom: 16px; }
-.hero h1 span { color: var(--teal); }
-.hero p { font-size: clamp(15px,2vw,18px); color: var(--muted); line-height: 1.7; margin-bottom: 28px; font-weight: 600; }
-.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-.hero-visual { position: relative; display: flex; justify-content: center; align-items: flex-end; gap: 16px; }
-.char-card {
-  background: white; border-radius: 24px; padding: 20px 16px 14px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  transition: transform 0.3s; cursor: default;
+/* Decorative circles */
+.hero::before {
+  content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(22,197,83,0.18) 0%, transparent 70%);
 }
-.char-card:hover { transform: translateY(-8px); }
-.char-card.center { transform: translateY(-16px); }
-.char-card.center:hover { transform: translateY(-24px); }
-.char-name { font-family: 'Fredoka One'; font-size: 14px; }
-.char-role { font-family: 'Nunito'; font-size: 11px; font-weight: 700; color: var(--muted); text-align: center; max-width: 80px; }
+.hero::after {
+  content: ''; position: absolute; bottom: 100px; left: -80px; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+.hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; position: relative; z-index: 1; padding-bottom: 60px; }
 
-/* ── Sections ── */
-section { padding: clamp(60px,8vw,100px) clamp(20px,5vw,80px); }
-.container { max-width: 1100px; margin: 0 auto; }
-.section-tag { font-family: 'Nunito'; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 12px; }
-.section-title { font-family: 'Fredoka One'; font-size: clamp(28px,4vw,42px); color: var(--dark); margin-bottom: 16px; line-height: 1.2; }
-.section-sub { font-size: 16px; color: var(--muted); line-height: 1.7; font-weight: 600; max-width: 560px; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(22,197,83,0.2); border: 1.5px solid rgba(22,197,83,0.4);
+  border-radius: 100px; padding: 5px 14px; font-size: 11px; font-weight: 800;
+  color: var(--green-l); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px;
+}
+.hero-tag-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
 
-/* ── About ── */
-.about { background: white; }
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.about-visual { background: linear-gradient(135deg, var(--teal)15, var(--teal)28); border-radius: 28px; padding: 40px; display: flex; flex-direction: column; gap: 16px; }
-.about-pill { background: white; border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.about-pill-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.about-pill-text { font-family: 'Nunito'; font-size: 14px; font-weight: 700; color: var(--dark); }
-.about-pill-sub { font-family: 'Nunito'; font-size: 12px; color: var(--muted); font-weight: 600; }
+.hero h1 {
+  font-family: 'Montserrat'; font-weight: 900; font-size: clamp(38px,5.5vw,66px);
+  line-height: 1.0; letter-spacing: -2px; color: white; margin-bottom: 12px;
+}
+.hero h1 .green { color: var(--green-l); }
 
-/* ── How it works ── */
+.hero p { font-size: clamp(14px,1.5vw,17px); color: rgba(255,255,255,0.82); line-height: 1.75; margin-bottom: 24px; font-weight: 500; max-width: 460px; }
+
+.hero-features { display: flex; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
+.hero-feature { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.9); }
+.hero-feature-icon { width: 26px; height: 26px; border-radius: 50%; background: rgba(22,197,83,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-green-hero {
+  background: linear-gradient(135deg, var(--green), var(--green-d));
+  color: white; font-family: 'Montserrat'; font-weight: 800; font-size: 15px;
+  padding: 14px 32px; border-radius: 100px; text-decoration: none;
+  box-shadow: 0 6px 24px rgba(22,197,83,0.45); transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-green-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(22,197,83,0.55); }
+.btn-outline-hero {
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.35);
+  color: white; font-family: 'Montserrat'; font-weight: 700; font-size: 15px;
+  padding: 14px 28px; border-radius: 100px; text-decoration: none;
+  transition: all 0.2s; backdrop-filter: blur(8px);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline-hero:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+
+/* Hero visual — character illustrations */
+.hero-visual { position: relative; height: 500px; display: flex; align-items: flex-end; justify-content: center; }
+.hero-char-group { position: relative; width: 100%; height: 100%; }
+
+/* Character placeholder cards with 3D feel */
+.h-char {
+  position: absolute; bottom: 0; display: flex; flex-direction: column; align-items: center;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.h-char:hover { transform: translateY(-16px) scale(1.06) !important; }
+.h-char-img {
+  width: 160px; height: 220px; border-radius: 20px 20px 0 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 80px;
+  backdrop-filter: blur(8px); overflow: hidden;
+}
+.h-char-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.h-char.valentina { left: 10px; z-index: 2; animation: floatChar 4s ease-in-out infinite; }
+.h-char.tomas { right: 10px; z-index: 2; animation: floatChar 4s ease-in-out infinite 1s; }
+.h-char.coco { left: 50%; transform: translateX(-50%); z-index: 3; animation: floatChar 3.5s ease-in-out infinite 0.5s; }
+.h-char.coco .h-char-img { width: 180px; height: 250px; }
+
+/* Floating elements */
+.h-float {
+  position: absolute; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(16px);
+  display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); white-space: nowrap;
+}
+.h-float-1 { top: 80px; left: -10px; animation: floatBadge 4s ease-in-out infinite; }
+.h-float-2 { top: 140px; right: -10px; animation: floatBadge 4s ease-in-out infinite 1.2s; }
+.h-float-3 { top: 30px; left: 50%; transform: translateX(-50%); animation: floatBadge 3.5s ease-in-out infinite 0.6s; }
+
+/* ─── SECTIONS ─── */
+.section { padding: clamp(64px,7vw,96px) clamp(16px,4vw,64px); }
+.container { max-width: 1160px; margin: 0 auto; }
+
+.eyebrow {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--green-d); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.eyebrow::before { content:''; width:24px; height:2.5px; border-radius:2px; background:var(--green); }
+.section-title {
+  font-family: 'Montserrat'; font-weight: 900; font-size: clamp(28px,3.5vw,44px);
+  color: var(--blue); line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px;
+}
+.section-title .green { color: var(--green-d); }
+.section-sub { font-size: clamp(14px,1.5vw,16px); color: var(--text-m); line-height: 1.8; font-weight: 500; max-width: 560px; }
+
+/* ─── PROBLEM ─── */
+.problem { background: white; }
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.problem-highlight { font-size: clamp(15px,1.6vw,17px); color: var(--green-d); font-weight: 800; line-height: 1.7; margin-top: 20px; }
+.problem-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+.problem-card {
+  background: var(--cream); border: 1.5px solid rgba(27,47,107,0.08);
+  border-radius: 16px; padding: 18px 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: all 0.25s; cursor: default;
+}
+.problem-card:hover { border-color: var(--green); background: var(--green-bg); transform: translateX(4px); }
+.problem-card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.problem-card-title { font-family: 'Montserrat'; font-size: 14px; font-weight: 800; color: var(--blue); margin-bottom: 3px; }
+.problem-card-text { font-size: 13px; color: var(--text-m); line-height: 1.6; font-weight: 500; }
+
+.solution-box {
+  background: linear-gradient(160deg, #EEF4FF, #F0FDF4);
+  border: 2px solid rgba(22,197,83,0.25); border-radius: 28px; padding: 40px 36px;
+  position: relative; overflow: hidden;
+}
+.solution-box::after { content:''; position:absolute; bottom:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(22,197,83,0.12) 0%, transparent 70%); }
+.solution-box h3 { font-family:'Montserrat'; font-weight:900; font-size:20px; color:var(--blue); margin-bottom:24px; }
+.sol-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(27,47,107,0.06); }
+.sol-item:last-child { border-bottom:none; }
+.sol-check { width:22px; height:22px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; font-size:11px; color:white; flex-shrink:0; }
+.sol-text { font-size:14px; font-weight:700; color:var(--blue); }
+.sol-quote { margin-top:24px; padding-top:20px; border-top:1px solid rgba(27,47,107,0.06); font-size:13px; color:var(--text-m); font-style:italic; line-height:1.65; }
+
+/* ─── HOW IT WORKS ─── */
 .how { background: var(--cream); }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 48px; }
-.step { background: white; border-radius: 20px; padding: 28px 24px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-.step-num { font-family: 'Fredoka One'; font-size: 48px; color: var(--teal); opacity: 0.18; position: absolute; top: 16px; right: 20px; line-height: 1; }
-.step-icon { font-size: 36px; margin-bottom: 14px; display: block; }
-.step h3 { font-family: 'Fredoka One'; font-size: 20px; color: var(--dark); margin-bottom: 8px; }
-.step p { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 600; }
-
-/* ── Characters ── */
-.chars { background: white; }
-.chars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
-.char-bio { border-radius: 24px; padding: 32px 28px; position: relative; overflow: hidden; }
-.char-bio.valentina { background: linear-gradient(135deg, #C1623F12, #C1623F22); border: 2px solid #C1623F30; }
-.char-bio.tomas     { background: linear-gradient(135deg, #E8A20012, #E8A20022); border: 2px solid #E8A20030; }
-.char-bio.coco      { background: linear-gradient(135deg, #22C5A812, #22C5A822); border: 2px solid #22C5A830; }
-.char-bio-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-.char-bio h3 { font-family: 'Fredoka One'; font-size: 24px; margin-bottom: 2px; }
-.char-bio-role { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-.char-bio p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 600; }
-.char-traits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-.char-trait { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 100px; }
-
-/* ── Ages ── */
-.ages { background: var(--cream2); }
-.ages-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
-.age-card { background: white; border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
-.age-card h3 { font-family: 'Fredoka One'; font-size: 22px; color: var(--dark); margin: 12px 0 8px; }
-.age-card p { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 600; }
-.age-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-.age-list li { font-size: 13px; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-.age-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
-
-/* ── Pilot ── */
-.pilot { background: var(--teal); color: white; text-align: center; }
-.pilot h2 { font-family: 'Fredoka One'; font-size: clamp(28px,4vw,42px); margin-bottom: 16px; }
-.pilot p { font-size: 16px; opacity: 0.9; line-height: 1.7; font-weight: 600; max-width: 600px; margin: 0 auto 32px; }
-.btn-white { background: white; color: var(--teal); font-family: 'Fredoka One'; font-size: 18px; padding: 14px 40px; border-radius: 100px; border: none; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 6px 24px rgba(0,0,0,0.15); transition: transform 0.15s; }
-.btn-white:hover { transform: scale(1.05); }
-
-/* ── FAQ ── */
-.faq { background: white; }
-.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; max-width: 720px; }
-.faq-item { border: 2px solid #E0D5C0; border-radius: 16px; overflow: hidden; }
-.faq-q { padding: 18px 20px; font-family: 'Nunito'; font-size: 15px; font-weight: 800; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
-.faq-q:hover { background: var(--cream); }
-.faq-a { padding: 0 20px 16px; font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 600; display: none; }
-.faq-item.open .faq-a { display: block; }
-.faq-item.open { border-color: var(--teal); }
-.faq-item.open .faq-q { color: var(--teal); }
-
-/* ── Footer ── */
-footer { background: var(--dark); color: #B0A090; padding: 40px clamp(20px,5vw,80px); display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 16px; }
-.footer-logo { font-family: 'Fredoka One'; font-size: 20px; color: white; }
-.footer-note { font-size: 13px; font-weight: 600; }
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .hero-content { grid-template-columns: 1fr; gap: 40px; }
-  .hero-visual { order: -1; }
-  .about-grid { grid-template-columns: 1fr; }
-  .ages-grid { grid-template-columns: 1fr; }
-  .nav-links a:not(:last-child) { display: none; }
+.how-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-top: 48px; }
+.how-card {
+  background: white; border-radius: 20px; padding: 28px 20px;
+  box-shadow: var(--shadow-l); border: 1.5px solid transparent;
+  transition: all 0.3s; position: relative; overflow: hidden;
 }
+.how-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue-l),var(--green)); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.how-card:hover { border-color:rgba(22,197,83,0.3); transform:translateY(-6px); box-shadow:var(--shadow); }
+.how-card:hover::before { transform:scaleX(1); }
+.how-num { font-family:'Montserrat'; font-weight:900; font-size:42px; color:rgba(27,47,107,0.08); position:absolute; top:16px; right:18px; line-height:1; }
+.how-icon-wrap { width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:14px; }
+.how-title { font-family:'Montserrat'; font-weight:800; font-size:16px; color:var(--blue); margin-bottom:8px; }
+.how-desc { font-size:13px; color:var(--text-m); line-height:1.65; font-weight:500; }
+.how-connector { display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--green); padding-top:40px; }
 
-/* ── Animations ── */
-@keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
-@keyframes floatCenter { 0%,100%{transform:translateY(-16px)}50%{transform:translateY(-26px)} }
-.float { animation: float 4s ease-in-out infinite; }
-.float-center { animation: floatCenter 4s ease-in-out infinite 0.5s; }
-.float-right { animation: float 4s ease-in-out infinite 1s; }
+/* ─── AGES ─── */
+.ages { background: white; }
+.ages-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-top: 48px; }
+.age-card {
+  border-radius: 20px; padding: 24px 20px; position: relative; overflow: hidden;
+  transition: all 0.3s; border: 2px solid transparent;
+}
+.age-card:hover { transform: translateY(-6px); }
+.age-card.c1 { background:linear-gradient(160deg,#ECFDF5,#D1FAE5); border-color:#6EE7B7; }
+.age-card.c2 { background:linear-gradient(160deg,#EFF6FF,#DBEAFE); border-color:#93C5FD; }
+.age-card.c3 { background:linear-gradient(160deg,#FFF7ED,#FED7AA); border-color:#FCA974; opacity:0.7; }
+.age-card.c4 { background:linear-gradient(160deg,#F5F3FF,#EDE9FE); border-color:#C4B5FD; opacity:0.7; }
+.age-card.c1:hover { border-color: var(--green); opacity:1; }
+.age-card.c2:hover { border-color: var(--blue-l); opacity:1; }
+.age-card.c3:hover { opacity:1; }
+.age-card.c4:hover { opacity:1; }
+.age-emoji { font-size:36px; margin-bottom:10px; display:block; }
+.age-range { font-family:'Montserrat'; font-weight:900; font-size:22px; color:var(--blue); margin-bottom:4px; }
+.age-title { font-size:13px; font-weight:800; color:var(--text-m); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.8px; }
+.age-list { list-style:none; display:flex; flex-direction:column; gap:5px; }
+.age-list li { font-size:12px; color:var(--text-m); font-weight:600; display:flex; align-items:center; gap:7px; }
+.age-list li::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); flex-shrink:0; }
+.age-badge-active { display:inline-flex; align-items:center; gap:5px; background:rgba(22,197,83,0.15); border:1px solid rgba(22,197,83,0.4); border-radius:100px; padding:3px 10px; font-size:10px; font-weight:800; color:var(--green-d); margin-bottom:10px; }
+.age-badge-soon { display:inline-flex; align-items:center; gap:5px; background:rgba(27,47,107,0.06); border:1px solid rgba(27,47,107,0.12); border-radius:100px; padding:3px 10px; font-size:10px; font-weight:800; color:var(--text-l); margin-bottom:10px; }
+.age-btn { display:inline-flex; align-items:center; gap:6px; background:var(--blue); color:white; font-family:'Montserrat'; font-size:11px; font-weight:800; padding:7px 16px; border-radius:100px; text-decoration:none; margin-top:14px; transition:all 0.2s; }
+.age-btn:hover { background:var(--blue-m); transform:translateY(-2px); }
+.age-btn.disabled { background:rgba(27,47,107,0.15); color:var(--text-l); cursor:default; }
+.age-btn.disabled:hover { transform:none; }
 
-.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
+/* ─── BENEFITS ─── */
+.benefits { background: var(--cream); }
+.benefits-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-top: 48px; }
+.benefit-card {
+  background: white; border-radius: 18px; padding: 24px 16px; text-align: center;
+  box-shadow: var(--shadow-l); transition: all 0.3s; border: 1.5px solid transparent;
+}
+.benefit-card:hover { border-color: var(--green); transform: translateY(-6px); box-shadow: var(--shadow); }
+.benefit-icon-wrap { width: 52px; height: 52px; border-radius: 16px; display:flex; align-items:center; justify-content:center; font-size:26px; margin: 0 auto 12px; }
+.benefit-title { font-family:'Montserrat'; font-weight:800; font-size:13px; color:var(--blue); margin-bottom:6px; line-height:1.35; }
+.benefit-desc { font-size:11px; color:var(--text-m); line-height:1.6; font-weight:500; }
+
+/* ─── CHARACTERS ─── */
+.characters { background: white; }
+.chars-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 48px; }
+.char-card {
+  border-radius: 24px; overflow: hidden; position: relative;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: var(--shadow);
+}
+.char-card:hover { transform: translateY(-10px) scale(1.02); }
+.char-card-header { height: 240px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.char-card-header img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.char-card-placeholder { font-size: 90px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2)); animation: floatChar 4s ease-in-out infinite; }
+.char-card.valentina .char-card-header { background: linear-gradient(160deg, #FFF4F0, #FFE4D9); }
+.char-card.tomas     .char-card-header { background: linear-gradient(160deg, #FFFBEB, #FEF3C7); }
+.char-card.coco      .char-card-header { background: linear-gradient(160deg, #F0FFF4, #DCFCE7); }
+.char-card-body { padding: 22px 24px 26px; background: white; }
+.char-card-name { font-family:'Montserrat'; font-weight:900; font-size:22px; color:var(--blue); margin-bottom:4px; }
+.char-card-role { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+.char-card.valentina .char-card-role { color: #F97316; }
+.char-card.tomas     .char-card-role { color: #D97706; }
+.char-card.coco      .char-card-role { color: var(--green-d); }
+.char-card-bio { font-size:13px; color:var(--text-m); line-height:1.65; font-weight:500; }
+.char-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.char-tag { font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; }
+.char-card.valentina .char-tag { background:#FFF1EB; color:#F97316; }
+.char-card.tomas     .char-tag { background:#FFFBEB; color:#D97706; }
+.char-card.coco      .char-tag { background:#F0FDF4; color:var(--green-d); }
+
+/* ─── MISSIONS ─── */
+.missions { background: var(--cream); }
+.missions-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-top: 48px; }
+.mission-card {
+  background: white; border-radius: 18px; padding: 20px 16px; text-align: center;
+  border: 2px solid transparent; transition: all 0.3s; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-l);
+}
+.mission-card.active { border-color: rgba(22,197,83,0.35); }
+.mission-card.active:hover { transform: translateY(-6px); border-color: var(--green); box-shadow: 0 12px 32px rgba(22,197,83,0.2); }
+.mission-card.locked { opacity: 0.55; }
+.mission-card.locked:hover { opacity: 0.75; transform: translateY(-3px); }
+.mission-emoji { font-size: 36px; margin-bottom: 10px; display: block; }
+.mission-country { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-l); margin-bottom: 5px; }
+.mission-title { font-family:'Montserrat'; font-size:13px; font-weight:800; color:var(--blue); line-height:1.35; }
+.mission-lock { position:absolute; top:10px; right:10px; font-size:14px; opacity:0.4; }
+
+/* ─── PILOT ─── */
+.pilot { background: white; }
+.pilot-inner {
+  background: linear-gradient(160deg, #F0F4FF, #F0FDF4);
+  border: 2px solid rgba(22,197,83,0.2); border-radius: 32px;
+  padding: clamp(36px,5vw,64px); position: relative; overflow: hidden;
+}
+.pilot-inner::before { content:''; position:absolute; top:-60px; right:-60px; width:240px; height:240px; border-radius:50%; background:radial-gradient(circle, rgba(22,197,83,0.12) 0%, transparent 70%); }
+.pilot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; position: relative; z-index:1; }
+.pilot-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 28px; }
+.pilot-stat { background: white; border-radius: 16px; padding: 16px 20px; box-shadow: var(--shadow-l); text-align: center; flex: 1; min-width: 120px; }
+.pilot-stat-num { font-family:'Montserrat'; font-weight:900; font-size:22px; color:var(--blue); }
+.pilot-stat-label { font-size:11px; font-weight:700; color:var(--text-m); text-transform:uppercase; letter-spacing:0.8px; margin-top:2px; }
+.flow-title { font-family:'Montserrat'; font-weight:800; font-size:17px; color:var(--blue); margin-bottom:20px; }
+.flow-step { display: flex; gap: 14px; padding-bottom: 20px; position: relative; }
+.flow-step::after { content:''; position:absolute; left:16px; top:36px; width:2px; height:calc(100% - 16px); background:linear-gradient(to bottom, rgba(22,197,83,0.4), transparent); }
+.flow-step:last-child::after { display:none; }
+.flow-step:last-child { padding-bottom: 0; }
+.flow-circle { width: 34px; height: 34px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; border: 2px solid; }
+.flow-blue  { background:rgba(27,47,107,0.1); border-color:var(--blue-l); }
+.flow-green { background:rgba(22,197,83,0.1); border-color:var(--green); }
+.flow-orange{ background:rgba(249,115,22,0.1); border-color:#F97316; }
+.flow-gold  { background:rgba(251,191,36,0.1); border-color:var(--yellow); }
+.flow-content { flex: 1; }
+.flow-week { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-l); margin-bottom:3px; }
+.flow-name { font-family:'Montserrat'; font-weight:800; font-size:14px; color:var(--blue); margin-bottom:2px; }
+.flow-desc { font-size:12px; color:var(--text-m); font-weight:500; line-height:1.5; }
+.flow-tag { display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:100px; margin-top:5px; }
+.tag-required { background:rgba(249,115,22,0.12); color:#EA6E0A; border:1px solid rgba(249,115,22,0.25); }
+.tag-reward { background:rgba(22,197,83,0.12); color:var(--green-d); border:1px solid rgba(22,197,83,0.25); }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials { background: var(--cream); }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
+.testi-card {
+  background: white; border-radius: 20px; padding: 28px 24px;
+  box-shadow: var(--shadow-l); border: 1.5px solid transparent; transition: all 0.25s;
+}
+.testi-card:hover { border-color: rgba(22,197,83,0.3); transform: translateY(-4px); }
+.testi-stars { display:flex; gap:3px; margin-bottom:14px; font-size:16px; }
+.testi-text { font-size:14px; color:var(--text); line-height:1.75; font-weight:500; margin-bottom:18px; font-style:italic; }
+.testi-author { display:flex; align-items:center; gap:10px; }
+.testi-avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, var(--blue-l), var(--green)); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.testi-name { font-family:'Montserrat'; font-size:13px; font-weight:800; color:var(--blue); }
+.testi-role { font-size:11px; color:var(--text-m); font-weight:600; }
+
+/* ─── FAQ ─── */
+.faq { background: white; }
+.faq-list { max-width:720px; display:flex; flex-direction:column; gap:10px; margin-top:44px; }
+.faq-item { background:var(--cream); border:1.5px solid rgba(27,47,107,0.08); border-radius:14px; overflow:hidden; transition:border-color 0.2s; }
+.faq-item.open { border-color:var(--green); background:var(--green-bg); }
+.faq-q { padding:18px 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
+.faq-q-text { font-family:'Montserrat'; font-size:14px; font-weight:800; color:var(--blue); }
+.faq-item.open .faq-q-text { color:var(--green-d); }
+.faq-icon { width:26px; height:26px; border-radius:50%; background:rgba(27,47,107,0.08); display:flex; align-items:center; justify-content:center; color:var(--text-m); font-size:15px; transition:all 0.2s; flex-shrink:0; }
+.faq-item.open .faq-icon { background:rgba(22,197,83,0.15); color:var(--green-d); }
+.faq-a { padding:0 20px 16px; font-size:13px; color:var(--text-m); line-height:1.7; font-weight:500; display:none; }
+.faq-item.open .faq-a { display:block; }
+
+/* ─── FINAL CTA ─── */
+.final-cta {
+  padding: clamp(80px,8vw,120px) clamp(16px,4vw,64px);
+  background: linear-gradient(160deg, #0A1F5C 0%, #1B3B8A 50%, #15A040 100%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.final-cta::before { content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, rgba(22,197,83,0.2) 0%, transparent 70%); }
+.final-cta h2 { font-family:'Montserrat'; font-weight:900; font-size:clamp(30px,4.5vw,54px); color:white; margin-bottom:14px; letter-spacing:-1.5px; position:relative; z-index:1; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.1; }
+.final-cta h2 .green { color: var(--green-l); }
+.final-cta p { font-size:clamp(14px,1.5vw,17px); color:rgba(255,255,255,0.8); max-width:500px; margin:0 auto 36px; line-height:1.8; font-weight:500; position:relative; z-index:1; }
+.final-cta .btn-green-hero { font-size:17px; padding:16px 44px; position:relative; z-index:1; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: #060E2C; border-top: 1px solid rgba(255,255,255,0.06);
+  padding: clamp(40px,4vw,56px) clamp(16px,4vw,64px);
+}
+.footer-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; }
+.footer-logo-wrap { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.footer-logo-img { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--blue-m),var(--green-d)); display:flex; align-items:center; justify-content:center; font-size:18px; }
+.footer-logo-name { font-family:'Montserrat'; font-weight:900; font-size:15px; color:white; }
+.footer-desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.7; font-weight:500; max-width:240px; }
+.footer-col h4 { font-family:'Montserrat'; font-weight:800; font-size:12px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px; }
+.footer-col a { display:block; font-size:13px; color:rgba(255,255,255,0.6); text-decoration:none; margin-bottom:8px; font-weight:600; transition:color 0.2s; }
+.footer-col a:hover { color:var(--green-l); }
+.footer-bottom { max-width:1160px; margin:28px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+.footer-copy { font-size:12px; color:rgba(255,255,255,0.3); font-weight:500; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 6px currentColor}50%{opacity:0.6;box-shadow:0 0 14px currentColor} }
+@keyframes floatChar { 0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)} }
+@keyframes floatBadge { 0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.02)} }
+@keyframes slideInLeft { from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)} }
+@keyframes slideInRight { from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)} }
+@keyframes slideInUp { from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)} }
+@keyframes countUp { from{opacity:0}to{opacity:1} }
+
+.reveal { opacity:0; transform:translateY(36px); transition:opacity 0.75s ease, transform 0.75s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-left { opacity:0; transform:translateX(-36px); transition:opacity 0.75s ease, transform 0.75s ease; }
+.reveal-left.visible { opacity:1; transform:translateX(0); }
+.reveal-right { opacity:0; transform:translateX(36px); transition:opacity 0.75s ease, transform 0.75s ease; }
+.reveal-right.visible { opacity:1; transform:translateX(0); }
+.d1 { transition-delay:0.1s; } .d2 { transition-delay:0.2s; } .d3 { transition-delay:0.3s; } .d4 { transition-delay:0.4s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .how-grid { grid-template-columns:1fr 1fr; }
+  .benefits-grid { grid-template-columns:repeat(3,1fr); }
+  .missions-grid { grid-template-columns:repeat(3,1fr); }
+  .footer-inner { grid-template-columns:1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns:1fr; }
+  .hero-visual { display:none; }
+  .problem-grid { grid-template-columns:1fr; }
+  .ages-grid { grid-template-columns:1fr 1fr; }
+  .chars-row { grid-template-columns:1fr; }
+  .pilot-grid { grid-template-columns:1fr; }
+  .testi-grid { grid-template-columns:1fr; }
+  .nav-links > a:not(.nav-cta) { display:none; }
+}
+@media (max-width: 480px) {
+  .how-grid { grid-template-columns:1fr; }
+  .benefits-grid { grid-template-columns:1fr 1fr; }
+  .ages-grid { grid-template-columns:1fr; }
+  .missions-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+<style>
+/* Extra tweaks for SVG icon version */
+.ico { display:inline-flex; align-items:center; justify-content:center; }
+.char-card-header img { width:100%; height:100%; object-fit:cover; object-position:top center; }
+.h-char-img img { width:100%; height:100%; object-fit:cover; object-position:top; }
+.hero { background:
+  linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 55%, #fff 100%),
+  url('https://lh3.googleusercontent.com/d/1Lj0DjrQUPqMOsA5f3qk0bfUdzPfRYzXx') center/cover no-repeat,
+  linear-gradient(160deg, #0A1F5C 0%, #1B3B8A 35%, #1E7A3E 70%, #15A040 100%);
+}
+.dot-pulse { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s infinite; display:inline-block; }
 </style>
 </head>
 <body>
 
+<!-- SVG Icon Defs -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ico-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="ico-bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="ico-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+  <symbol id="ico-star-o" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+  <symbol id="ico-game" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="13" r="1" fill="currentColor"/></symbol>
+  <symbol id="ico-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="ico-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="ico-medal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></symbol>
+  <symbol id="ico-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+  <symbol id="ico-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></symbol>
+  <symbol id="ico-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="ico-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22C2 22 8 16 12 12C16 8 22 2 22 2C22 2 22 8 18 12C14 16 8 22 2 22Z"/><path d="M2 22L12 12"/></symbol>
+  <symbol id="ico-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ico-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="ico-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></symbol>
+  <symbol id="ico-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+  <symbol id="ico-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="ico-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="ico-play" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="10 8 16 12 10 16 10 8"/></symbol>
+  <symbol id="ico-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="ico-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.64Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.64Z"/></symbol>
+  <symbol id="ico-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6 10h.01"/><path d="M6 14h.01"/><circle cx="6" cy="10" r="2" fill="none"/><path d="M10 10a2 2 0 1 0-4 0 2 2 0 0 0 4 0z"/><path d="M6 14c1.1 0 2-.9 2-2"/></symbol>
+  <symbol id="ico-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="ico-sparkle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z"/><path d="M19 15l.75 2.25L22 18l-2.25.75L19 21l-.75-2.25L16 18l2.25-.75L19 15z" opacity="0.6"/><path d="M5 15l.5 1.5L7 17l-1.5.5L5 19l-.5-1.5L3 17l1.5-.5L5 15z" opacity="0.4"/></symbol>
+  <symbol id="ico-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></symbol>
+  <symbol id="ico-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="ico-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="13"/><path d="M7 4H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3"/><path d="M17 4h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-3"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/></symbol>
+  <symbol id="ico-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 16 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="ico-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="ico-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="ico-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="ico-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+  <symbol id="ico-facebook" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  <symbol id="ico-child" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M9 12l3 3 3-3"/></symbol>
+  <symbol id="ico-lang" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c0 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></symbol>
+  <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+</svg>
+
+
 <!-- NAV -->
-<nav>
+<nav id="main-nav">
   <a href="#" class="nav-logo">
-    🌎 Español de Herencia
+    <div class="nav-logo-img"><svg width="20" height="20" style="color:white;flex-shrink:0;" class=""><use href="#ico-globe"/></svg></div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-top">ESPAÑOL</span>
+      <span class="nav-logo-sub">DE HERENCIA</span>
+    </div>
   </a>
   <div class="nav-links">
-    <a href="#que-es">¿Qué es?</a>
+    <a href="#como">Cómo funciona</a>
+    <a href="#edades">Edades (Misiones)</a>
     <a href="#personajes">Personajes</a>
-    <a href="#edades">Edades</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://quasarworksco.github.io/LGP/programa" class="btn-primary">Acceder →</a>
+    <a href="#piloto">Para padres</a>
+    <a href="https://quasarworksco.github.io/LGP/Programa" class="nav-cta"><svg width="14" height="14" style="color:white;flex-shrink:0;" class=""><use href="#ico-bolt"/></svg> ¡Empieza la aventura!</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
+  <div class="hero-inner">
     <div>
-      <div class="hero-tag">✦ Prueba piloto 2026</div>
-      <h1>Tu hijo puede mantener vivo su <span>español</span></h1>
-      <p>Un programa de aventuras lingüísticas para niños hispanohablantes que viven fuera de su país. Sin exámenes, sin presión — solo exploración y juego.</p>
+      <div class="hero-tag"><span class="dot-pulse"></span>Programa para hablantes de herencia</div>
+      <h1>QUE TU HIJO<br/>NO PIERDA<br/>SU ESPAÑOL.<br/><span class="green">HAZ QUE LO VIVA.</span></h1>
+      <p>Fortalecemos el español de los hijos de familias hispanohablantes que viven fuera de su país.</p>
+      <div class="hero-features">
+        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;" class=""><use href="#ico-game"/></svg></div>Juega</div>
+        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;" class=""><use href="#ico-book"/></svg></div>Aprende</div>
+        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;" class=""><use href="#ico-heart"/></svg></div>Conecta</div>
+      </div>
       <div class="hero-btns">
-        <a href="https://quasarworksco.github.io/LGP/programa" class="btn-primary" style="font-size:18px; padding:14px 36px;">Acceder a la plataforma →</a>
-        <a href="#que-es" class="btn-secondary" style="font-size:18px; padding:14px 36px;">Saber más</a>
+        <a href="https://quasarworksco.github.io/LGP/Programa" class="btn-green-hero"><svg width="16" height="16" style="color:white;flex-shrink:0;" class=""><use href="#ico-bolt"/></svg> ¡Empieza la aventura!</a>
+        <a href="#como" class="btn-outline-hero">Ver cómo funciona <svg width="16" height="16" style="color:white;flex-shrink:0;" class=""><use href="#ico-arrow-right"/></svg></a>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="char-card float">
-        <svg width="90" height="90" viewBox="0 0 80 80" fill="none">
-          <path d="M16 80 Q16 60 40 58 Q64 60 64 80Z" fill="#C1623F"/>
-          <rect x="34" y="50" width="12" height="10" rx="4" fill="#F5C9A0"/>
-          <circle cx="40" cy="34" r="22" fill="#F5C9A0"/>
-          <ellipse cx="40" cy="20" rx="22" ry="12" fill="#1A1A2E"/>
-          <circle cx="18" cy="36" r="5" fill="#F5C9A0"/><circle cx="62" cy="36" r="5" fill="#F5C9A0"/>
-          <path d="M18 28 Q22 14 40 13 Q58 14 62 28 Q58 20 40 19 Q22 20 18 28Z" fill="#1A1A2E"/>
-          <ellipse cx="20" cy="38" rx="4" ry="10" fill="#1A1A2E"/><ellipse cx="60" cy="38" rx="4" ry="10" fill="#1A1A2E"/>
-          <path d="M16 26 Q40 18 64 26" stroke="#FF6B9D" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <circle cx="40" cy="19" r="4" fill="#FF6B9D"/>
-          <ellipse cx="32" cy="36" rx="4.5" ry="5" fill="white"/><ellipse cx="48" cy="36" rx="4.5" ry="5" fill="white"/>
-          <circle cx="33" cy="37" r="3" fill="#2C1800"/><circle cx="49" cy="37" r="3" fill="#2C1800"/>
-          <circle cx="34" cy="36" r="1" fill="white"/><circle cx="50" cy="36" r="1" fill="white"/>
-          <path d="M28 30 Q32 28 36 30" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M44 30 Q48 28 52 30" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M30 48 Q40 56 50 48" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <circle cx="26" cy="44" r="5" fill="#FFB0A0" opacity="0.4"/><circle cx="54" cy="44" r="5" fill="#FFB0A0" opacity="0.4"/>
-        </svg>
-        <span class="char-name" style="color:#C1623F">Valentina</span>
-        <span class="char-role">Exploradora cultural</span>
-      </div>
-      <div class="char-card center float-center">
-        <svg width="110" height="110" viewBox="0 0 80 80" fill="none">
-          <ellipse cx="40" cy="74" rx="8" ry="10" fill="#1A7A6A" transform="rotate(-10 40 74)"/>
-          <ellipse cx="44" cy="74" rx="5" ry="10" fill="#0D9C84" transform="rotate(10 44 74)"/>
-          <ellipse cx="40" cy="55" rx="18" ry="20" fill="#1A9E8A"/>
-          <ellipse cx="22" cy="52" rx="8" ry="14" fill="#15866E" transform="rotate(-20 22 52)"/>
-          <ellipse cx="58" cy="52" rx="8" ry="14" fill="#15866E" transform="rotate(20 58 52)"/>
-          <circle cx="40" cy="28" r="20" fill="#22C5A8"/>
-          <ellipse cx="35" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(-15 35 10)"/>
-          <ellipse cx="40" cy="8" rx="5" ry="9" fill="#FF7A50"/>
-          <ellipse cx="45" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(15 45 10)"/>
-          <circle cx="31" cy="28" r="5" fill="white"/><circle cx="49" cy="28" r="5" fill="white"/>
-          <circle cx="32" cy="28" r="3" fill="#1A2E28"/><circle cx="50" cy="28" r="3" fill="#1A2E28"/>
-          <circle cx="32.5" cy="27" r="1" fill="white"/><circle cx="50.5" cy="27" r="1" fill="white"/>
-          <path d="M36 36 L44 36 L40 42 Z" fill="#F5A800"/>
-          <circle cx="26" cy="32" r="4" fill="#FF6B6B" opacity="0.5"/><circle cx="54" cy="32" r="4" fill="#FF6B6B" opacity="0.5"/>
-        </svg>
-        <span class="char-name" style="color:#22C5A8">Coco</span>
-        <span class="char-role">Guía y mentor</span>
-      </div>
-      <div class="char-card float-right">
-        <svg width="90" height="90" viewBox="0 0 80 80" fill="none">
-          <ellipse cx="40" cy="63" rx="18" ry="13" fill="#E8A200" opacity="0.9"/>
-          <ellipse cx="40" cy="63" rx="10" ry="13" fill="#F5BC00" opacity="0.7"/>
-          <circle cx="40" cy="36" r="22" fill="#F4C87C"/>
-          <ellipse cx="40" cy="17" rx="20" ry="8" fill="#3D2800"/>
-          <rect x="19" y="17" width="8" height="12" rx="4" fill="#3D2800"/>
-          <rect x="53" y="17" width="8" height="12" rx="4" fill="#3D2800"/>
-          <circle cx="32" cy="37" r="4" fill="#3D2800"/><circle cx="48" cy="37" r="4" fill="#3D2800"/>
-          <circle cx="33" cy="36" r="1.5" fill="white"/><circle cx="49" cy="36" r="1.5" fill="white"/>
-          <path d="M30 45 Q40 54 50 45" stroke="#3D2800" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          <circle cx="28" cy="42" r="1.5" fill="#C8860A" opacity="0.5"/><circle cx="52" cy="42" r="1.5" fill="#C8860A" opacity="0.5"/>
-        </svg>
-        <span class="char-name" style="color:#E8A200">Tomás</span>
-        <span class="char-role">El que anima a participar</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- QUÉ ES -->
-<section class="about" id="que-es">
-  <div class="container">
-    <div class="about-grid fade-in">
-      <div>
-        <div class="section-tag">¿Qué es?</div>
-        <h2 class="section-title">No es un curso de español. Es una aventura.</h2>
-        <p class="section-sub">Español de Herencia es un programa educativo interactivo para niños que ya tienen contacto con el español en casa — y quieren ir más lejos.</p>
-        <br/>
-        <p class="section-sub">La plataforma no enseña español desde cero. Acompaña a niños que ya lo sienten cercano: lo escuchan en casa, con sus abuelos, en viajes. Lo que hacemos es fortalecer ese vínculo y convertirlo en orgullo.</p>
-        <br/>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
-          <div style="background:#22C5A815; border:1.5px solid #22C5A840; border-radius:100px; padding:6px 16px; font-size:13px; font-weight:800; color:#22C5A8;">Por misiones</div>
-          <div style="background:#C1623F15; border:1.5px solid #C1623F40; border-radius:100px; padding:6px 16px; font-size:13px; font-weight:800; color:#C1623F;">100% interactivo</div>
-          <div style="background:#E8A20015; border:1.5px solid #E8A20040; border-radius:100px; padding:6px 16px; font-size:13px; font-weight:800; color:#E8A200;">Sin exámenes</div>
-          <div style="background:#9B59B615; border:1.5px solid #9B59B640; border-radius:100px; padding:6px 16px; font-size:13px; font-weight:800; color:#9B59B6;">Culturalmente rico</div>
+      <div class="hero-char-group">
+        <div class="h-float h-float-1"><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-medal"/></svg> +30 pts por misión</div>
+        <div class="h-float h-float-2"><svg width="16" height="16" style="color:#67E8F9;flex-shrink:0;" class=""><use href="#ico-cloud"/></svg> Progreso en la nube</div>
+        <div class="h-float h-float-3"><svg width="16" height="16" style="color:#4ADE80;flex-shrink:0;" class=""><use href="#ico-globe"/></svg> 5 países hispanohablantes</div>
+        <div class="h-char valentina">
+          <div class="h-char-img"><img src="https://lh3.googleusercontent.com/d/1j1zCNF1r1KV6KuWVy7oDV7l8-L-8-mAP" alt="Valentina" loading="eager" crossorigin="anonymous" onerror="this.style.opacity='0'"/></div>
         </div>
-      </div>
-      <div class="about-visual">
-        <div class="about-pill">
-          <div class="about-pill-icon" style="background:#22C5A815;">🗺️</div>
-          <div>
-            <div class="about-pill-text">Misiones por países hispanohablantes</div>
-            <div class="about-pill-sub">México, Argentina, España, Cuba, Colombia y más</div>
-          </div>
+        <div class="h-char coco">
+          <div class="h-char-img"><img src="https://lh3.googleusercontent.com/d/1N9QIiyvB-xFqnElgja2ob4lH6ZyPqEvY" alt="Coco" loading="eager" crossorigin="anonymous" onerror="this.style.opacity='0'"/></div>
         </div>
-        <div class="about-pill">
-          <div class="about-pill-icon" style="background:#C1623F15;">📚</div>
-          <div>
-            <div class="about-pill-text">Vocabulario, pragmática y cultura</div>
-            <div class="about-pill-sub">Aprendizaje integrado, no ejercicios aislados</div>
-          </div>
-        </div>
-        <div class="about-pill">
-          <div class="about-pill-icon" style="background:#E8A20015;">🏅</div>
-          <div>
-            <div class="about-pill-text">Insignias y coleccionables culturales</div>
-            <div class="about-pill-sub">Motivación real a través del juego</div>
-          </div>
-        </div>
-        <div class="about-pill">
-          <div class="about-pill-icon" style="background:#9B59B615;">☁️</div>
-          <div>
-            <div class="about-pill-text">Progreso guardado en la nube</div>
-            <div class="about-pill-sub">El niño puede continuar desde cualquier dispositivo</div>
-          </div>
+        <div class="h-char tomas">
+          <div class="h-char-img"><img src="https://lh3.googleusercontent.com/d/1Kqb1eBNrCrnMsuOHTPGZhK_gno8uKkSA" alt="Tomás" loading="eager" crossorigin="anonymous" onerror="this.style.opacity='0'"/></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
-<section class="how" id="como">
+<!-- PROBLEM -->
+<section class="section problem" id="problema">
   <div class="container">
-    <div class="fade-in">
-      <div class="section-tag">¿Cómo funciona?</div>
-      <h2 class="section-title">Una aventura por misiones</h2>
-      <p class="section-sub">Cada semana, una nueva misión. Cada misión, un lugar, un reto y un aprendizaje.</p>
-    </div>
-    <div class="steps fade-in">
-      <div class="step">
-        <span class="step-num">1</span>
-        <span class="step-icon">🔑</span>
-        <h3>Accede con tu cuenta</h3>
-        <p>Elige tu avatar, escribe tu nombre y selecciona tu grupo de edad. ¡Tu perfil de explorador/a está listo!</p>
+    <div class="problem-grid">
+      <div class="reveal-left">
+        <div class="eyebrow">El entorno cambia.</div>
+        <h2 class="section-title">La lengua mayoritaria se vuelve dominante y el español, poco a poco, <span class="green">deja de usarse.</span></h2>
+        <p class="section-sub">Mantener el español en casa no es solo hablarlo. Implica ayudarles a construir un uso más completo de la lengua: que les permita comprender, leer, escribir y expresarse con seguridad.</p>
+        <p class="problem-highlight">Es hacer que su español crezca con ellos, tanto en su forma oral como en su forma escrita.</p>
+        <div class="problem-cards">
+          <div class="problem-card">
+            <div class="problem-card-icon" style="background:#FFF1EB;"><svg width="20" height="20" style="color:#F97316;flex-shrink:0;" class=""><use href="#ico-child"/></svg></div>
+            <div>
+              <div class="problem-card-title">Vergüenza de equivocarse</div>
+              <div class="problem-card-text">Muchos niños evitan hablar español por miedo a cometer errores frente a familiares nativos.</div>
+            </div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-card-icon" style="background:#FFFBEB;"><svg width="20" height="20" style="color:#D97706;flex-shrink:0;" class=""><use href="#ico-book"/></svg></div>
+            <div>
+              <div class="problem-card-title">Métodos que no conectan</div>
+              <div class="problem-card-text">Los métodos tradicionales tratan el español de herencia como lengua extranjera. No es lo mismo.</div>
+            </div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-card-icon" style="background:#F0FDF4;"><svg width="20" height="20" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-globe"/></svg></div>
+            <div>
+              <div class="problem-card-title">Desconexión cultural</div>
+              <div class="problem-card-text">Sin referentes culturales propios, el idioma pierde su razón de ser para el niño.</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="step">
-        <span class="step-num">2</span>
-        <span class="step-icon">🗺️</span>
-        <h3>Elige tu misión</h3>
-        <p>Valentina, Tomás y Coco te presentan el reto de la semana. Sin ti, la misión no puede completarse.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">3</span>
-        <span class="step-icon">🎯</span>
-        <h3>Completa las actividades</h3>
-        <p>5 actividades encadenadas: descubrimiento, comprensión, práctica, uso en contexto y reto final.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">4</span>
-        <span class="step-icon">🏅</span>
-        <h3>Gana insignias y avanza</h3>
-        <p>Cada misión completada desbloquea insignias culturales y abre el camino a la siguiente aventura.</p>
+      <div class="solution-box reveal-right">
+        <h3>Nuestra respuesta</h3>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Aprendizaje por aventuras — no por ejercicios</div></div>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Contenido adaptado por edad y nivel real</div></div>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Personajes guía que hacen al niño indispensable</div></div>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Variantes del español según país — cultura viva</div></div>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Sin exámenes, sin presión — solo exploración</div></div>
+        <div class="sol-item"><div class="sol-check"><svg width="11" height="11" style="color:white;flex-shrink:0;" class=""><use href="#ico-check"/></svg></div><div class="sol-text">Progreso guardado en la nube, desde cualquier dispositivo</div></div>
+        <div class="sol-quote">"No enseñamos español. Devolvemos al niño el orgullo de un idioma que ya lleva dentro."</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PERSONAJES -->
-<section class="chars" id="personajes">
+<!-- HOW IT WORKS -->
+<section class="section how" id="como">
   <div class="container">
-    <div class="fade-in">
-      <div class="section-tag">Los personajes</div>
-      <h2 class="section-title">Tu hijo es el tercer explorador</h2>
-      <p class="section-sub">Los personajes no son un adorno. Son la estructura que guía cada experiencia. Sin el niño, ninguna misión puede completarse.</p>
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">¿Cómo funciona?</div>
+      <h2 class="section-title" style="text-align:center;">4 pasos, una aventura</h2>
     </div>
-    <div class="chars-grid fade-in" style="margin-top:40px;">
-      <div class="char-bio valentina">
-        <div class="char-bio-header">
-          <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
-            <path d="M16 80 Q16 60 40 58 Q64 60 64 80Z" fill="#C1623F"/>
-            <rect x="34" y="50" width="12" height="10" rx="4" fill="#F5C9A0"/>
-            <circle cx="40" cy="34" r="22" fill="#F5C9A0"/>
-            <ellipse cx="40" cy="20" rx="22" ry="12" fill="#1A1A2E"/>
-            <ellipse cx="20" cy="38" rx="4" ry="10" fill="#1A1A2E"/><ellipse cx="60" cy="38" rx="4" ry="10" fill="#1A1A2E"/>
-            <path d="M16 26 Q40 18 64 26" stroke="#FF6B9D" stroke-width="5" stroke-linecap="round" fill="none"/>
-            <ellipse cx="32" cy="36" rx="4.5" ry="5" fill="white"/><ellipse cx="48" cy="36" rx="4.5" ry="5" fill="white"/>
-            <circle cx="33" cy="37" r="3" fill="#2C1800"/><circle cx="49" cy="37" r="3" fill="#2C1800"/>
-            <path d="M30 48 Q40 56 50 48" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
-          </svg>
-          <div>
-            <h3 style="color:#C1623F">Valentina</h3>
-            <div class="char-bio-role" style="color:#C1623F">Exploradora cultural</div>
-          </div>
-        </div>
-        <p>Curiosa, observadora y reflexiva. Valentina introduce los temas culturales, nota las diferencias entre palabras y acompaña actividades de vocabulario y descubrimiento.</p>
-        <div class="char-traits">
-          <span class="char-trait" style="background:#C1623F18; color:#C1623F">Cultura</span>
-          <span class="char-trait" style="background:#C1623F18; color:#C1623F">Vocabulario</span>
-          <span class="char-trait" style="background:#C1623F18; color:#C1623F">Reflexión</span>
-        </div>
+    <div class="how-grid">
+      <div class="how-card reveal d1">
+        <div class="how-num">01</div>
+        <div class="how-icon-wrap" style="background:#EEF4FF;"><svg width="26" height="26" style="color:#2E4DAE;flex-shrink:0;" class=""><use href="#ico-key"/></svg></div>
+        <div class="how-title">Crea tu perfil</div>
+        <div class="how-desc">Elige tu avatar y tu grupo de edad. Tu perfil queda guardado en la nube.</div>
       </div>
-      <div class="char-bio tomas">
-        <div class="char-bio-header">
-          <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
-            <ellipse cx="40" cy="63" rx="18" ry="13" fill="#E8A200" opacity="0.9"/>
-            <circle cx="40" cy="36" r="22" fill="#F4C87C"/>
-            <ellipse cx="40" cy="17" rx="20" ry="8" fill="#3D2800"/>
-            <circle cx="32" cy="37" r="4" fill="#3D2800"/><circle cx="48" cy="37" r="4" fill="#3D2800"/>
-            <circle cx="33" cy="36" r="1.5" fill="white"/><circle cx="49" cy="36" r="1.5" fill="white"/>
-            <path d="M30 45 Q40 54 50 45" stroke="#3D2800" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          </svg>
-          <div>
-            <h3 style="color:#E8A200">Tomás</h3>
-            <div class="char-bio-role" style="color:#E8A200">El que anima a participar</div>
-          </div>
-        </div>
-        <p>Espontáneo, comunicador y activo. Tomás impulsa la acción, propone retos y anima al niño a participar. Aparece en actividades orales, pragmáticas y de interacción social.</p>
-        <div class="char-traits">
-          <span class="char-trait" style="background:#E8A20018; color:#E8A200">Comunicación</span>
-          <span class="char-trait" style="background:#E8A20018; color:#E8A200">Pragmática</span>
-          <span class="char-trait" style="background:#E8A20018; color:#E8A200">Acción</span>
-        </div>
+      <div class="how-card reveal d2">
+        <div class="how-num">02</div>
+        <div class="how-icon-wrap" style="background:#F0FDF4;"><svg width="26" height="26" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-map"/></svg></div>
+        <div class="how-title">Elige tu misión</div>
+        <div class="how-desc">Cada semana, un nuevo reto en un lugar del mundo hispanohablante.</div>
       </div>
-      <div class="char-bio coco">
-        <div class="char-bio-header">
-          <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
-            <ellipse cx="40" cy="55" rx="18" ry="20" fill="#1A9E8A"/>
-            <circle cx="40" cy="28" r="20" fill="#22C5A8"/>
-            <ellipse cx="35" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(-15 35 10)"/>
-            <ellipse cx="40" cy="8" rx="5" ry="9" fill="#FF7A50"/>
-            <ellipse cx="45" cy="10" rx="5" ry="9" fill="#FF5E3A" transform="rotate(15 45 10)"/>
-            <circle cx="31" cy="28" r="5" fill="white"/><circle cx="49" cy="28" r="5" fill="white"/>
-            <circle cx="32" cy="28" r="3" fill="#1A2E28"/><circle cx="50" cy="28" r="3" fill="#1A2E28"/>
-            <path d="M36 36 L44 36 L40 42 Z" fill="#F5A800"/>
-          </svg>
-          <div>
-            <h3 style="color:#22C5A8">Coco</h3>
-            <div class="char-bio-role" style="color:#22C5A8">Guía y mentor</div>
-          </div>
-        </div>
-        <p>Simpático, inteligente y cercano. Coco da instrucciones, ofrece pistas y corrige sin castigar. Es el personaje principal del feedback — siempre amable, siempre útil.</p>
-        <div class="char-traits">
-          <span class="char-trait" style="background:#22C5A818; color:#22C5A8">Feedback</span>
-          <span class="char-trait" style="background:#22C5A818; color:#22C5A8">Pronunciación</span>
-          <span class="char-trait" style="background:#22C5A818; color:#22C5A8">Escucha</span>
-        </div>
+      <div class="how-card reveal d3">
+        <div class="how-num">03</div>
+        <div class="how-icon-wrap" style="background:#FFF7ED;"><svg width="26" height="26" style="color:#F97316;flex-shrink:0;" class=""><use href="#ico-target"/></svg></div>
+        <div class="how-title">Completa actividades</div>
+        <div class="how-desc">Explora, practica y usa el español en contexto real.</div>
+      </div>
+      <div class="how-card reveal d4">
+        <div class="how-num">04</div>
+        <div class="how-icon-wrap" style="background:#FFFBEB;"><svg width="26" height="26" style="color:#D97706;flex-shrink:0;" class=""><use href="#ico-trophy"/></svg></div>
+        <div class="how-title">Gana insignias y avanza</div>
+        <div class="how-desc">Desbloquea logros y sigue creciendo con cada misión completada.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EDADES -->
-<section class="ages" id="edades">
+<!-- AGES -->
+<section class="section ages" id="edades">
   <div class="container">
-    <div class="fade-in">
-      <div class="section-tag">¿Para quién es?</div>
-      <h2 class="section-title">Adaptado por edad y nivel</h2>
-      <p class="section-sub">Dentro de una misma misión, el contenido se adapta según el grupo del niño. No todos aprenden igual — y eso está bien.</p>
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Misiones por edad</div>
+      <h2 class="section-title" style="text-align:center;">Actividades diseñadas según el desarrollo lingüístico real del niño</h2>
     </div>
-    <div class="ages-grid fade-in">
-      <div class="age-card">
-        <div style="font-size:36px;">🌱</div>
-        <h3>6 – 8 años</h3>
-        <p>Actividades visuales, cortas y lúdicas. El aprendizaje ocurre a través del juego y la repetición significativa.</p>
+    <div class="ages-grid">
+      <div class="age-card c1 reveal d1">
+        <div class="age-badge-active"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 6px var(--green);"></span>Activo</div>
+        <svg width="36" height="36" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-leaf"/></svg>
+        <div class="age-range">6 – 8 años</div>
+        <div class="age-title">Consolidación</div>
         <ul class="age-list">
-          <li>Imágenes y audio centrales</li>
-          <li>Instrucciones muy simples</li>
-          <li>Tareas breves y divertidas</li>
-          <li>Repetición motivadora</li>
+          <li>Amplían vocabulario, leen, escriben y se expresan con más seguridad</li>
+          <li>Actividades visuales e interactivas</li>
+          <li>Misiones cortas y divertidas</li>
         </ul>
+        <a href="https://quasarworksco.github.io/LGP/Programa" class="age-btn">Ver misiones <svg width="12" height="12" style="color:white;flex-shrink:0;" class=""><use href="#ico-arrow-right"/></svg></a>
       </div>
-      <div class="age-card">
-        <div style="font-size:36px;">🧭</div>
-        <h3>9 – 12 años</h3>
-        <p>Mayor reflexión, lectura y escritura. Actividades pragmáticas más complejas y exploración cultural profunda.</p>
+      <div class="age-card c2 reveal d2">
+        <div class="age-badge-active"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 6px var(--green);"></span>Activo</div>
+        <svg width="36" height="36" style="color:#2E4DAE;flex-shrink:0;" class=""><use href="#ico-compass"/></svg>
+        <div class="age-range">9 – 11 años</div>
+        <div class="age-title">Desarrollo</div>
         <ul class="age-list">
-          <li>Lectura comprensiva</li>
-          <li>Variantes del español</li>
-          <li>Reflexión lingüística</li>
-          <li>Identidad y pertenencia</li>
+          <li>Comprenden textos más complejos y expresan sus ideas con autonomía</li>
+          <li>Reflexión lingüística y cultural</li>
+          <li>Variantes del español por país</li>
         </ul>
+        <a href="https://quasarworksco.github.io/LGP/Programa" class="age-btn">Ver misiones <svg width="12" height="12" style="color:white;flex-shrink:0;" class=""><use href="#ico-arrow-right"/></svg></a>
+      </div>
+      <div class="age-card c3 reveal d3">
+        <div class="age-badge-soon">Próximamente</div>
+        <svg width="36" height="36" style="color:#EA580C;flex-shrink:0;" class=""><use href="#ico-leaf"/></svg>
+        <div class="age-range">3 – 5 años</div>
+        <div class="age-title">Descubrimiento</div>
+        <ul class="age-list">
+          <li>Exploran palabras, sonidos y se expresan a través del juego</li>
+          <li>Audio y repetición significativa</li>
+          <li>Actividades muy visuales</li>
+        </ul>
+        <span class="age-btn disabled">Próximamente</span>
+      </div>
+      <div class="age-card c4 reveal d4">
+        <div class="age-badge-soon">Próximamente</div>
+        <svg width="36" height="36" style="color:#7C3AED;flex-shrink:0;" class=""><use href="#ico-star"/></svg>
+        <div class="age-range">12 – 14 años</div>
+        <div class="age-title">Uso académico</div>
+        <ul class="age-list">
+          <li>Usan el español en contextos académicos y proyectos desafiantes</li>
+          <li>Literatura e identidad cultural</li>
+          <li>Español formal e informal</li>
+        </ul>
+        <span class="age-btn disabled">Próximamente</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PILOT CTA -->
-<section class="pilot">
-  <div class="container" style="text-align:center;" class="fade-in">
-    <div style="font-size:48px; margin-bottom:16px;">🚀</div>
-    <h2>Forma parte de la prueba piloto</h2>
-    <p>Esta plataforma está en su primera etapa. Tu familia es parte de un grupo selecto que ayudará a dar forma a la experiencia. Cada misión completada, cada sugerencia, cuenta.</p>
-    <a href="https://quasarworksco.github.io/LGP/programa" class="btn-white">Acceder a la plataforma →</a>
+<!-- BENEFITS -->
+<section class="section benefits">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Mucho más que vocabulario</div>
+      <h2 class="section-title" style="text-align:center;">Lo que realmente desarrolla</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal d1">
+        <div class="benefit-icon-wrap" style="background:#F0FDF4;"><svg width="26" height="26" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-leaf"/></svg></div>
+        <div class="benefit-title">Mantiene su español activo</div>
+        <div class="benefit-desc">Uso constante y significativo del idioma en contextos reales</div>
+      </div>
+      <div class="benefit-card reveal d2">
+        <div class="benefit-icon-wrap" style="background:#EEF4FF;"><svg width="26" height="26" style="color:#2E4DAE;flex-shrink:0;" class=""><use href="#ico-shield"/></svg></div>
+        <div class="benefit-title">Gana confianza hablando</div>
+        <div class="benefit-desc">Sin miedo a equivocarse, con un entorno seguro y motivador</div>
+      </div>
+      <div class="benefit-card reveal d3">
+        <div class="benefit-icon-wrap" style="background:#FFF7ED;"><svg width="26" height="26" style="color:#F97316;flex-shrink:0;" class=""><use href="#ico-users"/></svg></div>
+        <div class="benefit-title">Conecta con su familia y cultura</div>
+        <div class="benefit-desc">El idioma como puente con sus raíces</div>
+      </div>
+      <div class="benefit-card reveal d4">
+        <div class="benefit-icon-wrap" style="background:#F5F3FF;"><svg width="26" height="26" style="color:#7C3AED;flex-shrink:0;" class=""><use href="#ico-id"/></svg></div>
+        <div class="benefit-title">Refuerza su identidad</div>
+        <div class="benefit-desc">Orgullo por su herencia lingüística y cultural</div>
+      </div>
+      <div class="benefit-card reveal d4">
+        <div class="benefit-icon-wrap" style="background:#FFFBEB;"><svg width="26" height="26" style="color:#D97706;flex-shrink:0;" class=""><use href="#ico-brain"/></svg></div>
+        <div class="benefit-title">Mejora sus habilidades lingüísticas</div>
+        <div class="benefit-desc">Lectura, escritura y comprensión en ambos idiomas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section class="section characters" id="personajes">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Conoce a nuestros exploradores</div>
+      <h2 class="section-title" style="text-align:center;">Tu hijo es el <span class="green">cuarto explorador</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center;">Sin el niño, ninguna misión puede completarse. Esa es la magia.</p>
+    </div>
+    <div class="chars-row">
+      <div class="char-card valentina reveal d1">
+        <div class="char-card-header">
+          <img src="https://lh3.googleusercontent.com/d/1j1zCNF1r1KV6KuWVy7oDV7l8-L-8-mAP" alt="Valentina — Exploradora cultural" crossorigin="anonymous" onerror="this.style.opacity='0'"/>
+        </div>
+        <div class="char-card-body">
+          <div class="char-card-name">Valentina</div>
+          <div class="char-card-role">Exploradora cultural</div>
+          <div class="char-card-bio">Curiosa y observadora. Descubre el mundo, las palabras y las historias para comprender diferentes culturas.</div>
+          <div class="char-tags">
+            <span class="char-tag">Cultura</span>
+            <span class="char-tag">Vocabulario</span>
+            <span class="char-tag">Reflexión</span>
+          </div>
+        </div>
+      </div>
+      <div class="char-card tomas reveal d2">
+        <div class="char-card-header">
+          <img src="https://lh3.googleusercontent.com/d/1Kqb1eBNrCrnMsuOHTPGZhK_gno8uKkSA" alt="Tomás — Explorador comunicador" crossorigin="anonymous" onerror="this.style.opacity='0'"/>
+        </div>
+        <div class="char-card-body">
+          <div class="char-card-name">Tomás</div>
+          <div class="char-card-role">Explorador comunicador</div>
+          <div class="char-card-bio">Espontáneo y activo. Le encanta conversar, participar en retos y compartir sus ideas.</div>
+          <div class="char-tags">
+            <span class="char-tag">Comunicación</span>
+            <span class="char-tag">Pragmática</span>
+            <span class="char-tag">Acción</span>
+          </div>
+        </div>
+      </div>
+      <div class="char-card coco reveal d3">
+        <div class="char-card-header">
+          <img src="https://lh3.googleusercontent.com/d/1N9QIiyvB-xFqnElgja2ob4lH6ZyPqEvY" alt="Coco — Guía y mentor" crossorigin="anonymous" onerror="this.style.opacity='0'"/>
+        </div>
+        <div class="char-card-body">
+          <div class="char-card-name">Coco</div>
+          <div class="char-card-role">Guía y mentor</div>
+          <div class="char-card-bio">Simpático e inteligente. Acompaña, orienta y motiva a los niños en cada misión. Nunca castiga, siempre anima.</div>
+          <div class="char-tags">
+            <span class="char-tag">Feedback</span>
+            <span class="char-tag">Pronunciación</span>
+            <span class="char-tag">Escucha</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSIONS -->
+<section class="section missions">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">El mapa de aventuras</div>
+      <h2 class="section-title" style="text-align:center;">5 misiones. 5 países. 1 aventura.</h2>
+    </div>
+    <div class="missions-grid">
+      <div class="mission-card active reveal d1">
+        <div style="display:flex;justify-content:center;margin-bottom:10px;"><svg width="36" height="36" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-lang"/></svg></div>
+        <div class="mission-country">Misión 1 · México</div>
+        <div class="mission-title">La maleta de las palabras</div>
+      </div>
+      <div class="mission-card active reveal d2">
+        <div style="display:flex;justify-content:center;margin-bottom:10px;"><svg width="36" height="36" style="color:#2E4DAE;flex-shrink:0;" class=""><use href="#ico-map"/></svg></div>
+        <div class="mission-country">Misión 2 · Argentina</div>
+        <div class="mission-title">El mercado de los acentos</div>
+      </div>
+      <div class="mission-card locked reveal d3">
+        <span class="mission-lock"><svg width="14" height="14" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-lock"/></svg></span>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-globe"/></svg></div>
+        <div class="mission-country">Misión 3 · Caribe</div>
+        <div class="mission-title">El secreto del Caribe</div>
+      </div>
+      <div class="mission-card locked reveal d4">
+        <span class="mission-lock"><svg width="14" height="14" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-lock"/></svg></span>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-compass"/></svg></div>
+        <div class="mission-country">Misión 4 · Colombia</div>
+        <div class="mission-title">El mapa de las palabras</div>
+      </div>
+      <div class="mission-card locked reveal d4">
+        <span class="mission-lock"><svg width="14" height="14" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-lock"/></svg></span>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;" class=""><use href="#ico-users"/></svg></div>
+        <div class="mission-country">Misión 5 · España</div>
+        <div class="mission-title">Historias que viven en familia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOT -->
+<section class="section pilot" id="piloto">
+  <div class="container">
+    <div class="pilot-inner">
+      <div class="pilot-grid">
+        <div class="reveal-left">
+          <div class="eyebrow">Para padres</div>
+          <h2 class="section-title" style="font-size:clamp(24px,3.2vw,38px);">Un programa vivo que mejora <span class="green">contigo</span></h2>
+          <p class="section-sub" style="margin-top:12px;">Este piloto no es solo para tu hijo — es para construir juntos la mejor versión del programa. Tu opinión como familia es parte fundamental del proceso.</p>
+          <div class="pilot-stats">
+            <div class="pilot-stat">
+              <div class="pilot-stat-num">4</div>
+              <div class="pilot-stat-label">Semanas de piloto</div>
+            </div>
+            <div class="pilot-stat">
+              <div class="pilot-stat-num">100%</div>
+              <div class="pilot-stat-label">Gratis durante el piloto</div>
+            </div>
+            <div class="pilot-stat">
+              <div class="pilot-stat-num"><svg width="22" height="22" style="color:#D97706;flex-shrink:0;" class=""><use href="#ico-trophy"/></svg></div>
+              <div class="pilot-stat-label">Descuento exclusivo al final</div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <div class="flow-title">Flujo del piloto</div>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div class="flow-step">
+              <div class="flow-circle flow-blue"><svg width="15" height="15" style="color:#2E4DAE;flex-shrink:0;" class=""><use href="#ico-play"/></svg></div>
+              <div class="flow-content">
+                <div class="flow-week">Semana 1</div>
+                <div class="flow-name">Primeras misiones</div>
+                <div class="flow-desc">Tu hijo completa las primeras aventuras y gana sus primeras insignias.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-circle flow-green"><svg width="15" height="15" style="color:#16A34A;flex-shrink:0;" class=""><use href="#ico-clipboard"/></svg></div>
+              <div class="flow-content">
+                <div class="flow-week">Semana 2 · Antes de acceder</div>
+                <div class="flow-name">Cuestionario de progreso</div>
+                <div class="flow-desc">Los padres responden un cuestionario breve. Esto desbloquea la semana 2.</div>
+                <span class="flow-tag tag-required">Obligatorio para continuar</span>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-circle flow-orange"><svg width="15" height="15" style="color:#F97316;flex-shrink:0;" class=""><use href="#ico-rocket"/></svg></div>
+              <div class="flow-content">
+                <div class="flow-week">Semanas 2 y 3</div>
+                <div class="flow-name">Más misiones y descubrimientos</div>
+                <div class="flow-desc">Nuevas aventuras en más países hispanohablantes.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-circle flow-gold"><svg width="15" height="15" style="color:#D97706;flex-shrink:0;" class=""><use href="#ico-gift"/></svg></div>
+              <div class="flow-content">
+                <div class="flow-week">Semana 4 · Al finalizar</div>
+                <div class="flow-name">Valoración final + descuento</div>
+                <div class="flow-desc">Al completar el feedback final, las familias reciben un código de descuento exclusivo.</div>
+                <span class="flow-tag tag-reward">Descuento exclusivo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Lo que dicen otras familias</div>
+      <h2 class="section-title" style="text-align:center;">Familias reales, resultados reales</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal d1">
+        <div class="testi-stars"><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg></div>
+        <div class="testi-text">"Mi hija espera con ilusión cada misión. He ganado confianza hablándole español."</div>
+        <div class="testi-author">
+          <div class="testi-avatar"><svg width="20" height="20" style="color:white;flex-shrink:0;" class=""><use href="#ico-child"/></svg></div>
+          <div><div class="testi-name">María, mamá de dos</div><div class="testi-role">España → Alemania</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal d2">
+        <div class="testi-stars"><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg></div>
+        <div class="testi-text">"Por fin una plataforma que entiende nuestras necesidades como familia bilingüe."</div>
+        <div class="testi-author">
+          <div class="testi-avatar"><svg width="20" height="20" style="color:white;flex-shrink:0;" class=""><use href="#ico-child"/></svg></div>
+          <div><div class="testi-name">Carlos, papá</div><div class="testi-role">México → Canadá</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal d3">
+        <div class="testi-stars"><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;" class=""><use href="#ico-star"/></svg></div>
+        <div class="testi-text">"Las actividades son tan divertidas y educativas. ¡Muy recomendable para familias bilingües!"</div>
+        <div class="testi-author">
+          <div class="testi-avatar"><svg width="20" height="20" style="color:white;flex-shrink:0;" class=""><use href="#ico-child"/></svg></div>
+          <div><div class="testi-name">Ana, mamá</div><div class="testi-role">Colombia → Francia</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="faq" id="faq">
+<section class="section faq" id="faq">
   <div class="container">
-    <div class="fade-in">
-      <div class="section-tag">Preguntas frecuentes</div>
+    <div class="reveal">
+      <div class="eyebrow">Preguntas frecuentes</div>
       <h2 class="section-title">Lo que nos preguntan las familias</h2>
     </div>
-    <div class="faq-list fade-in">
+    <div class="faq-list reveal">
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Necesito saber español para acompañar a mi hijo? <span>+</span></div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Necesito saber español para acompañar a mi hijo?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
         <div class="faq-a">No es necesario. La plataforma está diseñada para que el niño pueda navegar de forma autónoma. Los padres pueden acompañar, pero no es un requisito.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cuánto tiempo lleva cada misión? <span>+</span></div>
-        <div class="faq-a">Cada misión está pensada para completarse en sesiones de 15 a 30 minutos. El progreso se guarda automáticamente, por lo que el niño puede pausar y retomar cuando quiera.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Cuánto tiempo lleva cada misión?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Cada misión está pensada para completarse en sesiones de 15 a 30 minutos. El progreso se guarda automáticamente.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Funciona en tablet y móvil? <span>+</span></div>
-        <div class="faq-a">Sí. La plataforma es completamente responsive y funciona en computadora, tablet y teléfono. Recomendamos usarla en tablet o computadora para la mejor experiencia.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Por qué los cuestionarios son obligatorios?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Porque este piloto no es solo para tu hijo — es para construir juntos el programa definitivo. El feedback de las familias es el insumo más valioso que tenemos. Como reconocimiento, el feedback final desbloquea un descuento exclusivo.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo se guarda el progreso de mi hijo? <span>+</span></div>
-        <div class="faq-a">El progreso se guarda en la nube. Esto significa que tu hijo puede acceder desde cualquier dispositivo con su usuario y contraseña, y todo su avance estará disponible.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Qué pasa si mi hijo olvida su contraseña?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Al crear la cuenta, el niño elige un PIN secreto de 4 dígitos. Si olvida la contraseña, puede recuperarla usando su usuario y su PIN.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Qué pasa si mi hijo olvida su contraseña? <span>+</span></div>
-        <div class="faq-a">Al crear la cuenta, el niño elige un PIN de 4 dígitos de recuperación. Si olvida la contraseña, puede recuperarla ingresando su usuario y su PIN secreto.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Funciona en móvil y tablet?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Sí. La plataforma funciona en computadora, tablet y móvil. Recomendamos tablet o computadora para la mejor experiencia visual.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Es una plataforma de pago? <span>+</span></div>
-        <div class="faq-a">Durante esta etapa de prueba piloto, el acceso es completamente gratuito para las familias participantes.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Cuándo estarán disponibles las otras edades?</span><span class="faq-icon ico"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;" class=""><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Las franjas de 3-5 y 12-14 años están en desarrollo. Los resultados de este piloto determinarán el calendario de lanzamiento.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div style="position:relative;z-index:1;">
+    <div style="display:flex;justify-content:center;margin-bottom:20px;"><svg width="56" height="56" style="color:#4ADE80;flex-shrink:0;" class=""><use href="#ico-sparkle"/></svg></div>
+    <h2>Tu hijo ya tiene el español.<br/>Solo necesita un espacio para <span class="green">vivirlo.</span></h2>
+    <p>Empieza hoy y fortalece su lengua familiar, su identidad y su confianza.</p>
+    <a href="https://quasarworksco.github.io/LGP/Programa" class="btn-green-hero" style="font-size:17px;padding:16px 44px;"><svg width="18" height="18" style="color:white;flex-shrink:0;" class=""><use href="#ico-bolt"/></svg> ¡Empieza la aventura! — Es gratis</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🌎 Español de Herencia</div>
-  <div class="footer-note">Prueba piloto 2026 — Programa educativo para familias hispanohablantes</div>
-  <a href="https://quasarworksco.github.io/LGP/programa" class="btn-primary">Acceder →</a>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo-wrap">
+        <div class="footer-logo-img"><svg width="18" height="18" style="color:white;flex-shrink:0;" class=""><use href="#ico-globe"/></svg></div>
+        <div>
+          <div class="footer-logo-name">ESPAÑOL DE HERENCIA</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);font-weight:600;">Programa educativo</div>
+        </div>
+      </div>
+      <div class="footer-desc">Fortalecemos el español de los hijos de familias hispanohablantes que viven fuera de su país.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <a href="#como">Cómo funciona</a>
+      <a href="#edades">Edades</a>
+      <a href="#personajes">Personajes</a>
+    </div>
+    <div class="footer-col">
+      <h4>Para padres</h4>
+      <a href="#piloto">El piloto</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Plataforma</h4>
+      <a href="https://quasarworksco.github.io/LGP/Programa">Acceder</a>
+      <a href="https://quasarworksco.github.io/LGP/Programa">Crear cuenta</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Español de Herencia. Prueba piloto.</div>
+    <div style="display:flex;gap:16px;align-items:center;">
+      <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;display:flex;align-items:center;gap:5px;"><svg width="16" height="16" style="color:rgba(255,255,255,0.4);flex-shrink:0;" class=""><use href="#ico-instagram"/></svg> Instagram</a>
+      <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;display:flex;align-items:center;gap:5px;"><svg width="16" height="16" style="color:rgba(255,255,255,0.4);flex-shrink:0;" class=""><use href="#ico-facebook"/></svg> Facebook</a>
+      <a href="https://quasarworksco.github.io/LGP/Programa" class="nav-cta"><svg width="12" height="12" style="color:white;flex-shrink:0;" class=""><use href="#ico-bolt"/></svg> Acceder</a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -530,14 +1024,27 @@ function toggleFaq(el) {
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
-  el.querySelector('span').textContent = item.classList.contains('open') ? '−' : '+';
 }
 
-// Scroll animations
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').style.boxShadow = window.scrollY > 40
+    ? '0 4px 30px rgba(27,47,107,0.12)' : '0 2px 20px rgba(27,47,107,0.06)';
+});
+
+document.querySelectorAll('.char-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `translateY(-10px) scale(1.02) rotate3d(${-y},${x},0,8deg)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
 </script>
 </body>
 </html>
