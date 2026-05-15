@@ -1177,7 +1177,6 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .benefits-grid{grid-template-columns:1fr 1fr}
   .ages-grid{grid-template-columns:1fr}
   .mission-age-group .missions-cards-row{grid-template-columns:1fr}
-  .deco-img{display:none}
 }
 
 /* ── Decorative illustrations ── */
@@ -1185,31 +1184,27 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   position: absolute;
   pointer-events: none;
   user-select: none;
-  z-index: 0;
-  border-radius: 50%;
-  /* dark halo so mix-blend-mode:screen works on any bg */
-  background: radial-gradient(circle, rgba(3,8,28,0.88) 38%, rgba(3,8,28,0.45) 62%, transparent 78%);
+  z-index: 2;
 }
 .deco-wrap img {
   display: block;
   width: 100%;
   height: auto;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.18));
 }
 @keyframes decoFloat {
   0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
-  50% { transform: translateY(-14px) rotate(var(--rot,0deg)); }
+  50% { transform: translateY(-12px) rotate(var(--rot,0deg)); }
 }
 @keyframes decoFloatR {
   0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
-  50% { transform: translateY(-10px) rotate(var(--rot,0deg)); }
+  50% { transform: translateY(-8px) rotate(var(--rot,0deg)); }
 }
 .deco-wrap { animation: decoFloat 5s ease-in-out infinite; }
 .deco-wrap.slow { animation-duration: 7s; }
 .deco-wrap.fast { animation-duration: 3.8s; }
-.deco-wrap.alt { animation-name: decoFloatR; animation-delay: 1.2s; }
-@media(max-width:480px){ .deco-wrap { display: none; } }
+.deco-wrap.alt { animation-name: decoFloatR; animation-delay: 1.5s; }
+@media(max-width:768px){ .deco-wrap { display: none; } }
 
 /* CSS vars */
 :root{
