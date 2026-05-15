@@ -1204,7 +1204,9 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
 .deco-wrap.slow { animation-duration: 7s; }
 .deco-wrap.fast { animation-duration: 3.8s; }
 .deco-wrap.alt { animation-name: decoFloatR; animation-delay: 1.5s; }
-@media(max-width:768px){ .deco-wrap { display: none; } }
+@media(max-width:768px){
+  .deco-wrap { width: clamp(70px,18vw,100px) !important; }
+}
 
 /* CSS vars */
 :root{
