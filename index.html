@@ -1166,7 +1166,30 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .benefits-grid{grid-template-columns:1fr 1fr}
   .ages-grid{grid-template-columns:1fr}
   .mission-age-group .missions-cards-row{grid-template-columns:1fr}
+  .deco-img{display:none}
 }
+
+/* ── Decorative illustrations ── */
+.deco-img {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: screen;
+  z-index: 0;
+  opacity: 0.92;
+}
+@keyframes decoFloat {
+  0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
+  50% { transform: translateY(-14px) rotate(var(--rot,0deg)); }
+}
+@keyframes decoFloatR {
+  0%,100% { transform: translateY(0) rotate(var(--rot,0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--rot,0deg)); }
+}
+.deco-img { animation: decoFloat 5s ease-in-out infinite; }
+.deco-img.slow { animation-duration: 7s; }
+.deco-img.fast { animation-duration: 3.8s; }
+.deco-img.alt { animation-name: decoFloatR; animation-delay: 1.2s; }
 
 /* CSS vars */
 :root{
@@ -1330,6 +1353,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 <!-- HERO -->
 <section class="hero">
   <div class="hero-img-panel"></div>
+  <img class="deco-img slow" src="https://lh3.googleusercontent.com/d/14nqWtsVIjouNwPGWSDS937WZSAy1Wurt" alt="" aria-hidden="true" style="width:clamp(160px,18vw,260px);top:8%;right:52%;--rot:-6deg;opacity:0.7;z-index:3;">
   <div class="hero-atm"></div>
   <div class="hero-slice"></div>
   <div class="hero-inner">
@@ -1467,7 +1491,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section how" id="como">
+<section class="section how" id="como" style="position:relative;overflow:hidden;">
+  <img class="deco-img alt" src="https://lh3.googleusercontent.com/d/1Qglc5SEBi96P6xjD4_wt1fvnA9dc-pR6" alt="" aria-hidden="true" style="width:clamp(140px,14vw,210px);bottom:-20px;right:-20px;--rot:12deg;opacity:0.55;">
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">¿Cómo funciona?</div>
@@ -1563,7 +1588,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 </section>
 
 <!-- BENEFITS -->
-<section class="section benefits">
+<section class="section benefits" style="position:relative;overflow:hidden;">
+  <img class="deco-img slow" src="https://lh3.googleusercontent.com/d/16leGIU_G8TMhjYEUfRPGUcaRA8jhKjtj" alt="" aria-hidden="true" style="width:clamp(130px,13vw,200px);top:-10px;left:-15px;--rot:-8deg;opacity:0.5;">
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">Mucho más que vocabulario</div>
@@ -1600,7 +1626,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 </section>
 
 <!-- CHARACTERS -->
-<section class="section characters" id="personajes">
+<section class="section characters" id="personajes" style="position:relative;overflow:hidden;">
+  <img class="deco-img" src="https://lh3.googleusercontent.com/d/1I2uzoAIV6jASbHNkkH-HK1TVpriFxeHL" alt="" aria-hidden="true" style="width:clamp(100px,10vw,160px);top:24px;right:12px;--rot:14deg;opacity:0.45;">
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">Los personajes</div>
@@ -1646,7 +1673,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 </section>
 
 <!-- MISSIONS -->
-<section class="section missions">
+<section class="section missions" style="position:relative;overflow:hidden;">
+  <img class="deco-img alt slow" src="https://lh3.googleusercontent.com/d/1LE0TeaXvwupnXobJAKOnfEHbdB6xMjeM" alt="" aria-hidden="true" style="width:clamp(120px,12vw,190px);top:30px;right:-10px;--rot:-10deg;opacity:0.5;">
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">El mapa de aventuras</div>
@@ -1888,7 +1916,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
 </section>
 
 <!-- TRUST -->
-<section class="section trust">
+<section class="section trust" style="position:relative;overflow:hidden;">
+  <img class="deco-img slow" src="https://lh3.googleusercontent.com/d/1ryUCnaGIv5yk1eQzyooWADGkeSqgF1Px" alt="" aria-hidden="true" style="width:clamp(110px,11vw,170px);bottom:-10px;left:-10px;--rot:8deg;opacity:0.5;">
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">Por qué funciona</div>
