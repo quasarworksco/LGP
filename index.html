@@ -520,16 +520,16 @@ footer {
   justify-content: center;
 }
 
-/* Capa 1: oscuridad profunda y uniforme */
+/* Capa 1: oscuridad profunda — máximo contraste para legibilidad */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
     linear-gradient(to bottom,
-      rgba(3,7,22,0.88) 0%,
-      rgba(3,7,22,0.82) 50%,
-      rgba(3,7,22,0.94) 100%);
+      rgba(2,5,18,0.93) 0%,
+      rgba(2,5,18,0.90) 40%,
+      rgba(2,5,18,0.96) 100%);
   z-index: 1;
 }
 
@@ -588,20 +588,23 @@ footer {
   backdrop-filter: blur(8px);
 }
 
-/* H1 — tipografía de pantalla, jerarquía fuerte */
+/* H1 — Montserrat para máxima legibilidad en todos los dispositivos */
 .hero h1 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 900;
   font-style: normal;
-  font-size: clamp(46px, 6.8vw, 80px);
-  line-height: 1.06;
-  letter-spacing: -2.5px;
+  font-size: clamp(38px, 6vw, 76px);
+  line-height: 1.08;
+  letter-spacing: -2px;
   color: #FFFFFF;
   margin-bottom: 0;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.7), 0 4px 48px rgba(0,0,0,0.4);
 }
 .hero h1 .green {
   color: #4ADE80;
+  font-family: 'Fraunces', serif;
   font-style: italic;
+  font-weight: 900;
 }
 
 /* Separador decorativo bajo el título */
@@ -614,16 +617,17 @@ footer {
   flex-shrink: 0;
 }
 
-/* Descripción — limpia y aireada */
+/* Descripción — limpia y aireada, alta legibilidad */
 .hero p {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(15px, 1.45vw, 17px);
-  color: rgba(255,255,255,0.65);
-  line-height: 1.9;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.85;
   margin-bottom: 36px;
-  font-weight: 400;
-  max-width: 510px;
+  font-weight: 500;
+  max-width: 520px;
   letter-spacing: 0.15px;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
 }
 
 /* Feature pills — sutiles y limpias */
@@ -870,6 +874,76 @@ footer {
 .mission-title { font-family:'Montserrat';font-size:13px;font-weight:800;color:var(--blue);line-height:1.35; }
 .mission-lock { position:absolute;top:10px;right:10px; }
 
+/* ── Missions — Age groups ── */
+.mission-age-group { margin-top: 52px; }
+.mission-age-group:first-of-type { margin-top: 40px; }
+.mission-age-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(27,47,107,0.07);
+}
+.mission-age-emoji { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.mission-age-range {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--blue);
+  line-height: 1;
+}
+.mission-age-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-m);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 3px;
+}
+.mission-age-badge-active {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(22,197,83,0.14); border: 1px solid rgba(22,197,83,0.4);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 10.5px; font-weight: 800; color: var(--green-d);
+  margin-left: auto; flex-shrink: 0;
+}
+.mission-age-badge-soon {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(27,47,107,0.06); border: 1px solid rgba(27,47,107,0.12);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 10.5px; font-weight: 800; color: var(--text-l);
+  margin-left: auto; flex-shrink: 0;
+}
+.missions-cards-row {
+  display: grid;
+  gap: 16px;
+}
+.missions-cards-row.cols-1 { grid-template-columns: 1fr; max-width: 340px; }
+.missions-cards-row.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 600px; }
+.missions-cards-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.mission-age-placeholder {
+  background: white;
+  border-radius: 18px;
+  padding: 28px 24px;
+  text-align: center;
+  border: 2px dashed rgba(27,47,107,0.12);
+  opacity: 0.6;
+}
+.mission-age-placeholder-icon { font-size: 32px; margin-bottom: 10px; }
+.mission-age-placeholder-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800; font-size: 13px; color: var(--text-m);
+}
+.mission-age-placeholder-sub {
+  font-size: 11px; color: var(--text-l); font-weight: 600; margin-top: 5px;
+}
+@media(max-width:768px){
+  .missions-cards-row.cols-3{grid-template-columns:1fr 1fr}
+  .missions-cards-row.cols-2{max-width:100%}
+  .missions-cards-row.cols-1{max-width:100%}
+}
+
 /* ── Pilot ── */
 .pilot { background:white; }
 .pilot-inner { background:linear-gradient(160deg,#F0F4FF,#F0FDF4);border:2px solid rgba(22,197,83,0.2);border-radius:32px;padding:clamp(36px,5vw,64px);position:relative;overflow:hidden; }
@@ -1050,14 +1124,19 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
 @media(max-width:1024px){
   .how-grid{grid-template-columns:1fr 1fr}
   .benefits-grid{grid-template-columns:repeat(3,1fr)}
-  .missions-grid{grid-template-columns:repeat(3,1fr)}
+  .missions-cards-row.cols-3{grid-template-columns:repeat(3,1fr)}
   .footer-inner{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .hero-inner{padding:120px 0 110px}
-  .hero h1{letter-spacing:-1.5px}
-  .hero-proof{gap:8px}
-  .hero-proof-item{padding:0 12px;font-size:11px}
+  .hero-inner{padding:110px 20px 100px}
+  .hero h1{font-size:clamp(34px,9vw,52px);letter-spacing:-1.2px}
+  .hero p{font-size:15px;color:rgba(255,255,255,0.90)}
+  .hero-features{gap:6px}
+  .hero-feature{font-size:11.5px;padding:6px 13px}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:12px;width:100%;max-width:320px;margin:0 auto}
+  .btn-green-hero,.btn-outline-hero{justify-content:center;width:100%;font-size:14px;padding:16px 28px}
+  .hero-proof{gap:6px}
+  .hero-proof-item{padding:0 10px;font-size:10.5px}
   .problem-grid{grid-template-columns:1fr}
   .ages-grid{grid-template-columns:1fr 1fr}
   .chars-row{grid-template-columns:1fr}
@@ -1066,12 +1145,16 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .newsletter-form{flex-direction:column}
   .nav-links>a:not(.nav-cta){display:none}
   .form-grid{grid-template-columns:1fr}
+  .testi-pair-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){
+  .hero h1{font-size:clamp(30px,10vw,44px);letter-spacing:-1px}
+  .hero-tag{font-size:9.5px;padding:7px 16px;letter-spacing:2px}
+  .hero-proof{display:none}
   .how-grid{grid-template-columns:1fr}
   .benefits-grid{grid-template-columns:1fr 1fr}
   .ages-grid{grid-template-columns:1fr}
-  .missions-grid{grid-template-columns:1fr 1fr}
+  .mission-age-group .missions-cards-row{grid-template-columns:1fr}
 }
 
 /* CSS vars */
@@ -1266,7 +1349,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
       </div>
       <div class="hero-feature">
         <span class="hero-feature-icon"><svg width="13" height="13"><use href="#ico-leaf"/></svg></span>
-        6 – 11 años
+        3 – 14 años
       </div>
       <div class="hero-feature">
         <span class="hero-feature-icon"><svg width="13" height="13"><use href="#ico-brain"/></svg></span>
@@ -1555,38 +1638,104 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;ov
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">El mapa de aventuras</div>
-      <h2 class="section-title" style="text-align:center;">5 misiones. 5 países. 1 aventura.</h2>
+      <h2 class="section-title" style="text-align:center;">Misiones por edad. <span class="green">Aprendizaje a medida.</span></h2>
+      <p class="section-sub" style="text-align:center;margin:0 auto;">Cada grupo de edad tiene su propio camino de misiones, diseñado para su etapa de desarrollo lingüístico.</p>
     </div>
-    <div class="missions-grid">
-      <div class="mission-card active reveal d1">
-        <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lang"/></svg></div>
-        <div class="mission-country">Misión 1 · México</div>
-        <div class="mission-title">La maleta de las palabras</div>
+
+    <!-- 3–5 años -->
+    <div class="mission-age-group reveal">
+      <div class="mission-age-header">
+        <span class="mission-age-emoji">🌱</span>
+        <div>
+          <div class="mission-age-range">3 – 5 años</div>
+          <div class="mission-age-label">Pequeños exploradores</div>
+        </div>
+        <span class="mission-age-badge-soon">Próximamente</span>
       </div>
-      <div class="mission-card active reveal d2">
-        <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-map"/></svg></div>
-        <div class="mission-country">Misión 2 · Argentina</div>
-        <div class="mission-title">El mercado de los acentos</div>
-      </div>
-      <div class="mission-card locked reveal d3">
-        <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
-        <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-globe"/></svg></div>
-        <div class="mission-country">Misión 3 · Caribe</div>
-        <div class="mission-title">El secreto del Caribe</div>
-      </div>
-      <div class="mission-card locked reveal d4">
-        <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
-        <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-compass"/></svg></div>
-        <div class="mission-country">Misión 4 · Colombia</div>
-        <div class="mission-title">El mapa de las palabras</div>
-      </div>
-      <div class="mission-card locked reveal d4">
-        <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
-        <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-users"/></svg></div>
-        <div class="mission-country">Misión 5 · España</div>
-        <div class="mission-title">Historias que viven en familia</div>
+      <div class="missions-cards-row cols-1">
+        <div class="mission-age-placeholder">
+          <div class="mission-age-placeholder-icon">🎨</div>
+          <div class="mission-age-placeholder-text">Misiones en preparación</div>
+          <div class="mission-age-placeholder-sub">Canciones, cuentos y primeras palabras en español</div>
+        </div>
       </div>
     </div>
+
+    <!-- 6–8 años -->
+    <div class="mission-age-group reveal">
+      <div class="mission-age-header">
+        <span class="mission-age-emoji">🗺️</span>
+        <div>
+          <div class="mission-age-range">6 – 8 años</div>
+          <div class="mission-age-label">Aventureros del idioma</div>
+        </div>
+        <span class="mission-age-badge-active"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Disponibles ahora</span>
+      </div>
+      <div class="missions-cards-row cols-2">
+        <div class="mission-card active reveal d1">
+          <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lang"/></svg></div>
+          <div class="mission-country">Misión 1 · México</div>
+          <div class="mission-title">La maleta de las palabras</div>
+        </div>
+        <div class="mission-card active reveal d2">
+          <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-map"/></svg></div>
+          <div class="mission-country">Misión 2 · Argentina</div>
+          <div class="mission-title">El mercado de los acentos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9–11 años -->
+    <div class="mission-age-group reveal">
+      <div class="mission-age-header">
+        <span class="mission-age-emoji">🧭</span>
+        <div>
+          <div class="mission-age-range">9 – 11 años</div>
+          <div class="mission-age-label">Exploradores avanzados</div>
+        </div>
+        <span class="mission-age-badge-active"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Disponibles ahora</span>
+      </div>
+      <div class="missions-cards-row cols-3">
+        <div class="mission-card locked reveal d1">
+          <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
+          <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-globe"/></svg></div>
+          <div class="mission-country">Misión 3 · Caribe</div>
+          <div class="mission-title">El secreto del Caribe</div>
+        </div>
+        <div class="mission-card locked reveal d2">
+          <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
+          <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-compass"/></svg></div>
+          <div class="mission-country">Misión 4 · Colombia</div>
+          <div class="mission-title">El mapa de las palabras</div>
+        </div>
+        <div class="mission-card locked reveal d3">
+          <div class="mission-lock"><svg width="13" height="13" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg></div>
+          <div class="mission-icon-wrap"><svg width="36" height="36" style="color:#8898CC;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-users"/></svg></div>
+          <div class="mission-country">Misión 5 · España</div>
+          <div class="mission-title">Historias que viven en familia</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12–14 años -->
+    <div class="mission-age-group reveal">
+      <div class="mission-age-header">
+        <span class="mission-age-emoji">🚀</span>
+        <div>
+          <div class="mission-age-range">12 – 14 años</div>
+          <div class="mission-age-label">Maestros del idioma</div>
+        </div>
+        <span class="mission-age-badge-soon">Próximamente</span>
+      </div>
+      <div class="missions-cards-row cols-1">
+        <div class="mission-age-placeholder">
+          <div class="mission-age-placeholder-icon">📚</div>
+          <div class="mission-age-placeholder-text">Misiones en preparación</div>
+          <div class="mission-age-placeholder-sub">Literatura, identidad cultural y expresión avanzada en español</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
