@@ -6,7 +6,7 @@
 <title>Español de Herencia — Que tu hijo no pierda su español</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -14,7 +14,7 @@
 /* ─── RESET ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Nunito', sans-serif; background: #fff; color: #1B2F6B; overflow-x: hidden; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #1B2F6B; overflow-x: hidden; }
 
 /* ─── TOKENS ─── */
 :root {
@@ -60,7 +60,7 @@ nav {
 .nav-links > a { font-size: 13px; font-weight: 700; color: var(--text-m); text-decoration: none; transition: color 0.2s; }
 .nav-links > a:hover { color: var(--blue); }
 .nav-dropdown { position: relative; }
-.nav-dropdown-btn { background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text-m); display: flex; align-items: center; gap: 4px; font-family: 'Nunito'; transition: color 0.2s; }
+.nav-dropdown-btn { background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text-m); display: flex; align-items: center; gap: 4px; font-family: 'Plus Jakarta Sans'; transition: color 0.2s; }
 .nav-dropdown-btn:hover { color: var(--blue); }
 .nav-cta {
   background: linear-gradient(135deg, var(--green), var(--green-d));
@@ -448,27 +448,36 @@ footer {
 /* ── Hero: split layout with image on right ── */
 .hero {
   min-height:100vh; padding:80px clamp(16px,4vw,64px) 0;
-  background: linear-gradient(120deg, #0A1F5C 0%, #1B3B8A 55%, #136B38 100%);
+  background-image: url('https://lh3.googleusercontent.com/d/1Lj0DjrQUPqMOsA5f3qk0bfUdzPfRYzXx');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   position:relative; overflow:hidden; display:flex; align-items:center;
 }
-.hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(22,197,83,0.18) 0%, transparent 70%); }
-.hero::after  { content:''; position:absolute; top:-200px; left:-100px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); }
+/* Dark gradient overlay for text readability */
+.hero::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, rgba(6,14,44,0.82) 0%, rgba(10,31,92,0.72) 45%, rgba(10,31,92,0.45) 100%); }
+.hero::after  { content:''; position:absolute; bottom:0; left:0; right:0; height:120px; background:linear-gradient(to top, white 0%, transparent 100%); }
 /* Diagonal white slice at bottom */
 .hero-slice { position:absolute; bottom:0; left:0; right:0; height:100px; background:white; clip-path:polygon(0 60%, 100% 0, 100% 100%, 0 100%); }
 
-.hero-inner { max-width:1200px; margin:0 auto; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; position:relative; z-index:1; padding-bottom:80px; }
+.hero-inner { max-width:860px; margin:0 auto; width:100%; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; z-index:1; padding-bottom:80px; padding-top:20px; }
 
-.hero-tag { display:inline-flex;align-items:center;gap:8px; background:rgba(22,197,83,0.2);border:1.5px solid rgba(22,197,83,0.4); border-radius:100px;padding:5px 14px;font-size:11px;font-weight:800; color:#4ADE80;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px; }
+.hero-tag { display:inline-flex;align-items:center;gap:8px; background:rgba(22,197,83,0.2);border:1.5px solid rgba(22,197,83,0.4); border-radius:100px;padding:6px 16px;font-size:11px;font-weight:800; color:#4ADE80;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:24px; font-family:'Plus Jakarta Sans',sans-serif; }
 
-.hero h1 { font-family:'Montserrat';font-weight:900;font-size:clamp(36px,5vw,62px); line-height:1.0;letter-spacing:-2px;color:white;margin-bottom:14px; }
-.hero h1 .green { color:#4ADE80; }
-.hero p { font-size:clamp(14px,1.5vw,17px);color:rgba(255,255,255,0.82);line-height:1.75;margin-bottom:22px;font-weight:500;max-width:460px; }
+.hero h1 { font-family:'Fraunces',serif; font-weight:900; font-style:italic; font-size:clamp(42px,7vw,82px); line-height:1.02; letter-spacing:-2px; color:white; margin-bottom:20px; }
+.hero h1 .green { color:#4ADE80; font-style:italic; }
+.hero h1 em { font-style:italic; }
+.hero p { font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(15px,1.6vw,18px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:28px;font-weight:500;max-width:600px; }
 
-.hero-features { display:flex;gap:20px;margin-bottom:26px;flex-wrap:wrap; }
-.hero-feature { display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.9); }
-.hero-feature-icon { width:28px;height:28px;border-radius:50%;background:rgba(22,197,83,0.25);border:1px solid rgba(22,197,83,0.4);display:flex;align-items:center;justify-content:center; }
+.hero-features { display:flex;gap:24px;margin-bottom:32px;flex-wrap:wrap;justify-content:center; }
+.hero-feature { display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif; }
+.hero-feature-icon { width:30px;height:30px;border-radius:50%;background:rgba(22,197,83,0.25);border:1px solid rgba(22,197,83,0.4);display:flex;align-items:center;justify-content:center; }
 
-.hero-btns { display:flex;gap:12px;flex-wrap:wrap; }
+.hero-btns { display:flex;gap:12px;flex-wrap:wrap;justify-content:center; }
+/* Social proof strip below buttons */
+.hero-proof { display:flex;align-items:center;gap:20px;margin-top:28px;flex-wrap:wrap;justify-content:center; }
+.hero-proof-item { display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;font-family:'Plus Jakarta Sans',sans-serif; }
+.hero-proof-dot { width:5px;height:5px;border-radius:50%;background:rgba(22,197,83,0.6);display:inline-block; }
 .btn-green-hero { background:linear-gradient(135deg,#16C553,#0FA046);color:white;font-family:'Montserrat';font-weight:800;font-size:15px; padding:14px 30px;border-radius:100px;text-decoration:none;box-shadow:0 6px 24px rgba(22,197,83,0.45);transition:all 0.25s;display:inline-flex;align-items:center;gap:8px; }
 .btn-green-hero:hover { transform:translateY(-3px);box-shadow:0 12px 36px rgba(22,197,83,0.55); }
 .btn-outline-hero { background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.35);color:white;font-family:'Montserrat';font-weight:700;font-size:15px; padding:14px 26px;border-radius:100px;text-decoration:none;transition:all 0.2s;backdrop-filter:blur(8px);display:inline-flex;align-items:center;gap:8px; }
@@ -672,7 +681,7 @@ footer {
 .form-grid.single { grid-template-columns:1fr; }
 .form-group { display:flex;flex-direction:column;gap:5px; }
 .form-label { font-size:12px;font-weight:800;color:var(--text-m);text-transform:uppercase;letter-spacing:0.5px; }
-.form-input { padding:12px 15px;border-radius:12px;border:2px solid rgba(27,47,107,0.12);font-family:'Nunito';font-size:14px;outline:none;background:white;color:var(--blue);transition:border 0.2s,box-shadow 0.2s;width:100%; }
+.form-input { padding:12px 15px;border-radius:12px;border:2px solid rgba(27,47,107,0.12);font-family:'Plus Jakarta Sans';font-size:14px;outline:none;background:white;color:var(--blue);transition:border 0.2s,box-shadow 0.2s;width:100%; }
 .form-input:focus { border-color:var(--green);box-shadow:0 0 0 3px rgba(22,197,83,0.12); }
 .form-input.error { border-color:#EF4444; }
 .form-select { appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A6A9A' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px; }
@@ -719,7 +728,7 @@ footer {
 .newsletter h2 { font-family:'Montserrat';font-weight:900;font-size:clamp(22px,3vw,32px);color:white;margin-bottom:10px; }
 .newsletter p { font-size:15px;color:rgba(255,255,255,0.75);margin-bottom:24px;font-weight:500; }
 .newsletter-form { display:flex;gap:10px;max-width:500px;margin:0 auto; }
-.newsletter-input { flex:1;padding:13px 18px;border-radius:100px;border:none;font-family:'Nunito';font-size:14px;outline:none;background:rgba(255,255,255,0.12);color:white;backdrop-filter:blur(8px); }
+.newsletter-input { flex:1;padding:13px 18px;border-radius:100px;border:none;font-family:'Plus Jakarta Sans';font-size:14px;outline:none;background:rgba(255,255,255,0.12);color:white;backdrop-filter:blur(8px); }
 .newsletter-input::placeholder { color:rgba(255,255,255,0.5); }
 .newsletter-input:focus { background:rgba(255,255,255,0.18); }
 .newsletter-btn { padding:13px 24px;border-radius:100px;background:linear-gradient(135deg,#16C553,#0FA046);color:white;border:none;font-family:'Montserrat';font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap;transition:all 0.2s; }
@@ -821,7 +830,7 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Nunito',sans-serif;background:#fff;color:#1B2F6B;overflow-x:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#F1F4FC}::-webkit-scrollbar-thumb{background:var(--blue-l);border-radius:3px}
 
 /* ── Testimonial Featured (solo, near top) ── */
@@ -884,6 +893,25 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1B2F6B;overflow-x:hi
 .free-badge-note{margin-top:12px;font-size:13px;color:var(--text-m);font-weight:600;}
 .free-badge-note strong{color:var(--blue);}
 
+/* ── Global typography refinements ── */
+/* Section titles: keep Montserrat bold — reliable and strong */
+.section-title { font-family:'Montserrat',sans-serif; letter-spacing:-1.5px; }
+/* Body text: Plus Jakarta Sans — clean, modern, readable */
+.section-sub, .problem-card-text, .how-desc, .benefit-desc, .char-card-bio,
+.trust-text, .flow-desc, .faq-a, .footer-desc, .sol-quote,
+.testi-body-new, .testi-inline-text, .testi-featured-text, .spec-card-text,
+.age-list li { font-family:'Plus Jakarta Sans',sans-serif; }
+/* Eyebrow labels: more open tracking */
+.eyebrow { font-family:'Montserrat',sans-serif; letter-spacing:2.5px; }
+/* Final CTA section title: add a touch of Fraunces warmth */
+.final-cta h2 { font-family:'Fraunces',serif; font-style:italic; letter-spacing:-2px; }
+/* Specialist section title */
+.specialist h2 { font-family:'Fraunces',serif; font-style:italic; }
+/* Trust card titles: slightly warmer */
+.trust-title { font-family:'Montserrat',sans-serif; }
+/* Hero responsive fix */
+@media(max-width:768px) { .hero h1 { letter-spacing:-1px; } }
+
 /* ── Responsive additions ── */
 @media(max-width:768px){
   .testi-pair-grid{grid-template-columns:1fr;}
@@ -891,6 +919,7 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1B2F6B;overflow-x:hi
   .testi-inline{flex-direction:column;}
   .free-badge{flex-direction:column;gap:10px;text-align:center;}
   .free-badge-divider{display:none;}
+  .hero-proof{gap:12px;}
 }
 </style>
 </head>
@@ -959,33 +988,23 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1B2F6B;overflow-x:hi
 <section class="hero">
   <div class="hero-slice"></div>
   <div class="hero-inner">
-    <div>
-      <div class="hero-tag"><span style="width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:pulse 2s infinite;display:inline-block;"></span>🎉 Prueba piloto GRATUITA · Solo 40 plazas</div>
-      <h1>QUE TU HIJO<br/>NO PIERDA<br/>SU ESPAÑOL.<br/><span class="green">HAZ QUE LO VIVA.</span></h1>
-      <p>Fortalecemos el español de los hijos de familias hispanohablantes que viven fuera de su país. Sin exámenes. Con personajes, misiones y cultura real.</p>
-      <div class="hero-features">
-        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-game"/></svg></div>Juega</div>
-        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-book"/></svg></div>Aprende</div>
-        <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-heart"/></svg></div>Conecta</div>
-      </div>
-      <div class="hero-btns">
-        <a href="#inscripcion" class="btn-green-hero"><svg width="16" height="16" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> ¡Plaza gratuita — inscribir ahora!</a>
-        <a href="#como" class="btn-outline-hero">Ver cómo funciona <svg width="16" height="16" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg></a>
-      </div>
+    <div class="hero-tag"><span style="width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:pulse 2s infinite;display:inline-block;"></span>🎉 Prueba piloto GRATUITA · Solo 40 plazas</div>
+    <h1>Que tu hijo<br/>no pierda su español.<br/><span class="green">Haz que lo viva.</span></h1>
+    <p>Fortalecemos el español de los hijos de familias hispanohablantes que viven fuera de su país. Sin exámenes. Con personajes, misiones y cultura real.</p>
+    <div class="hero-features">
+      <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-game"/></svg></div>Juega</div>
+      <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-book"/></svg></div>Aprende</div>
+      <div class="hero-feature"><div class="hero-feature-icon"><svg width="14" height="14" style="color:rgba(255,255,255,0.9);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-heart"/></svg></div>Conecta</div>
     </div>
-    <div class="hero-visual">
-      <div class="h-float h-float-1"><svg width="16" height="16" style="color:#FBBF24;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-medal"/></svg> +30 pts por misión</div>
-      <div class="h-float h-float-2"><svg width="16" height="16" style="color:#67E8F9;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-cloud"/></svg> Progreso en la nube</div>
-      <div class="h-float h-float-3"><svg width="16" height="16" style="color:#4ADE80;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-globe"/></svg> 5 países hispanohablantes</div>
-      <div class="h-char valentina">
-        <img src="https://lh3.googleusercontent.com/d/13bsUBjPq0mDKGUxoQmjPh5RoUJ1_PIIA" alt="Valentina" loading="eager" onerror="this.style.opacity='0'"/>
-      </div>
-      <div class="h-char coco">
-        <img src="https://lh3.googleusercontent.com/d/1OAiwip7c7vQ5KhDcP_hTDUPotYEe-LYM" alt="Coco" loading="eager" onerror="this.style.opacity='0'"/>
-      </div>
-      <div class="h-char tomas">
-        <img src="https://lh3.googleusercontent.com/d/1WGnnTVjcFHQRsX2veZs0fAmMtfy5GMlJ" alt="Tomás" loading="eager" onerror="this.style.opacity='0'"/>
-      </div>
+    <div class="hero-btns">
+      <a href="#inscripcion" class="btn-green-hero"><svg width="16" height="16" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> ¡Plaza gratuita — inscribir ahora!</a>
+      <a href="#como" class="btn-outline-hero">Ver cómo funciona <svg width="16" height="16" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg></a>
+    </div>
+    <div class="hero-proof">
+      <div class="hero-proof-item"><span class="hero-proof-dot"></span>100% gratuito · sin tarjeta</div>
+      <div class="hero-proof-item"><span class="hero-proof-dot"></span>5 países hispanohablantes</div>
+      <div class="hero-proof-item"><span class="hero-proof-dot"></span>6 – 11 años</div>
+      <div class="hero-proof-item"><span class="hero-proof-dot"></span>40 plazas disponibles</div>
     </div>
   </div>
 </section>
