@@ -852,7 +852,7 @@ footer {
 
 /* ── Benefits ── */
 .benefits { background:var(--cream); }
-.benefits-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px; }
+.benefits-grid { display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:48px; }
 .benefit-card { background:white;border-radius:18px;padding:24px 16px;text-align:center;box-shadow:0 2px 12px rgba(27,47,107,0.07);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);border:2px solid transparent;cursor:default; }
 .benefit-card:hover { border-color:var(--green);transform:translateY(-8px) scale(1.04);box-shadow:0 20px 48px rgba(22,197,83,0.15); }
 .benefit-icon-wrap { width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px; }
@@ -1146,7 +1146,7 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
 /* ── Responsive ── */
 @media(max-width:1024px){
   .how-grid{grid-template-columns:1fr 1fr}
-  .benefits-grid{grid-template-columns:repeat(3,1fr)}
+  .benefits-grid{grid-template-columns:repeat(3,1fr);}
   .missions-cards-row.cols-3{grid-template-columns:repeat(3,1fr)}
   .footer-inner{grid-template-columns:1fr 1fr}
 }
@@ -1635,42 +1635,36 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   <div class="deco-wrap slow" style="width:clamp(120px,12vw,180px);bottom:-25px;left:-25px;--rot:-6deg;"><img src="https://lh3.googleusercontent.com/d/16leGIU_G8TMhjYEUfRPGUcaRA8jhKjtj" alt="" aria-hidden="true"></div>
   <div class="container">
     <div class="reveal" style="text-align:center;">
-      <div class="eyebrow" style="justify-content:center;">Mucho más que vocabulario</div>
-      <h2 class="section-title" style="text-align:center;">Lo que realmente desarrolla</h2>
+      <h2 class="section-title" style="text-align:center;">Mucho más que ejercicios de idioma.</h2>
+      <p class="section-sub" style="text-align:center;max-width:620px;margin:16px auto 0;">Cada misión combina exploración lingüística, cultura e interacción para que el español forme parte de experiencias significativas.</p>
     </div>
-    <div class="benefits-grid">
-      <div class="benefit-card reveal d1">
-        <div class="benefit-icon-wrap" style="background:#F0FDF4;"><svg width="26" height="26" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-leaf"/></svg></div>
-        <div class="benefit-title">Partimos de lo que el niño ya sabe</div>
-        <div class="benefit-desc">Desarrollamos su español familiar en lugar de tratarlo como principiante.</div>
+    <div class="benefits-grid" style="margin-top:40px;">
+      <div class="benefit-card reveal d1" style="text-align:left;">
+        <div class="benefit-icon-wrap" style="background:#EFF6FF;font-size:26px;display:flex;align-items:center;justify-content:center;">🎧</div>
+        <div class="benefit-title">Escucha y explora</div>
+        <div class="benefit-desc">Audios, historias y comprensión auditiva adaptada a hablantes de herencia.</div>
       </div>
-      <div class="benefit-card reveal d2">
-        <div class="benefit-icon-wrap" style="background:#EEF4FF;"><svg width="26" height="26" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-shield"/></svg></div>
-        <div class="benefit-title">Del hablar al expresar con seguridad</div>
-        <div class="benefit-desc">Ampliamos vocabulario, comprensión y escritura de forma progresiva.</div>
+      <div class="benefit-card reveal d2" style="text-align:left;">
+        <div class="benefit-icon-wrap" style="background:#F0FDF4;font-size:26px;display:flex;align-items:center;justify-content:center;">🗣️</div>
+        <div class="benefit-title">Habla y crea</div>
+        <div class="benefit-desc">Retos orales y actividades para expresarse con más confianza.</div>
       </div>
-      <div class="benefit-card reveal d3">
-        <div class="benefit-icon-wrap" style="background:#FFF7ED;"><svg width="26" height="26" style="color:#F97316;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-users"/></svg></div>
-        <div class="benefit-title">Diseñado para hablantes de herencia</div>
-        <div class="benefit-desc">Un enfoque que respeta su identidad lingüística y cultural.</div>
+      <div class="benefit-card reveal d3" style="text-align:left;">
+        <div class="benefit-icon-wrap" style="background:#FFFBEB;font-size:26px;display:flex;align-items:center;justify-content:center;">✍️</div>
+        <div class="benefit-title">Lee y escribe</div>
+        <div class="benefit-desc">Lecturas breves y escritura progresiva según la edad.</div>
       </div>
-      <div class="benefit-card reveal d4">
-        <div class="benefit-icon-wrap" style="background:#F5F3FF;"><svg width="26" height="26" style="color:#7C3AED;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-id"/></svg></div>
-        <div class="benefit-title">Uso real del idioma, no ejercicios aislados</div>
-        <div class="benefit-desc">El niño comprende, crea y se expresa en contextos significativos.</div>
+      <div class="benefit-card reveal d4" style="text-align:left;">
+        <div class="benefit-icon-wrap" style="background:#FFF7ED;font-size:26px;display:flex;align-items:center;justify-content:center;">🌎</div>
+        <div class="benefit-title">Descubre culturas hispanas</div>
+        <div class="benefit-desc">Tradiciones, comidas, palabras y experiencias de distintos países.</div>
       </div>
-      <div class="benefit-card reveal d4">
-        <div class="benefit-icon-wrap" style="background:#FFFBEB;"><svg width="26" height="26" style="color:#D97706;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-brain"/></svg></div>
-        <div class="benefit-title">Misiones breves y estructuradas</div>
-        <div class="benefit-desc">Aprendizaje constante en 15–20 minutos al día, sin sobrecarga.</div>
-      </div>
-      <div class="benefit-card reveal d4">
-        <div class="benefit-icon-wrap" style="background:#FDF2F8;"><svg width="26" height="26" style="color:#DB2777;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-heart"/></svg></div>
-        <div class="benefit-title">Acompañamiento también para la familia</div>
-        <div class="benefit-desc">Orientaciones claras para sostener el español en casa.</div>
+      <div class="benefit-card reveal d5" style="text-align:left;">
+        <div class="benefit-icon-wrap" style="background:#F5F3FF;font-size:26px;display:flex;align-items:center;justify-content:center;">🧭</div>
+        <div class="benefit-title">Vive una aventura</div>
+        <div class="benefit-desc">Cada misión convierte al niño en un explorador junto a Valentina, Tomás y Coco.</div>
       </div>
     </div>
-    <p class="reveal" style="text-align:center;margin-top:40px;font-style:italic;font-size:clamp(14px,1.4vw,16px);color:var(--text-m);max-width:600px;margin-left:auto;margin-right:auto;line-height:1.75;">"No partimos de cero. Acompañamos el desarrollo del español que tu hijo ya conoce."</p>
   </div>
 </section>
 
@@ -1680,8 +1674,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">Los personajes</div>
-      <h2 class="section-title" style="text-align:center;">Tu hijo es el <span class="green">cuarto explorador</span></h2>
-      <p class="section-sub" style="margin:0 auto;text-align:center;">Sin el niño, ninguna misión puede completarse. Esa es la magia del programa.</p>
+      <h2 class="section-title" style="text-align:center;">Tu hijo es el <span class="green">cuarto explorador.</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center;">En cada misión, explorará el español junto a Valentina, Tomás y Coco.</p>
     </div>
     <div class="chars-row">
       <div class="char-card valentina reveal d1">
@@ -1691,7 +1685,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
         <div class="char-card-body">
           <div class="char-card-name">Valentina</div>
           <div class="char-card-role">Exploradora cultural</div>
-          <div class="char-card-bio">Curiosa y observadora. Descubre el mundo, las palabras y las historias para comprender diferentes culturas.</div>
+          <div class="char-card-bio">Curiosa y observadora. Descubre palabras, historias y tradiciones de diferentes culturas hispanas.</div>
           <div class="char-tags"><span class="char-tag">Cultura</span><span class="char-tag">Vocabulario</span><span class="char-tag">Reflexión</span></div>
         </div>
       </div>
@@ -1702,8 +1696,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
         <div class="char-card-body">
           <div class="char-card-name">Tomás</div>
           <div class="char-card-role">Explorador comunicador</div>
-          <div class="char-card-bio">Espontáneo y activo. Le encanta conversar, participar en retos y compartir sus ideas con el equipo.</div>
-          <div class="char-tags"><span class="char-tag">Comunicación</span><span class="char-tag">Pragmática</span><span class="char-tag">Acción</span></div>
+          <div class="char-card-bio">Espontáneo y sociable. Le encanta hablar, participar en retos y compartir ideas.</div>
+          <div class="char-tags"><span class="char-tag">Comunicación</span><span class="char-tag">Expresión oral</span><span class="char-tag">Acción</span></div>
         </div>
       </div>
       <div class="char-card coco reveal d3">
@@ -1713,8 +1707,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
         <div class="char-card-body">
           <div class="char-card-name">Coco</div>
           <div class="char-card-role">Guía y mentor</div>
-          <div class="char-card-bio">Simpático e inteligente. Acompaña, orienta y motiva. Nunca castiga los errores — siempre los convierte en aprendizaje.</div>
-          <div class="char-tags"><span class="char-tag">Feedback</span><span class="char-tag">Pronunciación</span><span class="char-tag">Escucha</span></div>
+          <div class="char-card-bio">Acompaña durante las misiones con pistas, motivación y ayuda para seguir aprendiendo.</div>
+          <div class="char-tags"><span class="char-tag">Guía</span><span class="char-tag">Motivación</span><span class="char-tag">Escucha</span></div>
         </div>
       </div>
     </div>
