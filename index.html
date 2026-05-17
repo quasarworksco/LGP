@@ -527,11 +527,11 @@ footer {
 .hero-inner {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
   position: relative;
   z-index: 3;
-  padding: 110px clamp(32px,8vw,160px) 56px;
+  padding: 100px clamp(24px,6vw,120px) 40px;
   gap: 0;
   background: #01030C;
 }
@@ -540,8 +540,9 @@ footer {
 .hero-photo-col {
   position: relative;
   overflow: hidden;
-  height: 460px;
+  height: 520px;
   flex-shrink: 0;
+  width: 100%;
 }
 .hero-photo {
   width: 100%;
@@ -594,7 +595,7 @@ footer {
   color: #4ADE80;
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
   backdrop-filter: blur(8px);
 }
 
@@ -623,7 +624,7 @@ footer {
   height: 2px;
   background: linear-gradient(90deg, rgba(74,222,128,0.8), rgba(74,222,128,0.3));
   border-radius: 2px;
-  margin: 28px 0 28px;
+  margin: 20px auto 20px;
   flex-shrink: 0;
 }
 
@@ -632,10 +633,10 @@ footer {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(15px, 1.3vw, 17px);
   color: rgba(255,255,255,0.85);
-  line-height: 1.85;
-  margin-bottom: 36px;
+  line-height: 1.75;
+  margin-bottom: 24px;
   font-weight: 400;
-  max-width: 480px;
+  max-width: 540px;
   letter-spacing: 0.1px;
 }
 
@@ -643,9 +644,9 @@ footer {
 .hero-features {
   display: flex;
   gap: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .hero-feature {
   display: flex;
@@ -673,7 +674,7 @@ footer {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .btn-green-hero {
   background: linear-gradient(135deg, #16C553 0%, #0FA046 100%);
@@ -717,10 +718,10 @@ footer {
 .hero-proof {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
-  margin-top: 40px;
-  padding-top: 24px;
+  margin-top: 28px;
+  padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.1);
   width: 100%;
   gap: 0;
@@ -1112,7 +1113,7 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
 .nav-links { display:flex;align-items:center;gap:28px; }
 .nav-links > a { font-size:13px;font-weight:700;color:var(--text-m);text-decoration:none;transition:color 0.2s; }
 .nav-links > a:hover { color:var(--blue); }
-.nav-cta { background:linear-gradient(135deg,var(--green),var(--green-d));color:white;font-family:'Montserrat';font-weight:800;font-size:13px;padding:10px 22px;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(22,197,83,0.35);transition:all 0.2s;display:flex;align-items:center;gap:6px;white-space:nowrap; }
+.nav-cta,.nav-links > a.nav-cta { background:linear-gradient(135deg,var(--green),var(--green-d));color:white !important;font-family:'Montserrat';font-weight:800;font-size:13px;padding:10px 22px;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(22,197,83,0.35);transition:all 0.2s;display:flex;align-items:center;gap:6px;white-space:nowrap; }
 .nav-cta:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(22,197,83,0.45); }
 
 /* ── Animations ── */
@@ -1138,8 +1139,8 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .footer-inner{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .hero-photo-col{height:240px}
-  .hero-inner{padding:90px 24px 40px;box-sizing:border-box}
+  .hero-photo-col{height:300px;width:100%}
+  .hero-inner{padding:90px 20px 32px;box-sizing:border-box;align-items:center;text-align:center}
   .hero h1{font-size:clamp(34px,9vw,52px);letter-spacing:-1.2px}
   .hero p{font-size:15px}
   .hero-features{gap:6px;justify-content:flex-start}
@@ -1159,7 +1160,7 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .testi-pair-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){
-  .hero-inner{padding:90px 20px 36px 20px}
+  .hero-inner{padding:80px 16px 28px 16px}
   .hero h1{font-size:clamp(30px,10vw,44px);letter-spacing:-0.8px}
   .hero-tag{font-size:9.5px;padding:7px 16px;letter-spacing:2px}
   .hero-proof{display:none}
