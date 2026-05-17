@@ -850,7 +850,7 @@ footer {
 
 /* ── Benefits ── */
 .benefits { background:var(--cream); }
-.benefits-grid { display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:48px; }
+.benefits-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px; }
 .benefit-card { background:white;border-radius:18px;padding:24px 16px;text-align:center;box-shadow:0 2px 12px rgba(27,47,107,0.07);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);border:2px solid transparent;cursor:default; }
 .benefit-card:hover { border-color:var(--green);transform:translateY(-8px) scale(1.04);box-shadow:0 20px 48px rgba(22,197,83,0.15); }
 .benefit-icon-wrap { width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px; }
@@ -1369,7 +1369,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
 <!-- NAV -->
 <nav id="main-nav">
   <a href="#" class="nav-logo">
-    <img src="https://lh3.googleusercontent.com/d/1D5SWVOw5ciDGxi1wV_AoCcrJK3Fdkl2K" alt="Español de Herencia" style="height:40px;width:auto;display:block;object-fit:contain;">
+    <img src="https://lh3.googleusercontent.com/d/1D5SWVOw5ciDGxi1wV_AoCcrJK3Fdkl2K" alt="Lengua de Herencia" style="height:40px;width:auto;display:block;object-fit:contain;">
+    <div class="nav-logo-text"><span class="nav-logo-top">LENGUA DE HERENCIA</span><span class="nav-logo-sub">Español</span></div>
   </a>
   <div class="nav-links">
     <a href="#como">Cómo funciona</a>
@@ -1395,23 +1396,19 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
     </div>
 
     <!-- Headline -->
-    <h1>Que tu hijo<br/>no pierda su español.<br/><span class="green">Haz que lo viva.</span></h1>
+    <h1>No dejes que tu hijo<br/>pierda su español.<br/><span class="green">Partimos de lo que ya sabe.</span></h1>
 
     <!-- Decorative rule -->
     <div class="hero-rule"></div>
 
     <!-- Description -->
-    <p>Fortalecemos el español de los hijos de familias hispanohablantes que viven fuera de su país. Sin exámenes. Con personajes, misiones y cultura real.</p>
+    <p>Partimos del español que tu hijo ya sabe y lo ayudamos a desarrollarlo. Con misiones, personajes y cultura real.</p>
 
     <!-- Feature pills -->
     <div class="hero-features">
       <div class="hero-feature">
         <span class="hero-feature-icon"><svg width="13" height="13"><use href="#ico-game"/></svg></span>
         Gamificado
-      </div>
-      <div class="hero-feature">
-        <span class="hero-feature-icon"><svg width="13" height="13"><use href="#ico-globe"/></svg></span>
-        5 países hispanohablantes
       </div>
       <div class="hero-feature">
         <span class="hero-feature-icon"><svg width="13" height="13"><use href="#ico-leaf"/></svg></span>
@@ -1526,33 +1523,44 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">¿Cómo funciona?</div>
-      <h2 class="section-title" style="text-align:center;">4 pasos, una aventura</h2>
+      <h2 class="section-title" style="text-align:center;">4 pasos para fortalecer su español</h2>
     </div>
     <div class="how-grid">
       <div class="how-card reveal d1">
         <div class="how-num">01</div>
         <div class="how-icon-wrap" style="background:#EEF4FF;"><svg width="26" height="26" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-key"/></svg></div>
         <div class="how-title">Crea tu perfil</div>
-        <div class="how-desc">Elige tu avatar y tu grupo de edad. Tu perfil queda guardado en la nube.</div>
+        <div class="how-desc">Se registra con sus datos y edad. Partimos del español que ya tiene para acompañar su desarrollo real.</div>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">02</div>
         <div class="how-icon-wrap" style="background:#F0FDF4;"><svg width="26" height="26" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-map"/></svg></div>
         <div class="how-title">Elige tu misión</div>
-        <div class="how-desc">Cada semana, un nuevo reto en un lugar del mundo hispanohablante.</div>
+        <div class="how-desc">Cada misión trabaja aspectos clave: comprensión, vocabulario, expresión o escritura.</div>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">03</div>
         <div class="how-icon-wrap" style="background:#FFF7ED;"><svg width="26" height="26" style="color:#F97316;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-target"/></svg></div>
-        <div class="how-title">Completa actividades</div>
-        <div class="how-desc">Explora, practica y usa el español en contexto real — hasta 5 actividades encadenadas.</div>
+        <div class="how-title">Completa las actividades</div>
+        <div class="how-desc">El niño lee, comprende, crea y se expresa a través de actividades breves en contextos significativos hispanos.</div>
       </div>
       <div class="how-card reveal d4">
         <div class="how-num">04</div>
         <div class="how-icon-wrap" style="background:#FFFBEB;"><svg width="26" height="26" style="color:#D97706;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-trophy"/></svg></div>
         <div class="how-title">Gana insignias y avanza</div>
-        <div class="how-desc">Desbloquea logros culturales y sigue creciendo con cada misión completada.</div>
+        <div class="how-desc">El avance es progresivo y acumulativo, fortaleciendo su confianza y sus habilidades lingüísticas.</div>
       </div>
+    </div>
+    <div class="reveal" style="background:var(--cream);border-radius:20px;padding:28px 32px;margin-top:40px;max-width:720px;margin-left:auto;margin-right:auto;">
+      <p style="font-size:13.5px;color:var(--text-m);line-height:1.8;font-weight:500;margin-bottom:14px;">Durante la prueba piloto, las familias descubrirán diferentes tipos de actividades diseñadas para fortalecer el español de forma natural, motivadora y significativa. Cada misión combinará:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span style="background:white;border:1.5px solid rgba(22,197,83,0.35);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--green-d);">✔ Comprensión</span>
+        <span style="background:white;border:1.5px solid rgba(22,197,83,0.35);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--green-d);">✔ Expresión oral</span>
+        <span style="background:white;border:1.5px solid rgba(22,197,83,0.35);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--green-d);">✔ Lectura y escritura</span>
+        <span style="background:white;border:1.5px solid rgba(22,197,83,0.35);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--green-d);">✔ Exploración cultural</span>
+        <span style="background:white;border:1.5px solid rgba(22,197,83,0.35);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--green-d);">✔ Retos interactivos</span>
+      </div>
+      <p style="font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;margin-top:14px;">Adaptados a hablantes de herencia.</p>
     </div>
   </div>
 </section>
@@ -1629,30 +1637,36 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
     <div class="benefits-grid">
       <div class="benefit-card reveal d1">
         <div class="benefit-icon-wrap" style="background:#F0FDF4;"><svg width="26" height="26" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-leaf"/></svg></div>
-        <div class="benefit-title">Mantiene su español activo</div>
-        <div class="benefit-desc">Uso constante y significativo del idioma en contextos reales</div>
+        <div class="benefit-title">Partimos de lo que el niño ya sabe</div>
+        <div class="benefit-desc">Desarrollamos su español familiar en lugar de tratarlo como principiante.</div>
       </div>
       <div class="benefit-card reveal d2">
         <div class="benefit-icon-wrap" style="background:#EEF4FF;"><svg width="26" height="26" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-shield"/></svg></div>
-        <div class="benefit-title">Gana confianza hablando</div>
-        <div class="benefit-desc">Sin miedo a equivocarse, en un entorno seguro y motivador</div>
+        <div class="benefit-title">Del hablar al expresar con seguridad</div>
+        <div class="benefit-desc">Ampliamos vocabulario, comprensión y escritura de forma progresiva.</div>
       </div>
       <div class="benefit-card reveal d3">
         <div class="benefit-icon-wrap" style="background:#FFF7ED;"><svg width="26" height="26" style="color:#F97316;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-users"/></svg></div>
-        <div class="benefit-title">Conecta con su familia y cultura</div>
-        <div class="benefit-desc">El idioma como puente con sus raíces</div>
+        <div class="benefit-title">Diseñado para hablantes de herencia</div>
+        <div class="benefit-desc">Un enfoque que respeta su identidad lingüística y cultural.</div>
       </div>
       <div class="benefit-card reveal d4">
         <div class="benefit-icon-wrap" style="background:#F5F3FF;"><svg width="26" height="26" style="color:#7C3AED;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-id"/></svg></div>
-        <div class="benefit-title">Refuerza su identidad</div>
-        <div class="benefit-desc">Orgullo por su herencia lingüística y cultural</div>
+        <div class="benefit-title">Uso real del idioma, no ejercicios aislados</div>
+        <div class="benefit-desc">El niño comprende, crea y se expresa en contextos significativos.</div>
       </div>
       <div class="benefit-card reveal d4">
         <div class="benefit-icon-wrap" style="background:#FFFBEB;"><svg width="26" height="26" style="color:#D97706;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-brain"/></svg></div>
-        <div class="benefit-title">Mejora sus habilidades lingüísticas</div>
-        <div class="benefit-desc">Lectura, escritura y comprensión en ambos idiomas</div>
+        <div class="benefit-title">Misiones breves y estructuradas</div>
+        <div class="benefit-desc">Aprendizaje constante en 15–20 minutos al día, sin sobrecarga.</div>
+      </div>
+      <div class="benefit-card reveal d4">
+        <div class="benefit-icon-wrap" style="background:#FDF2F8;"><svg width="26" height="26" style="color:#DB2777;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-heart"/></svg></div>
+        <div class="benefit-title">Acompañamiento también para la familia</div>
+        <div class="benefit-desc">Orientaciones claras para sostener el español en casa.</div>
       </div>
     </div>
+    <p class="reveal" style="text-align:center;margin-top:40px;font-style:italic;font-size:clamp(14px,1.4vw,16px);color:var(--text-m);max-width:600px;margin-left:auto;margin-right:auto;line-height:1.75;">"No partimos de cero. Acompañamos el desarrollo del español que tu hijo ya conoce."</p>
   </div>
 </section>
 
@@ -1893,12 +1907,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
     <div class="pilot-inner">
       <div class="pilot-grid">
         <div class="reveal-left">
-          <div class="eyebrow">Para padres</div>
-          <h2 class="section-title" style="font-size:clamp(24px,3.2vw,38px);">Un programa vivo que mejora <span class="green">contigo</span></h2>
-          <p class="section-sub" style="margin-top:12px;">Este piloto no es solo para tu hijo. Es para construir juntos la mejor versión del programa. Tu opinión como familia es parte fundamental del proceso.</p>
+          <div class="eyebrow">Para familias piloto</div>
+          <h2 class="section-title" style="font-size:clamp(24px,3.2vw,38px);">Un programa lingüístico que <span class="green">crece contigo</span></h2>
+          <p class="section-sub" style="margin-top:12px;">Esta prueba piloto no es solo para tu hijo. Tu participación y feedback nos ayudarán a mejorar el programa para familias hispanohablantes que viven fuera de su país.</p>
           <div class="pilot-stats">
             <div class="pilot-stat"><div class="pilot-stat-num">4</div><div class="pilot-stat-label">Semanas</div></div>
-            <div class="pilot-stat"><div class="pilot-stat-num">40</div><div class="pilot-stat-label">Plazas máx.</div></div>
+            <div class="pilot-stat"><div class="pilot-stat-num">40</div><div class="pilot-stat-label">Familias piloto</div></div>
             <div class="pilot-stat"><div class="pilot-stat-num" style="color:var(--green-d);">0 €</div><div class="pilot-stat-label">Totalmente gratis</div></div>
           </div>
         </div>
@@ -1908,34 +1922,34 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
             <div class="flow-step">
               <div class="flow-circle flow-blue"><svg width="15" height="15" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-play"/></svg></div>
               <div class="flow-content">
-                <div class="flow-week">Semana 1</div>
-                <div class="flow-name">Primeras misiones</div>
-                <div class="flow-desc">Tu hijo completa las primeras aventuras y gana sus primeras insignias.</div>
+                <div class="flow-week">Semana 1 · Misión 1</div>
+                <div class="flow-name">Primeras aventuras en español</div>
+                <div class="flow-desc">Tu hijo realizará una actividad breve por día mientras descubre sus primeras misiones e insignias.</div>
               </div>
             </div>
             <div class="flow-step">
               <div class="flow-circle flow-green"><svg width="15" height="15" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-clipboard"/></svg></div>
               <div class="flow-content">
-                <div class="flow-week">Final semana 1 · Antes de continuar</div>
-                <div class="flow-name">Cuestionario de progreso</div>
-                <div class="flow-desc">Los padres responden un cuestionario breve. Esto desbloquea las semanas siguientes.</div>
+                <div class="flow-week">Final semana 1</div>
+                <div class="flow-name">Cuestionario breve para familias</div>
+                <div class="flow-desc">Tu feedback nos ayuda a mejorar la experiencia del programa.</div>
                 <span class="flow-tag tag-required">Obligatorio para continuar</span>
               </div>
             </div>
             <div class="flow-step">
               <div class="flow-circle flow-orange"><svg width="15" height="15" style="color:#F97316;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-rocket"/></svg></div>
               <div class="flow-content">
-                <div class="flow-week">Semanas 2 y 3</div>
-                <div class="flow-name">Más misiones y descubrimientos</div>
-                <div class="flow-desc">Nuevas aventuras en más países hispanohablantes.</div>
+                <div class="flow-week">Semanas 2 y 3 · Misiones 2 y 3</div>
+                <div class="flow-name">Nuevos retos y más exploración</div>
+                <div class="flow-desc">Más actividades conectadas para escuchar, hablar, leer, escribir y explorar en español.</div>
               </div>
             </div>
             <div class="flow-step">
               <div class="flow-circle flow-gold"><svg width="15" height="15" style="color:#D97706;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-gift"/></svg></div>
               <div class="flow-content">
-                <div class="flow-week">Semana 4 · Al finalizar</div>
-                <div class="flow-name">Valoración final + acceso prioritario</div>
-                <div class="flow-desc">Al completar el feedback final, las familias reciben acceso prioritario a futuras ediciones y condiciones especiales por haber sido parte del piloto fundador.</div>
+                <div class="flow-week">Semana 4 · Misión 4</div>
+                <div class="flow-name">Cierre de la aventura + valoración final</div>
+                <div class="flow-desc">Las familias completan un breve cuestionario final y podrán acceder a un descuento especial si desean continuar en el programa.</div>
                 <span class="flow-tag tag-reward"><svg width="10" height="10" style="color:#0FA046;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-trophy"/></svg> Familia fundadora del programa</span>
               </div>
             </div>
@@ -1952,23 +1966,23 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="eyebrow" style="justify-content:center;">Por qué funciona</div>
-      <h2 class="section-title" style="text-align:center;">Diseñado con <span class="green">intención</span></h2>
+      <h2 class="section-title" style="text-align:center;">Español de herencia no es <span class="green">español extranjero</span></h2>
     </div>
     <div class="trust-grid">
       <div class="trust-card reveal d1">
         <div class="trust-icon-wrap" style="background:#EEF4FF;"><svg width="28" height="28" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-brain"/></svg></div>
-        <div class="trust-title">Basado en adquisición de lenguas</div>
-        <div class="trust-text">El programa sigue principios de enseñanza de español como lengua de herencia — no como lengua extranjera. Son enfoques distintos, con resultados distintos.</div>
+        <div class="trust-title">Diseñado por especialistas en lengua de herencia</div>
+        <div class="trust-text">Muchos programas enseñan español como si el niño empezara desde cero. Nosotros trabajamos desde lo que el niño ya comprende, vive y trae de casa, siguiendo enfoques especializados en lengua de herencia y bilingüismo familiar, con base en estudios actuales sobre adquisición, transmisión y mantenimiento del español.</div>
       </div>
       <div class="trust-card reveal d2">
         <div class="trust-icon-wrap" style="background:#FFF1EB;"><svg width="28" height="28" style="color:#F97316;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-heart"/></svg></div>
-        <div class="trust-title">Emocionalmente conectado</div>
-        <div class="trust-text">Los personajes crean un vínculo afectivo real. El niño no aprende gramática — se convierte en protagonista de una historia que necesita su español.</div>
+        <div class="trust-title">Aprendizaje emocionalmente conectado</div>
+        <div class="trust-text">Los personajes, historias y misiones crean un vínculo afectivo real con el idioma. El niño no memoriza palabras aisladas: vive experiencias en español que conectan con su vida, su familia y sus emociones.</div>
       </div>
       <div class="trust-card reveal d3">
         <div class="trust-icon-wrap" style="background:#F0FDF4;"><svg width="28" height="28" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-globe"/></svg></div>
-        <div class="trust-title">Cultura como motor</div>
-        <div class="trust-text">Cada misión explora un país hispanohablante diferente. El aprendizaje lingüístico ocurre dentro de un contexto cultural que le da significado real al idioma.</div>
+        <div class="trust-title">Cultura que da sentido al idioma</div>
+        <div class="trust-text">Cada misión explora tradiciones, historias, lugares y formas de vivir el español. Porque la lengua no se aprende sola: se vive dentro de una cultura, una identidad y una historia familiar.</div>
       </div>
     </div>
   </div>
