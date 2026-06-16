@@ -1007,18 +1007,6 @@ footer {
 .inscription { background:white;padding:clamp(64px,7vw,96px) clamp(16px,4vw,64px); }
 .inscription-inner { max-width:860px;margin:0 auto; }
 .inscription-header { text-align:center;margin-bottom:48px; }
-.pilot-counter { display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:2px solid rgba(22,197,83,0.3);border-radius:16px;padding:14px 24px;margin-bottom:28px; }
-.pilot-counter-bar-wrap { flex:1;background:rgba(27,47,107,0.1);border-radius:100px;height:8px;min-width:160px;overflow:hidden; }
-.pilot-counter-bar { height:100%;border-radius:100px;background:linear-gradient(90deg,var(--green),var(--green-d));transition:width 1s ease; }
-.pilot-counter-text { font-family:'Montserrat';font-size:13px;font-weight:800;color:var(--blue);white-space:nowrap; }
-.pilot-counter-label { font-size:11px;font-weight:700;color:var(--green-d);white-space:nowrap; }
-
-/* Pricing pills */
-.pricing-pills { display:flex;gap:16px;justify-content:center;margin-bottom:32px;flex-wrap:wrap; }
-.pricing-pill { background:var(--cream);border:2px solid rgba(27,47,107,0.1);border-radius:16px;padding:14px 20px;text-align:center;transition:all 0.25s; }
-.pricing-pill:hover { border-color:var(--green);background:var(--green-bg); }
-.pricing-pill-num { font-family:'Montserrat';font-weight:900;font-size:24px;color:var(--blue); }
-.pricing-pill-label { font-size:12px;font-weight:700;color:var(--text-m);margin-top:2px; }
 
 /* Form */
 .insc-form { background:var(--cream);border:2px solid rgba(27,47,107,0.08);border-radius:24px;padding:clamp(24px,4vw,40px); }
@@ -1034,41 +1022,26 @@ footer {
 .form-input.error { border-color:#EF4444; }
 .form-select { appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A6A9A' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px; }
 
-/* Children blocks */
-.child-block { background:white;border:2px solid rgba(27,47,107,0.08);border-radius:16px;padding:20px;position:relative;margin-bottom:12px;transition:border-color 0.2s; }
-.child-block:hover { border-color:rgba(22,197,83,0.3); }
-.child-block-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px; }
-.child-block-title { font-family:'Montserrat';font-weight:800;font-size:13px;color:var(--blue); }
-.child-remove { background:rgba(239,68,68,0.1);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;color:#EF4444;cursor:pointer;transition:background 0.2s; }
-.child-remove:hover { background:rgba(239,68,68,0.2); }
-.add-child-btn { display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:12px;border:2px dashed rgba(22,197,83,0.4);background:rgba(22,197,83,0.04);font-family:'Montserrat';font-size:13px;font-weight:800;color:var(--green-d);cursor:pointer;transition:all 0.2s;margin-bottom:20px; }
-.add-child-btn:hover { border-color:var(--green);background:rgba(22,197,83,0.09); }
-
-/* Price summary */
-.price-summary { background:linear-gradient(135deg,#1B2F6B,#2E4DAE);border-radius:18px;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap; }
-.price-breakdown { color:rgba(255,255,255,0.75);font-size:13px;font-weight:600;line-height:1.7; }
-.price-total { text-align:right; }
-.price-total-label { font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px; }
-.price-total-num { font-family:'Montserrat';font-weight:900;font-size:36px;color:white;line-height:1; }
-.price-total-suffix { font-size:14px;color:rgba(255,255,255,0.7);font-weight:600; }
-
-/* Waitlist notice */
-.waitlist-notice { background:rgba(251,191,36,0.12);border:2px solid rgba(251,191,36,0.4);border-radius:14px;padding:14px 18px;font-size:13px;font-weight:700;color:#92400E;margin-bottom:20px;display:none;align-items:center;gap:10px; }
-.waitlist-notice.visible { display:flex; }
-
 .submit-btn { width:100%;padding:16px;border-radius:100px;background:linear-gradient(135deg,#16C553,#0FA046);color:white;border:none;font-family:'Montserrat';font-weight:900;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 24px rgba(22,197,83,0.45);transition:all 0.25s; }
 .submit-btn:hover { transform:translateY(-3px);box-shadow:0 12px 36px rgba(22,197,83,0.55); }
 .submit-btn:disabled { background:#C8D5B9;box-shadow:none;cursor:default;transform:none; }
-
-.paypal-note { text-align:center;font-size:12px;color:var(--text-m);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600; }
 
 /* Success / error states */
 .form-success { display:none;text-align:center;padding:40px 24px; }
 .form-success.visible { display:block; }
 .form-success-icon { width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#16C553,#0FA046);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 32px rgba(22,197,83,0.4); }
 
-/* Age calc badge */
-.age-calc { display:inline-flex;align-items:center;gap:6px;background:rgba(22,197,83,0.1);border:1px solid rgba(22,197,83,0.3);border-radius:100px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--green-d);margin-top:4px; }
+/* Privacy checkbox */
+.privacy-check { display:flex;align-items:flex-start;gap:10px;margin:20px 0 24px; }
+.privacy-check input { width:18px;height:18px;border-radius:4px;accent-color:var(--green);margin-top:2px;flex-shrink:0; }
+.privacy-check label { font-size:13px;color:var(--text-m);font-weight:600;line-height:1.5; }
+.privacy-check label a { color:var(--green-d);font-weight:700;text-decoration:underline; }
+
+/* Form trust note */
+.form-trust-note { text-align:center;font-size:12.5px;color:var(--text-m);margin-top:14px;font-weight:600;line-height:1.6; }
+
+/* Waitlist section */
+.waitlist-section { background:var(--cream); }
 
 /* ── Newsletter strip ── */
 .newsletter { background:linear-gradient(135deg,#1B2F6B,#2E4DAE);padding:clamp(48px,5vw,72px) clamp(16px,4vw,64px); }
@@ -1993,36 +1966,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   <div class="inscription-inner">
     <div class="inscription-header reveal">
       <div class="eyebrow" style="justify-content:center;">Inscripción a la prueba piloto</div>
-      <h2 class="section-title" style="text-align:center;">Asegura el lugar de tu hijo/a</h2>
-      <p class="section-sub" style="margin:0 auto 24px;text-align:center;">Plazas limitadas. Cuando se completen los cupos, las inscripciones adicionales pasan automáticamente a lista de espera.</p>
-
-      <!-- Pilot counter -->
-      <div class="pilot-counter reveal">
-        <div><svg width="18" height="18" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-users"/></svg></div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:800;color:var(--green-d);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Plazas disponibles</div>
-          <div class="pilot-counter-bar-wrap">
-            <div class="pilot-counter-bar" id="pilot-bar" style="width:0%;"></div>
-          </div>
-        </div>
-        <div>
-          <div class="pilot-counter-text" id="pilot-text">Cargando...</div>
-          <div class="pilot-counter-label">plazas ocupadas</div>
-        </div>
-      </div>
-
-      <!-- Free Badge -->
-      <div class="free-hero-banner" style="margin-top:28px;">
-        <div class="free-badge">
-          <div class="free-badge-price">GRATIS</div>
-          <div class="free-badge-divider"></div>
-          <div class="free-badge-info">
-            <div class="free-badge-label">Prueba piloto totalmente gratuita</div>
-            <div class="free-badge-sub">Para las primeras 40 familias · Sin tarjeta de crédito</div>
-          </div>
-        </div>
-        <p class="free-badge-note" style="margin-top:14px;">A cambio, pedimos tu <strong>valoración honesta</strong> al finalizar para mejorar el programa.</p>
-      </div>
+      <h2 class="section-title" style="text-align:center;">Reserva tu plaza gratuita</h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center;">Completa este formulario y te enviaremos la información para participar en la primera edición piloto de Español de Herencia.</p>
     </div>
 
     <!-- FORM -->
@@ -2034,118 +1979,121 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
       </div>
 
       <form id="insc-form" novalidate>
-        <!-- Parent info -->
-        <div class="form-section">
-          <div class="form-section-title"><svg width="18" height="18" style="color:#2E4DAE;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-child"/></svg> Datos del padre/madre o tutor legal</div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label">Nombre completo *</label>
-              <input class="form-input" type="text" id="parent-name" placeholder="Nombre y apellido" required/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Email de contacto *</label>
-              <input class="form-input" type="email" id="parent-email" placeholder="email@ejemplo.com" required/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">País de residencia *</label>
-              <select class="form-input form-select" id="parent-country" required>
-                <option value="">Selecciona un país</option>
-                <option>Alemania</option><option>Australia</option><option>Bélgica</option>
-                <option>Canadá</option><option>Chile</option><option>Colombia</option>
-                <option>Costa Rica</option><option>Ecuador</option><option>España</option>
-                <option>Estados Unidos</option><option>Francia</option><option>Italia</option>
-                <option>México</option><option>Países Bajos</option><option>Portugal</option>
-                <option>Reino Unido</option><option>Suecia</option><option>Suiza</option>
-                <option>Uruguay</option><option>Venezuela</option><option>Otro</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Idioma del hogar (además del español)</label>
-              <input class="form-input" type="text" id="home-lang" placeholder="Ej: inglés, francés..."/>
-            </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre del adulto responsable *</label>
+            <input class="form-input" type="text" id="parent-name" placeholder="Nombre y apellido" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input class="form-input" type="email" id="parent-email" placeholder="email@ejemplo.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">País de residencia *</label>
+            <select class="form-input form-select" id="parent-country" required>
+              <option value="">Selecciona un país</option>
+              <option>Alemania</option><option>Australia</option><option>Bélgica</option>
+              <option>Canadá</option><option>Chile</option><option>Colombia</option>
+              <option>Costa Rica</option><option>Ecuador</option><option>España</option>
+              <option>Estados Unidos</option><option>Francia</option><option>Italia</option>
+              <option>México</option><option>Países Bajos</option><option>Portugal</option>
+              <option>Reino Unido</option><option>Suecia</option><option>Suiza</option>
+              <option>Uruguay</option><option>Venezuela</option><option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Edad del niño/a *</label>
+            <input class="form-input" type="number" min="0" max="17" id="child-age" placeholder="Ej: 7" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lengua dominante del entorno *</label>
+            <input class="form-input" type="text" id="dominant-lang" placeholder="Ej: alemán, inglés, francés..." required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">¿Tu hijo/a entiende español? *</label>
+            <select class="form-input form-select" id="understands-spanish" required>
+              <option value="">Selecciona una opción</option>
+              <option>Sí</option><option>Un poco</option><option>Muy poco</option>
+            </select>
           </div>
         </div>
 
-        <!-- Children -->
-        <div class="form-section">
-          <div class="form-section-title"><svg width="18" height="18" style="color:#16A34A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-star"/></svg> Datos de los niños</div>
-          <div id="children-container">
-            <!-- Child blocks inserted here -->
-          </div>
-          <button type="button" class="add-child-btn" id="add-child-btn">
-            <svg width="16" height="16" style="color:#0FA046;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg> Añadir otro hijo/a
-          </button>
+        <div class="privacy-check">
+          <input type="checkbox" id="privacy-accept" required/>
+          <label for="privacy-accept">He leído y acepto la <a href="privacidad.html" target="_blank">política de privacidad</a> *</label>
         </div>
 
-        <!-- Newsletter -->
-        <div class="form-section">
-          <div style="background:var(--cream);border:1.5px solid rgba(27,47,107,0.1);border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;">
-            <input type="checkbox" id="newsletter" style="width:18px;height:18px;border-radius:4px;accent-color:var(--green);margin-top:2px;flex-shrink:0;"/>
-            <div>
-              <label for="newsletter" style="font-family:'Montserrat';font-size:13px;font-weight:800;color:var(--blue);cursor:pointer;">Suscribirse al newsletter de Español de Herencia</label>
-              <div style="font-size:12px;color:var(--text-m);font-weight:500;margin-top:3px;">Recibirás novedades del programa, recursos para familias hispanohablantes y anuncios de nuevas ediciones.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Testimonial #4 — near the CTA button -->
-        <div class="testi-inline-wrap reveal">
-          <div class="testi-inline">
-            <!-- Illustrated avatar: woman, curly hair, warm skin -->
-            <svg class="testi-avatar-ill" style="width:52px;height:52px;flex-shrink:0;" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="28" cy="28" r="28" fill="#EDE9FE"/>
-              <ellipse cx="28" cy="31" rx="12" ry="13" fill="#E8B89A"/>
-              <circle cx="20" cy="16" r="5" fill="#8B3A10"/>
-              <circle cx="28" cy="13" r="5.5" fill="#8B3A10"/>
-              <circle cx="36" cy="16" r="5" fill="#8B3A10"/>
-              <circle cx="17" cy="23" r="4" fill="#8B3A10"/>
-              <circle cx="39" cy="23" r="4" fill="#8B3A10"/>
-              <ellipse cx="28" cy="20" rx="12" ry="8" fill="#8B3A10"/>
-              <circle cx="24" cy="27" r="1.8" fill="#1a1a1a"/>
-              <circle cx="32" cy="27" r="1.8" fill="#1a1a1a"/>
-              <circle cx="24.5" cy="26.4" r="0.6" fill="rgba(255,255,255,0.8)"/>
-              <circle cx="32.5" cy="26.4" r="0.6" fill="rgba(255,255,255,0.8)"/>
-              <path d="M23.5 33.5 Q28 37.5 32.5 33.5" stroke="#B5622A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-              <path d="M14 43 Q28 52 42 43 L42 56 L14 56Z" fill="#7C3AED"/>
-            </svg>
-            <div>
-              <div class="testi-inline-stars">
-                <svg width="14" height="14" style="color:#FBBF24"><use href="#ico-star"/></svg>
-                <svg width="14" height="14" style="color:#FBBF24"><use href="#ico-star"/></svg>
-                <svg width="14" height="14" style="color:#FBBF24"><use href="#ico-star"/></svg>
-                <svg width="14" height="14" style="color:#FBBF24"><use href="#ico-star"/></svg>
-                <svg width="14" height="14" style="color:#FBBF24"><use href="#ico-star"/></svg>
-              </div>
-              <p class="testi-inline-text">"Después de solo dos semanas, mi hija empezó a mezclar frases en español en la conversación de casa. Era algo que no hacía desde los 5 años. Ahora le escribe mensajes a su abuela en español."</p>
-              <div class="testi-inline-author">
-                <span>Carla V.</span>
-                <span style="color:rgba(27,47,107,0.2);">·</span>
-                <span>🇧🇪 Bélgica · Madre de Inés, 8 años</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Waitlist notice -->
-        <div class="waitlist-notice" id="waitlist-notice">
-          <svg width="18" height="18" style="color:#92400E;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-shield"/></svg> Las plazas del piloto están llenas. Tu hijo quedará en <strong>lista de espera</strong> y te contactaremos si se libera un lugar.
-        </div>
-
-        <!-- Free summary -->
-        <div id="price-summary" style="display:none;background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:2px solid rgba(22,197,83,0.3);border-radius:18px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-          <div id="price-breakdown" style="color:var(--blue);font-size:13px;font-weight:600;line-height:1.7;"></div>
-          <div style="text-align:right;">
-            <div style="font-size:11px;font-weight:700;color:var(--green-d);text-transform:uppercase;letter-spacing:1px;">Total</div>
-            <div style="font-family:'Montserrat';font-weight:900;font-size:28px;color:var(--green-d);">GRATIS</div>
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submit-btn" disabled>
-          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg> Añade al menos un hijo para continuar
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Reservar mi plaza gratuita
         </button>
-        <div class="paypal-note">
-          <svg width="14" height="14" style="color:var(--text-m);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-shield"/></svg> Inscripción gratuita · Sin tarjeta de crédito · Solo 40 plazas disponibles
+        <p class="form-trust-note">El piloto es gratuito. No pedimos tarjeta de crédito. Los datos se utilizarán únicamente para gestionar la participación en el piloto y enviar información relacionada con Español de Herencia.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="section waitlist-section" id="lista-espera">
+  <div class="container">
+    <div class="reveal" style="max-width:640px;margin:0 auto;text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">Lista de espera</div>
+      <h2 class="section-title" style="text-align:center;">¿Tu hijo/a no entra en esta primera edición piloto?</h2>
+      <p class="section-sub" style="text-align:center;margin:0 auto;">Déjanos tu email y te avisaremos cuando abramos nuevas plazas o nuevas rutas por edad.</p>
+      <p class="section-sub" style="text-align:center;margin:10px auto 0;">La primera edición piloto está dirigida a niños y niñas de 6 a 8 años, pero próximamente abriremos rutas para 3–5, 9–11 y 12–14 años.</p>
+      <p class="section-sub" style="text-align:center;margin:10px auto 0;">También recibirás recursos e ideas para acompañar el español en casa.</p>
+    </div>
+
+    <div class="insc-form reveal" style="max-width:640px;margin:36px auto 0;">
+      <div id="waitlist-success" class="form-success">
+        <div class="form-success-icon"><svg width="36" height="36" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-check"/></svg></div>
+        <h3 style="font-family:'Montserrat';font-weight:900;font-size:22px;color:var(--blue);margin-bottom:10px;">¡Listo! Te avisaremos pronto</h3>
+        <p style="font-size:14px;color:var(--text-m);line-height:1.7;max-width:420px;margin:0 auto;">Hemos recibido tus datos. Te contactaremos cuando abramos nuevas plazas o rutas por edad.</p>
+      </div>
+
+      <form id="waitlist-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre del adulto responsable *</label>
+            <input class="form-input" type="text" id="wl-name" placeholder="Nombre y apellido" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input class="form-input" type="email" id="wl-email" placeholder="email@ejemplo.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">País de residencia *</label>
+            <select class="form-input form-select" id="wl-country" required>
+              <option value="">Selecciona un país</option>
+              <option>Alemania</option><option>Australia</option><option>Bélgica</option>
+              <option>Canadá</option><option>Chile</option><option>Colombia</option>
+              <option>Costa Rica</option><option>Ecuador</option><option>España</option>
+              <option>Estados Unidos</option><option>Francia</option><option>Italia</option>
+              <option>México</option><option>Países Bajos</option><option>Portugal</option>
+              <option>Reino Unido</option><option>Suecia</option><option>Suiza</option>
+              <option>Uruguay</option><option>Venezuela</option><option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Edad del niño/a *</label>
+            <input class="form-input" type="number" min="0" max="17" id="wl-age" placeholder="Ej: 4" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ruta de interés *</label>
+            <select class="form-input form-select" id="wl-route" required>
+              <option value="">Selecciona una ruta</option>
+              <option>3–5 años</option><option>6–8 años</option><option>9–11 años</option><option>12–14 años</option>
+            </select>
+          </div>
         </div>
+
+        <div class="privacy-check">
+          <input type="checkbox" id="wl-privacy" required/>
+          <label for="wl-privacy">He leído y acepto la <a href="privacidad.html" target="_blank">política de privacidad</a> *</label>
+        </div>
+
+        <button type="submit" class="submit-btn" id="wl-submit-btn">
+          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Unirme a la lista de espera
+        </button>
       </form>
     </div>
   </div>
@@ -2177,34 +2125,30 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
       <h2 class="section-title">Lo que nos preguntan las familias</h2>
     </div>
     <div class="faq-list reveal">
-      
+
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿El piloto es de pago?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">No. La prueba piloto es <strong>totalmente gratuita</strong> para las primeras 40 familias. No se requiere tarjeta de crédito. A cambio, pedimos tu valoración honesta al finalizar el programa para ayudarnos a mejorarlo. Las familias participantes tendrán acceso prioritario y condiciones especiales en las siguientes ediciones.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿El piloto es gratuito?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Sí. Es gratuito y no pedimos tarjeta de crédito.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Puedo inscribir a varios hijos de distintas edades?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">Sí. Cada hijo se registra de forma independiente con su perfil, avatar y grupo de edad. El sistema calcula el precio total automáticamente según el número de niños inscritos.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Para qué edades está disponible?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">La primera ruta activa está pensada para niños y niñas de 6 a 8 años. Más adelante abriremos rutas para 3–5, 9–11 y 12–14 años.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Qué pasa si el piloto se llena antes de mi inscripción?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">Las inscripciones que superen el cupo del piloto pasan automáticamente a lista de espera. Recibirás un email informándote y serás contactada si se libera una plaza o para futuras ediciones.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Es para niños que no saben nada de español?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">No exactamente. Está pensada para niños y niñas que tienen contacto con el español en casa, aunque lo usen poco o respondan en otra lengua.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Necesito saber español para acompañar a mi hijo?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">No es necesario. La plataforma está diseñada para que el niño pueda navegar de forma autónoma. Los padres pueden acompañar, pero no es un requisito.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Cuánto tiempo requiere?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Cada microactividad está pensada para durar entre 5 y 10 minutos. La idea es acompañar el español en casa sin añadir más carga a la rutina escolar.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Qué pasa si mi hijo olvida su contraseña?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">Al crear la cuenta, el niño elige un PIN secreto de 4 dígitos. Si olvida la contraseña, puede recuperarla usando su usuario y su PIN.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Qué pasa después del piloto?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Al finalizar, cada familia recibirá un código de descuento si desea continuar mediante una membresía. No habrá ningún cobro automático.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Funcionan en móvil y tablet?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">Sí. La plataforma funciona en computadora, tablet y móvil. Recomendamos tablet o computadora para la mejor experiencia visual.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Cuándo estarán disponibles las otras edades?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
-        <div class="faq-a">Las franjas de 3-5 y 12-14 años están en desarrollo. Los resultados de este piloto determinarán el calendario de lanzamiento.</div>
+        <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">¿Qué datos se piden y para qué se usan?</span><span class="faq-icon"><svg width="16" height="16" style="color:#5A6A9A;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-plus"/></svg></span></div>
+        <div class="faq-a">Solo pedimos los datos necesarios para gestionar la participación en el piloto y comunicarnos con las familias. La información se trata según la política de privacidad.</div>
       </div>
     </div>
   </div>
@@ -2278,26 +2222,21 @@ const EMAILJS_PUBLIC_KEY   = 'ewr3ARCAZ19qILGYX';
 })();
 
 async function sendConfirmationEmail(data) {
-  const { parentName, parentEmail, children, total, isWaitlist } = data;
-  const childrenList = children.map((c, i) =>
-    `${i+1}. ${c.name} — ${c.age} años (${c.ageGroup || 'edad fuera del rango actual'})`
-  ).join('\n');
-
-  const templateId = isWaitlist ? EMAILJS_TPL_WAITLIST : EMAILJS_TPL_CONFIRM;
+  const { parentName, parentEmail, childAge, dominantLang, understandsSpanish } = data;
 
   const templateParams = {
-    to_name:        parentName,
-    to_email:       parentEmail,
-    children_list:  childrenList,
-    children_count: children.length,
-    total_price:    isWaitlist ? '—' : 'GRATIS (prueba piloto)',
-    status:         isWaitlist ? 'Lista de espera' : 'Confirmada',
-    program_link:   'https://quasarworksco.github.io/LGP/programa',
-    reply_to:       'lenguadeherenciaespanol@gmail.com',
+    to_name:             parentName,
+    to_email:             parentEmail,
+    child_age:            childAge,
+    dominant_lang:        dominantLang,
+    understands_spanish:  understandsSpanish,
+    status:               'Confirmada',
+    program_link:         'https://quasarworksco.github.io/LGP/programa',
+    reply_to:             'lenguadeherenciaespanol@gmail.com',
   };
 
   try {
-    await emailjs.send(EMAILJS_SERVICE_ID, templateId, templateParams);
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_CONFIRM, templateParams);
     console.log('Email sent successfully');
     return true;
   } catch(err) {
@@ -2308,27 +2247,53 @@ async function sendConfirmationEmail(data) {
 
 async function sendAdminNotification(data) {
   // Send notification to lenguadeherenciaespanol@gmail.com about new inscription
-  const { parentName, parentEmail, parentCountry, children, total, isWaitlist } = data;
-  const childrenList = children.map((c, i) =>
-    `${i+1}. ${c.name} — ${c.age} años (${c.ageGroup || 'fuera de rango'})`
-  ).join('\n');
+  const { parentName, parentEmail, parentCountry, childAge, dominantLang, understandsSpanish } = data;
 
   try {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_CONFIRM, {
-      to_name:        'Equipo EH',
-      to_email:       'lenguadeherenciaespanol@gmail.com',
-      children_list:  childrenList,
-      children_count: children.length,
-      total_price:    isWaitlist ? 'Lista de espera' : 'GRATIS (prueba piloto)',
-      status:         isWaitlist ? '⚠️ LISTA DE ESPERA' : '✅ CONFIRMADA',
-      parent_name:    parentName,
-      parent_email:   parentEmail,
-      parent_country: parentCountry,
-      program_link:   'https://quasarworksco.github.io/LGP/programa',
-      reply_to:       parentEmail,
+      to_name:              'Equipo EH',
+      to_email:             'lenguadeherenciaespanol@gmail.com',
+      child_age:            childAge,
+      dominant_lang:        dominantLang,
+      understands_spanish:  understandsSpanish,
+      status:               '✅ CONFIRMADA',
+      parent_name:          parentName,
+      parent_email:         parentEmail,
+      parent_country:       parentCountry,
+      program_link:         'https://quasarworksco.github.io/LGP/programa',
+      reply_to:             parentEmail,
     });
   } catch(err) {
     console.warn('Admin notification error:', err);
+  }
+}
+
+async function sendWaitlistEmail(data) {
+  const { parentName, parentEmail, parentCountry, childAge, route } = data;
+
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_WAITLIST, {
+      to_name:        parentName,
+      to_email:       parentEmail,
+      parent_country: parentCountry,
+      child_age:      childAge,
+      route:          route,
+      status:         'Lista de espera',
+      reply_to:       'lenguadeherenciaespanol@gmail.com',
+    });
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_WAITLIST, {
+      to_name:        'Equipo EH',
+      to_email:       'lenguadeherenciaespanol@gmail.com',
+      parent_name:    parentName,
+      parent_email:   parentEmail,
+      parent_country: parentCountry,
+      child_age:      childAge,
+      route:          route,
+      status:         '📋 NUEVA LISTA DE ESPERA',
+      reply_to:       parentEmail,
+    });
+  } catch(err) {
+    console.warn('Waitlist email error:', err);
   }
 }
 
@@ -2343,224 +2308,97 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const PILOT_MAX = 40;
-let currentCount = 0;
-let childCount = 0;
-
-// ── Load pilot count ──
-async function loadPilotCount() {
-  try {
-    const snap = await db.collection('inscripciones').get();
-    currentCount = snap.size;
-  } catch(e) { currentCount = 0; }
-  updatePilotBar();
-}
-
-function updatePilotBar() {
-  const pct = Math.min(100, Math.round((currentCount / PILOT_MAX) * 100));
-  document.getElementById('pilot-bar').style.width = pct + '%';
-  document.getElementById('pilot-text').textContent = currentCount + ' / ' + PILOT_MAX;
-  if (currentCount >= PILOT_MAX) {
-    document.getElementById('waitlist-notice').classList.add('visible');
-  }
-}
-
-// ── Age calculator ──
-function calcAge(dob) {
-  if (!dob) return null;
-  const today = new Date();
-  const birth = new Date(dob);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-  return age;
-}
-
-function getAgeGroup(age) {
-  if (age >= 3 && age <= 5) return '3-5 años';
-  if (age >= 6 && age <= 8) return '6-8 años';
-  if (age >= 9 && age <= 11) return '9-11 años';
-  if (age >= 12 && age <= 14) return '12-14 años';
-  return null;
-}
-
-// ── Pricing (free pilot) ──
-function calcPrice(n) {
-  return 0; // Pilot is free
-}
-
-function updatePrice() {
-  const n = childCount;
-  const summary = document.getElementById('price-summary');
-  const btn = document.getElementById('submit-btn');
-
-  if (n === 0) {
-    summary.style.display = 'none';
-    btn.disabled = true;
-    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-lock"/></svg> Añade al menos un hijo para continuar`;
-    return;
-  }
-
-  summary.style.display = 'flex';
-
-  let breakdown = '';
-  if (n === 1) breakdown = '✓ 1 niño inscrito · Acceso completo al piloto';
-  else breakdown = `✓ ${n} niños inscritos · Acceso completo al piloto`;
-  document.getElementById('price-breakdown').innerHTML = breakdown;
-
-  btn.disabled = false;
-  const isWaitlist = currentCount >= PILOT_MAX;
-  if (isWaitlist) {
-    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Unirse a la lista de espera`;
-    btn.style.background = 'linear-gradient(135deg,#D97706,#B45309)';
-  } else {
-    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> ¡Reservar mi plaza gratuita!`;
-    btn.style.background = '';
-  }
-}
-
-// ── Add child block ──
-function addChild() {
-  childCount++;
-  const idx = childCount;
-  const container = document.getElementById('children-container');
-  const div = document.createElement('div');
-  div.className = 'child-block';
-  div.id = 'child-' + idx;
-  div.innerHTML = `
-    <div class="child-block-header">
-      <div class="child-block-title">Hijo/a #${idx}</div>
-      ${idx > 1 ? `<button type="button" class="child-remove" onclick="removeChild(${idx})">Eliminar</button>` : ''}
-    </div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Nombre completo *</label>
-        <input class="form-input" type="text" id="child-name-${idx}" placeholder="Nombre y apellido" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Fecha de nacimiento *</label>
-        <input class="form-input" type="date" id="child-dob-${idx}" max="${new Date().toISOString().split('T')[0]}" required
-          onchange="updateAgeCalc(${idx})"/>
-        <div id="age-calc-${idx}" style="display:none;" class="age-calc"></div>
-      </div>
-    </div>
-  `;
-  container.appendChild(div);
-  updatePrice();
-}
-
-function removeChild(idx) {
-  const el = document.getElementById('child-' + idx);
-  if (el) el.remove();
-  // Recalculate childCount from DOM
-  childCount = document.querySelectorAll('.child-block').length;
-  // Renumber
-  document.querySelectorAll('.child-block').forEach((bl, i) => {
-    bl.querySelector('.child-block-title').textContent = 'Hijo/a #' + (i+1);
-  });
-  updatePrice();
-}
-
-function updateAgeCalc(idx) {
-  const dob = document.getElementById('child-dob-' + idx)?.value;
-  const el = document.getElementById('age-calc-' + idx);
-  if (!el) return;
-  const age = calcAge(dob);
-  if (age === null) { el.style.display = 'none'; return; }
-  const group = getAgeGroup(age);
-  el.style.display = 'inline-flex';
-  el.innerHTML = age + ' años' + (group ? ' · ' + group : ' · Fuera del rango actual');
-  el.style.background = group ? 'rgba(22,197,83,0.1)' : 'rgba(239,68,68,0.1)';
-  el.style.color = group ? 'var(--green-d)' : '#DC2626';
-  el.style.borderColor = group ? 'rgba(22,197,83,0.3)' : 'rgba(239,68,68,0.3)';
-}
-
-document.getElementById('add-child-btn').addEventListener('click', addChild);
-
-// ── Form submit ──
+// ── Inscription form submit ──
 document.getElementById('insc-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Procesando...';
 
   const parentName = document.getElementById('parent-name').value.trim();
   const parentEmail = document.getElementById('parent-email').value.trim();
   const parentCountry = document.getElementById('parent-country').value;
-  const homeLang = document.getElementById('home-lang').value.trim();
-  const wantsNewsletter = document.getElementById('newsletter').checked;
+  const childAge = document.getElementById('child-age').value.trim();
+  const dominantLang = document.getElementById('dominant-lang').value.trim();
+  const understandsSpanish = document.getElementById('understands-spanish').value;
+  const privacyAccepted = document.getElementById('privacy-accept').checked;
 
-  if (!parentName || !parentEmail || !parentCountry) {
-    alert('Por favor completa todos los campos obligatorios del padre/madre.');
-    btn.disabled = false;
-    updatePrice();
+  if (!parentName || !parentEmail || !parentCountry || !childAge || !dominantLang || !understandsSpanish) {
+    alert('Por favor completa todos los campos obligatorios.');
+    return;
+  }
+  if (!privacyAccepted) {
+    alert('Debes aceptar la política de privacidad para continuar.');
     return;
   }
 
-  const childBlocks = document.querySelectorAll('.child-block');
-  if (childBlocks.length === 0) {
-    alert('Añade al menos un hijo/a.');
-    btn.disabled = false;
-    updatePrice();
-    return;
-  }
-
-  const children = [];
-  for (const bl of childBlocks) {
-    const idStr = bl.id.replace('child-', '');
-    const name = document.getElementById('child-name-' + idStr)?.value.trim();
-    const dob  = document.getElementById('child-dob-'  + idStr)?.value;
-    if (!name || !dob) {
-      alert('Por favor completa todos los datos de cada hijo/a.');
-      btn.disabled = false;
-      updatePrice();
-      return;
-    }
-    const age = calcAge(dob);
-    children.push({ name, dob, age, ageGroup: getAgeGroup(age) });
-  }
-
-  const isWaitlist = currentCount >= PILOT_MAX;
-  const total = calcPrice(children.length);
+  btn.disabled = true;
+  btn.textContent = 'Procesando...';
 
   const data = {
-    parentName, parentEmail, parentCountry, homeLang,
-    wantsNewsletter, children, total,
-    status: isWaitlist ? 'waitlist' : 'confirmed',
+    parentName, parentEmail, parentCountry, childAge, dominantLang, understandsSpanish,
+    status: 'confirmed',
     createdAt: new Date().toISOString(),
   };
 
   try {
     // 1. Save to Firebase
     await db.collection('inscripciones').add(data);
-    if (wantsNewsletter) {
-      await db.collection('newsletter').add({ email: parentEmail, name: parentName, createdAt: new Date().toISOString() });
-    }
-    currentCount++;
-    updatePilotBar();
 
     // 2. Send confirmation email to parent
     btn.textContent = 'Enviando confirmación...';
-    await sendConfirmationEmail({ parentName, parentEmail, children, total, isWaitlist });
+    await sendConfirmationEmail({ parentName, parentEmail, childAge, dominantLang, understandsSpanish });
 
     // 3. Send admin notification
-    await sendAdminNotification({ parentName, parentEmail, parentCountry, children, total, isWaitlist });
+    await sendAdminNotification({ parentName, parentEmail, parentCountry, childAge, dominantLang, understandsSpanish });
 
     // 4. Show success screen
     document.getElementById('insc-form').style.display = 'none';
-    const success = document.getElementById('form-success');
-    success.classList.add('visible');
-    if (isWaitlist) {
-      document.getElementById('success-title').textContent = 'Estás en la lista de espera';
-      document.getElementById('success-desc').textContent = 'La prueba piloto está completa, pero tu hijo/a queda en lista de espera. Te contactaremos si se libera una plaza o para futuras ediciones. ¡Gracias por tu interés! Revisa tu email para la confirmación.';
-    } else {
-      document.getElementById('success-desc').textContent = 'Hemos recibido tu inscripción gratuita. En breve recibirás un email de confirmación en ' + parentEmail + ' con los próximos pasos y el acceso a la plataforma. ¡Bienvenida al piloto!';
-    }
+    document.getElementById('form-success').classList.add('visible');
+    document.getElementById('success-desc').textContent = 'Hemos recibido tu inscripción gratuita. En breve recibirás un email de confirmación en ' + parentEmail + ' con los próximos pasos y el acceso a la plataforma. ¡Bienvenida al piloto!';
   } catch(err) {
     console.error(err);
     alert('Hubo un error al procesar tu inscripción. Por favor intenta de nuevo o escríbenos a lenguadeherenciaespanol@gmail.com');
     btn.disabled = false;
-    updatePrice();
+    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Reservar mi plaza gratuita`;
+  }
+});
+
+// ── Waitlist form submit ──
+document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('wl-submit-btn');
+
+  const parentName = document.getElementById('wl-name').value.trim();
+  const parentEmail = document.getElementById('wl-email').value.trim();
+  const parentCountry = document.getElementById('wl-country').value;
+  const childAge = document.getElementById('wl-age').value.trim();
+  const route = document.getElementById('wl-route').value;
+  const privacyAccepted = document.getElementById('wl-privacy').checked;
+
+  if (!parentName || !parentEmail || !parentCountry || !childAge || !route) {
+    alert('Por favor completa todos los campos obligatorios.');
+    return;
+  }
+  if (!privacyAccepted) {
+    alert('Debes aceptar la política de privacidad para continuar.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Procesando...';
+
+  const data = { parentName, parentEmail, parentCountry, childAge, route, createdAt: new Date().toISOString() };
+
+  try {
+    await db.collection('lista_espera').add(data);
+    await sendWaitlistEmail({ parentName, parentEmail, parentCountry, childAge, route });
+
+    document.getElementById('waitlist-form').style.display = 'none';
+    document.getElementById('waitlist-success').classList.add('visible');
+  } catch(err) {
+    console.error(err);
+    alert('Hubo un error al procesar tu solicitud. Por favor intenta de nuevo o escríbenos a lenguadeherenciaespanol@gmail.com');
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Unirme a la lista de espera`;
   }
 });
 
@@ -2620,9 +2458,6 @@ if (hero) {
   });
 }
 
-// ── Init ──
-addChild(); // Add first child block
-loadPilotCount();
 </script>
 </body>
 </html>
