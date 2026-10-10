@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Estado del proyecto — Español de Herencia</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1D5SWVOw5ciDGxi1wV_AoCcrJK3Fdkl2K"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFF; color: #1B2F6B; }
+
+:root {
+  --blue:    #1B2F6B;
+  --blue-m:  #2E4DAE;
+  --blue-l:  #4169D4;
+  --green:   #16C553;
+  --green-d: #0FA046;
+  --green-l: #4ADE80;
+  --cream:   #F8FAFF;
+  --gray:    #F1F4FC;
+  --text:    #1B2F6B;
+  --text-m:  #5A6A9A;
+  --text-l:  #8898CC;
+  --white:   #FFFFFF;
+  --shadow:  0 4px 32px rgba(27,47,107,0.10);
+  --shadow-l:0 2px 12px rgba(27,47,107,0.07);
+}
+
+/* ─── NAV ─── */
+nav {
+  background: rgba(255,255,255,0.97); border-bottom: 1px solid rgba(27,47,107,0.08);
+  padding: 0 clamp(16px,4vw,64px); height: 66px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 20px rgba(27,47,107,0.06);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-img {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-m));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: 0 4px 12px rgba(27,47,107,0.25);
+}
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-logo-top { font-family: 'Montserrat'; font-weight: 900; font-size: 13px; color: var(--blue); line-height: 1; letter-spacing: -0.4px; }
+.nav-logo-sub { font-size: 10px; font-weight: 600; color: var(--text-m); letter-spacing: 0.5px; text-transform: uppercase; }
+.nav-back { font-size: 13px; font-weight: 700; color: var(--text-m); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
+.nav-back:hover { color: var(--blue); }
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  background: linear-gradient(160deg, #0A1F5C 0%, #1B3B8A 60%, #1E7A3E 100%);
+  padding: clamp(48px,6vw,72px) clamp(16px,4vw,64px);
+  text-align: center; position: relative; overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(22,197,83,0.14) 0%, transparent 70%);
+}
+.page-header::after {
+  content: ''; position: absolute; bottom: -60px; left: -60px; width: 280px; height: 280px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+}
+.page-header-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+.page-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(22,197,83,0.18); border: 1.5px solid rgba(22,197,83,0.35);
+  border-radius: 100px; padding: 5px 14px; font-size: 11px; font-weight: 800;
+  color: #4ADE80; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px;
+}
+.page-tag-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+.page-header h1 {
+  font-family: 'Montserrat'; font-weight: 900; font-size: clamp(26px,4vw,42px);
+  color: white; line-height: 1.1; letter-spacing: -1px; margin-bottom: 10px;
+}
+.page-header p {
+  font-size: clamp(13px,1.5vw,15px); color: rgba(255,255,255,0.75); font-weight: 500; line-height: 1.7;
+}
+
+/* ─── MAIN ─── */
+main { max-width: 860px; margin: 0 auto; padding: clamp(32px,5vw,56px) clamp(16px,4vw,32px) 80px; }
+
+/* ─── SUMMARY STAT STRIP ─── */
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 40px; }
+.stat-card {
+  background: white; border-radius: 16px; padding: 20px 16px; text-align: center;
+  box-shadow: var(--shadow-l); border: 1.5px solid rgba(27,47,107,0.06);
+}
+.stat-num { font-family: 'Montserrat'; font-weight: 900; font-size: 28px; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+.stat-num.green { color: var(--green-d); }
+.stat-num.yellow { color: #D97706; }
+.stat-label { font-size: 11px; font-weight: 700; color: var(--text-l); text-transform: uppercase; letter-spacing: 0.8px; }
+
+/* ─── SECTION TITLE ─── */
+.section-eyebrow {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--green-d); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-eyebrow::before { content:''; width:20px; height:2.5px; border-radius:2px; background:var(--green); }
+
+/* ─── CHECKLIST ─── */
+.checklist { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+
+.check-item {
+  background: white; border-radius: 18px;
+  border: 1.5px solid rgba(27,47,107,0.08);
+  padding: 20px 24px; display: flex; align-items: flex-start; gap: 18px;
+  box-shadow: var(--shadow-l); transition: box-shadow 0.2s, border-color 0.2s;
+}
+.check-item:hover { box-shadow: var(--shadow); border-color: rgba(27,47,107,0.14); }
+
+.check-item.status-complete { border-left: 4px solid var(--green); }
+.check-item.status-partial  { border-left: 4px solid #FBBF24; }
+.check-item.status-pending  { border-left: 4px solid rgba(27,47,107,0.18); }
+
+.check-num {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat'; font-weight: 800; font-size: 12px; color: var(--text-m);
+  flex-shrink: 0; margin-top: 1px;
+}
+.check-item.status-complete .check-num { background: #F0FDF4; color: var(--green-d); }
+.check-item.status-partial  .check-num { background: #FFFBEB; color: #D97706; }
+
+.check-content { flex: 1; min-width: 0; }
+.check-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.check-title { font-family: 'Montserrat'; font-weight: 800; font-size: 15px; color: var(--blue); line-height: 1.25; }
+.check-desc { font-size: 13px; color: var(--text-m); line-height: 1.65; font-weight: 500; }
+
+/* ─── BADGE ─── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 800; border-radius: 100px; padding: 3px 10px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.badge.complete { background: #F0FDF4; color: var(--green-d); border: 1px solid rgba(22,197,83,0.3); }
+.badge.partial  { background: #FFFBEB; color: #D97706;        border: 1px solid rgba(251,191,36,0.4); }
+.badge.pending  { background: var(--gray); color: var(--text-l); border: 1px solid rgba(27,47,107,0.1); }
+
+/* ─── SUMMARY BOX ─── */
+.summary-box {
+  background: linear-gradient(160deg, #EEF4FF, #F0FDF4);
+  border: 2px solid rgba(22,197,83,0.22); border-radius: 24px;
+  padding: 32px 36px; margin-bottom: 48px;
+}
+.summary-box h2 {
+  font-family: 'Montserrat'; font-weight: 900; font-size: 18px; color: var(--blue);
+  margin-bottom: 22px; display: flex; align-items: center; gap: 10px;
+}
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.summary-row {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 14px; background: rgba(255,255,255,0.7); border-radius: 12px;
+  border: 1px solid rgba(27,47,107,0.07);
+}
+.summary-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-l); }
+.summary-value { font-size: 13px; font-weight: 700; color: var(--blue); line-height: 1.5; }
+.summary-value a { color: var(--green-d); text-decoration: none; }
+.summary-value a:hover { text-decoration: underline; }
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center; padding: 28px 16px;
+  border-top: 1px solid rgba(27,47,107,0.07);
+  font-size: 12px; color: var(--text-l); font-weight: 600;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .check-item { padding: 16px 18px; gap: 12px; }
+  .check-title { font-size: 14px; }
+}
+@media (max-width: 420px) {
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .check-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-img">🌎</div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-top">Español de Herencia</span>
+      <span class="nav-logo-sub">Programa piloto</span>
+    </div>
+  </a>
+  <a class="nav-back" href="index.html">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+    Volver al inicio
+  </a>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="page-header-inner">
+    <div class="page-tag"><span class="page-tag-dot"></span> Documento de entrega</div>
+    <h1>Español de Herencia — Estado del proyecto</h1>
+    <p>Checklist de entrega &middot; Octubre 2026</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-card">
+      <div class="stat-num green">4</div>
+      <div class="stat-label">Completados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num yellow">3</div>
+      <div class="stat-label">Parciales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Pendiente</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num green">8</div>
+      <div class="stat-label">Ítems totales</div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="section-eyebrow">Checklist de entrega</div>
+
+  <div class="checklist">
+
+    <!-- 1 -->
+    <div class="check-item status-complete">
+      <div class="check-num">1</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Landing page</span>
+          <span class="badge complete">✅ Completado</span>
+        </div>
+        <p class="check-desc">7 bloques completos, formularios activos, diseño responsivo verificado en móvil y escritorio.</p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="check-item status-partial">
+      <div class="check-num">2</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Actividades didácticas</span>
+          <span class="badge partial">🟡 Parcial</span>
+        </div>
+        <p class="check-desc">programa.html incluye flujo completo (login → avatar → edad → dashboard → misión → actividad → completado) con 1 misión activa y guardado de progreso en Firebase. <strong>Pendiente:</strong> actividades 2, 3 y 4.</p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="check-item status-pending">
+      <div class="check-num">3</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Cuestionarios de satisfacción</span>
+          <span class="badge pending">🔲 Pendiente</span>
+        </div>
+        <p class="check-desc">Formulario construido en cuestionario.html. <strong>Pendiente:</strong> integración al flujo del programa.</p>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="check-item status-complete">
+      <div class="check-num">4</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Sistema de inscripción / mailing list</span>
+          <span class="badge complete">✅ Completado</span>
+        </div>
+        <p class="check-desc">Formulario de inscripción y lista de espera activos. Datos guardados en Firebase (colecciones: <code>inscripciones</code>, <code>lista_espera</code>). Emails automáticos vía EmailJS.</p>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="check-item status-partial">
+      <div class="check-num">5</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Recorrido funcional de familias</span>
+          <span class="badge partial">🟡 Parcial</span>
+        </div>
+        <p class="check-desc">Flujo activo en programa.html (onboarding completo). <strong>Pendiente:</strong> enlace desde landing al programa y completar actividades 2–4.</p>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="check-item status-partial">
+      <div class="check-num">6</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Contenidos, textos e ilustraciones</span>
+          <span class="badge partial">🟡 Parcial</span>
+        </div>
+        <p class="check-desc">Textos completos en landing y programa. <strong>Pendiente:</strong> ilustraciones de personajes (asset final).</p>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="check-item status-complete">
+      <div class="check-num">7</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Pruebas funcionales</span>
+          <span class="badge complete">✅ Completado</span>
+        </div>
+        <p class="check-desc">Verificado con Playwright: formularios, navegación, mobile, links de anclaje, sin errores de consola propios.</p>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="check-item status-complete">
+      <div class="check-num">8</div>
+      <div class="check-content">
+        <div class="check-top">
+          <span class="check-title">Sistema de datos y privacidad</span>
+          <span class="badge complete">✅ Completado</span>
+        </div>
+        <p class="check-desc">Firebase Firestore activo. Páginas de Privacidad y Términos conformes a GDPR. Consentimiento explícito en formularios.</p>
+      </div>
+    </div>
+
+  </div><!-- /checklist -->
+
+  <!-- SUMMARY BOX -->
+  <div class="section-eyebrow">Resumen de entrega</div>
+
+  <div class="summary-box">
+    <h2>
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#16C553" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+      Detalle técnico
+    </h2>
+    <div class="summary-grid">
+      <div class="summary-row">
+        <span class="summary-label">Repositorio</span>
+        <span class="summary-value"><a href="https://github.com/quasarworksco/LGP" target="_blank">github.com/quasarworksco/LGP</a></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Hosting</span>
+        <span class="summary-value">GitHub Pages</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Páginas entregadas</span>
+        <span class="summary-value">index.html · programa.html · terminos.html · privacidad.html · revision.html · cuestionario.html</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Backend</span>
+        <span class="summary-value">Firebase Firestore — colecciones: <code>inscripciones</code>, <code>lista_espera</code>, <code>respuestas_cuestionario</code>, <code>usuarios_programa</code></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Emails automáticos</span>
+        <span class="summary-value">EmailJS integrado</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Frameworks / librerías</span>
+        <span class="summary-value">React 18 (CDN) · Firebase 10 · EmailJS · Playwright (tests)</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Español de Herencia &mdash; Documento de entrega &middot; Octubre 2026
+</footer>
+
+</body>
+</html>
