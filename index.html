@@ -1212,6 +1212,446 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B2F6B}
   .specialist-grid{grid-template-columns:1fr;}
 }
 </style>
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   AESTHETIC ENHANCEMENT LAYER
+   All improvements are purely visual — no structure or JS changes
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Global rendering ── */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: #EEF1FA; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blue-l), var(--green));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--blue-m), var(--green-d)); }
+
+/* ── Typography hierarchy ── */
+.section-title {
+  font-size: clamp(30px, 4vw, 50px);
+  letter-spacing: -2px;
+  font-optical-sizing: auto;
+  line-height: 1.08;
+}
+.hero h1 {
+  font-size: clamp(38px, 5.5vw, 72px);
+  letter-spacing: -3px;
+  line-height: 1.0;
+  font-optical-sizing: auto;
+}
+.section-sub {
+  line-height: 1.85;
+}
+.eyebrow {
+  letter-spacing: 3px;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--green), var(--blue-l));
+  flex-shrink: 0;
+}
+
+/* ── Navigation ── */
+.nav-links {
+  gap: 32px;
+}
+.nav-links > a {
+  transition: color 0.2s ease;
+  letter-spacing: 0.1px;
+}
+.nav-logo-top {
+  letter-spacing: 0.2px;
+}
+.nav-cta {
+  padding: 11px 24px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  box-shadow: 0 4px 18px rgba(22,197,83,0.38);
+}
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(22,197,83,0.52);
+}
+
+/* ── Hero section ── */
+.hero {
+  background: #01030C;
+}
+/* Richer dark gradient background for hero text area */
+.hero-inner {
+  background: linear-gradient(170deg, #01030C 0%, #050F2A 40%, #030D1A 70%, #01030C 100%);
+  position: relative;
+}
+/* Luminous glow behind hero text */
+.hero-inner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 700px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(22,197,83,0.08) 0%,
+    rgba(27,47,107,0.12) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+/* Noise/grain texture overlay */
+.hero-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+}
+/* Make content stack above pseudo-elements */
+.hero-inner > * { position: relative; z-index: 1; }
+
+/* Hero eyebrow pill */
+.hero-tag {
+  padding: 9px 22px;
+  font-size: 11px;
+  letter-spacing: 2.8px;
+  gap: 10px;
+  background: rgba(22,197,83,0.12);
+  border: 1.5px solid rgba(22,197,83,0.35);
+  box-shadow: 0 0 24px rgba(22,197,83,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+/* Pulsing dot — slightly larger */
+.hero-tag > span:first-child,
+.hero-tag .dot-pulse,
+.hero-tag [style*="border-radius:50%"] {
+  width: 8px !important;
+  height: 8px !important;
+  box-shadow: 0 0 10px #4ADE80, 0 0 20px rgba(74,222,128,0.4) !important;
+}
+
+/* Hero description */
+.hero p {
+  color: rgba(255,255,255,0.9);
+  line-height: 1.8;
+  font-size: clamp(15px, 1.35vw, 17.5px);
+}
+
+/* Hero buttons */
+.hero-btns {
+  gap: 16px;
+}
+.btn-green-hero {
+  padding: 17px 40px;
+  border-radius: 14px;
+  font-size: 15px;
+  box-shadow: 0 8px 32px rgba(22,197,83,0.42), 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.btn-green-hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-green-hero:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px rgba(22,197,83,0.5), 0 16px 44px rgba(22,197,83,0.45), 0 4px 12px rgba(0,0,0,0.25);
+}
+.btn-green-hero:hover::after {
+  left: 140%;
+}
+.btn-outline-hero {
+  padding: 17px 36px;
+  border-radius: 14px;
+}
+
+/* ── Section alternation — cream slightly richer ── */
+.how { background: #F5F7FF; }
+.benefits { background: #F5F7FF; }
+.missions { background: #F5F7FF; }
+.testi-pair-section { background: #F5F7FF; }
+.trust { background: #F5F7FF; }
+.waitlist-section { background: #F5F7FF; }
+.faq-section { background: white; }
+
+/* ── Cards — improved shadows & borders ── */
+.how-card {
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.04), 0 8px 32px rgba(27,47,107,0.08);
+  border-top: 1px solid rgba(255,255,255,0.9);
+}
+.how-card:hover {
+  box-shadow: 0 4px 12px rgba(27,47,107,0.06), 0 20px 56px rgba(27,47,107,0.16);
+  border-color: rgba(22,197,83,0.4);
+}
+
+.benefit-card {
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.04), 0 8px 32px rgba(27,47,107,0.07);
+  border-top: 1px solid rgba(255,255,255,0.9);
+}
+.benefit-card:hover {
+  border-color: var(--green);
+  border-top-color: rgba(22,197,83,0.6);
+  box-shadow: 0 4px 16px rgba(27,47,107,0.06), 0 20px 56px rgba(22,197,83,0.18);
+  transform: translateY(-8px) scale(1.04);
+}
+
+.testi-card-new {
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.05), 0 10px 36px rgba(27,47,107,0.09);
+  border-top: 1px solid rgba(255,255,255,0.85);
+  background: linear-gradient(160deg, #ffffff 0%, #fafcff 100%);
+}
+.testi-card-new:hover {
+  border-color: rgba(22,197,83,0.4);
+  border-top-color: rgba(22,197,83,0.5);
+  box-shadow: 0 4px 16px rgba(27,47,107,0.07), 0 24px 60px rgba(22,197,83,0.14);
+}
+
+.trust-card {
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.04), 0 8px 32px rgba(27,47,107,0.08);
+  border-top: 1px solid rgba(255,255,255,0.9);
+}
+.trust-card:hover {
+  border-color: rgba(22,197,83,0.35);
+  box-shadow: 0 4px 16px rgba(27,47,107,0.06), 0 20px 56px rgba(22,197,83,0.12);
+}
+
+.age-card {
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.05), 0 8px 28px rgba(27,47,107,0.07);
+}
+.age-card:hover {
+  box-shadow: 0 4px 16px rgba(27,47,107,0.08), 0 24px 56px rgba(27,47,107,0.15);
+}
+
+.mission-card {
+  border-radius: 22px;
+  box-shadow: 0 2px 6px rgba(27,47,107,0.04), 0 6px 24px rgba(27,47,107,0.07);
+  border-top: 1px solid rgba(255,255,255,0.85);
+}
+
+/* ── Character cards — richer header gradients ── */
+.char-card.valentina .char-card-header {
+  background: linear-gradient(160deg, #FFF0E8 0%, #FFCDB2 50%, #FF9F7A 100%);
+}
+.char-card.tomas .char-card-header {
+  background: linear-gradient(160deg, #FFFBEB 0%, #FDE68A 50%, #F59E0B 100%);
+}
+.char-card.coco .char-card-header {
+  background: linear-gradient(160deg, #F0FFF4 0%, #BBF7D0 50%, #34D399 100%);
+}
+.char-card {
+  border-radius: 28px;
+  box-shadow: 0 4px 16px rgba(27,47,107,0.08), 0 16px 48px rgba(27,47,107,0.12);
+}
+.char-card:hover {
+  box-shadow: 0 8px 24px rgba(27,47,107,0.12), 0 32px 72px rgba(27,47,107,0.18);
+}
+.char-card-body {
+  border-top: 1px solid rgba(27,47,107,0.06);
+}
+
+/* ── Buttons — improved border-radius & glow ── */
+.age-btn {
+  border-radius: 14px;
+}
+.submit-btn {
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 17px;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.submit-btn:hover::after {
+  left: 140%;
+}
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 36px rgba(22,197,83,0.45), 0 16px 40px rgba(22,197,83,0.4);
+}
+
+/* ── Form inputs ── */
+.form-input {
+  border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder {
+  color: #A0AECB;
+}
+.form-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(22,197,83,0.2);
+}
+.form-select {
+  border-radius: 12px;
+}
+
+/* ── Inscription form card ── */
+.insc-form {
+  background: linear-gradient(160deg, #ffffff 0%, #F8FAFF 100%);
+  border: 2px solid rgba(27,47,107,0.1);
+  border-radius: 28px;
+  box-shadow: 0 4px 16px rgba(27,47,107,0.06), 0 24px 64px rgba(27,47,107,0.1);
+  border-top: 2px solid rgba(255,255,255,0.9);
+}
+
+/* ── FAQ ── */
+.faq-item {
+  border-radius: 18px;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.faq-item.open {
+  border-color: var(--green);
+  background: #F0FDF4;
+  box-shadow: 0 4px 20px rgba(22,197,83,0.1);
+  position: relative;
+}
+/* Left accent bar on open FAQ */
+.faq-item.open::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 18px 0 0 18px;
+  background: linear-gradient(180deg, var(--green), var(--blue-l));
+}
+.faq-q {
+  padding: 20px 22px;
+}
+.faq-a {
+  padding: 0 22px 18px 22px;
+  line-height: 1.8;
+}
+
+/* ── Dark sections — grain texture ── */
+.specialist::before {
+  /* Keep existing orb but add grain via another pseudo-element */
+}
+.specialist {
+  position: relative;
+}
+.specialist > .container {
+  position: relative;
+  z-index: 2;
+}
+/* Grain overlay via inset box-shadow — neutral texture */
+.final-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.45;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 0;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 -1px 0 rgba(74,222,128,0.06), 0 -8px 40px rgba(22,197,83,0.04);
+}
+.footer-bottom {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+/* ── Reveal elements ── */
+.reveal, .reveal-left, .reveal-right {
+  will-change: transform;
+}
+
+/* ── Pilot / flow cards ── */
+.pilot-inner {
+  border-radius: 36px;
+  box-shadow: 0 4px 24px rgba(22,197,83,0.07), 0 24px 64px rgba(27,47,107,0.08);
+}
+.pilot-stat {
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(27,47,107,0.05), 0 8px 28px rgba(27,47,107,0.08);
+  border-top: 1px solid rgba(255,255,255,0.9);
+}
+
+/* ── Solution box ── */
+.solution-box {
+  border-radius: 32px;
+  box-shadow: 0 4px 20px rgba(22,197,83,0.08), 0 16px 48px rgba(27,47,107,0.07);
+}
+
+/* ── Specialist cards ── */
+.spec-card {
+  border-radius: 20px;
+}
+
+/* ── Newsletter ── */
+.newsletter {
+  background: linear-gradient(135deg, #131E54 0%, #1B2F6B 40%, #2E4DAE 100%);
+}
+.newsletter-btn {
+  border-radius: 14px;
+}
+
+/* ── Testi body quotes — bigger, more decorative ── */
+.testi-body-new::before,
+.testi-body-new::after {
+  font-size: 32px;
+  color: var(--green);
+}
+
+/* ── Testimonial section header gradient card ── */
+.testi-pair-section .eyebrow::before {
+  background: linear-gradient(90deg, var(--green), var(--blue-l));
+}
+
+/* ── Responsive overrides for new radii ── */
+@media (max-width: 768px) {
+  .how-card { border-radius: 20px; }
+  .benefit-card { border-radius: 20px; }
+  .testi-card-new { border-radius: 20px; }
+  .char-card { border-radius: 20px; }
+  .age-card { border-radius: 20px; }
+  .mission-card { border-radius: 16px; }
+  .pilot-inner { border-radius: 24px; }
+  .insc-form { border-radius: 20px; }
+  .faq-item { border-radius: 14px; }
+}
+</style>
 </head>
 <body>
 
