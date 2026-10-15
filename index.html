@@ -1671,6 +1671,21 @@ footer {
 .explorers-close .green { color:var(--green-d); }
 @media (max-width:1024px) { .chars-row.explorers { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:600px) { .chars-row.explorers { grid-template-columns:1fr; max-width:380px; margin-left:auto; margin-right:auto; } }
+
+/* ── Bloque 2: texto + ilustración ── */
+.problem-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); grid-template-areas:"title figure" "text figure"; column-gap:clamp(40px,5vw,72px); align-items:start; }
+.problem-title { grid-area:title; }
+.problem-title .section-title { margin-bottom:0; font-size:clamp(30px,3.3vw,44px); }
+.problem-text .problem-highlight { margin-bottom:14px; }
+.problem-text { grid-area:text; margin-top:22px; }
+.problem-text .section-sub + .section-sub { margin-top:14px; }
+.problem-figure { grid-area:figure; align-self:center; margin:0; border-radius:28px; overflow:hidden; background:#FDF4DD; box-shadow:0 2px 6px rgba(27,47,107,0.06), 0 24px 60px rgba(27,47,107,0.14); }
+.problem-figure img { display:block; width:100%; height:auto; }
+@media (max-width:900px) {
+  .problem-layout { grid-template-columns:1fr; grid-template-areas:"title" "figure" "text"; }
+  .problem-figure { margin-top:28px; border-radius:22px; }
+  .problem-text { margin-top:32px; }
+}
 </style>
 </head>
 <body>
@@ -1794,13 +1809,20 @@ footer {
 <!-- PROBLEM -->
 <section class="section problem" id="problema">
   <div class="container">
-    <div class="reveal" style="max-width:740px;margin:0 auto;">
-      <h2 class="section-title">Cuando el entorno cambia, el español necesita <span class="green">nuevas oportunidades para crecer.</span></h2>
-      <p class="section-sub" style="margin-top:20px;">Muchos niños y niñas que crecen fuera de un país hispanohablante entienden español en casa, pero poco a poco empiezan a responder cada vez más en la lengua del colegio, de los amigos o del entorno.</p>
-      <p class="section-sub">No es falta de interés. Muchas veces necesitan más espacios, más estímulos y actividades pensadas para su realidad bilingüe o multilingüe.</p>
-      <p class="problem-highlight" style="margin-top:28px;">Español de Herencia no es una app de español como lengua extranjera.</p>
-      <p class="section-sub">Tus hijos/as no son extranjeros estudiando español desde cero: el español forma parte de su familia, de su historia y de su identidad desde el nacimiento.</p>
-      <p class="section-sub">Partimos de la lengua que ya existe en casa y la convertimos en una experiencia de aprendizaje breve, significativa y culturalmente cercana.</p>
+    <div class="problem-layout">
+      <div class="problem-title reveal">
+        <h2 class="section-title">Cuando el entorno cambia, el español necesita <span class="green">nuevas oportunidades para crecer.</span></h2>
+      </div>
+      <figure class="problem-figure reveal-right">
+        <img src="img/bloque2-familia.webp" width="1200" height="841" loading="lazy" alt="Una familia alrededor de la mesa con libros y un mapa, junto a Valentina, Tomás y Coco, mientras recuerdos y palabras en español fluyen entre ellos.">
+      </figure>
+      <div class="problem-text reveal">
+        <p class="section-sub">Muchos niños y niñas que crecen fuera de un país hispanohablante entienden español en casa, pero poco a poco empiezan a responder cada vez más en la lengua del colegio, de los amigos o del entorno.</p>
+        <p class="section-sub">No es falta de interés. Muchas veces necesitan más espacios, más estímulos y actividades pensadas para su realidad bilingüe o multilingüe.</p>
+        <p class="problem-highlight" style="margin-top:28px;">Español de Herencia no es una app de español como lengua extranjera.</p>
+        <p class="section-sub">Tus hijos/as no son extranjeros estudiando español desde cero: el español forma parte de su familia, de su historia y de su identidad desde el nacimiento.</p>
+        <p class="section-sub">Partimos de la lengua que ya existe en casa y la convertimos en una experiencia de aprendizaje breve, significativa y culturalmente cercana.</p>
+      </div>
     </div>
   </div>
 </section>
