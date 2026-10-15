@@ -1653,8 +1653,10 @@ footer {
 }
 
 /* ── Exploradores: 4 tarjetas ── */
+.explorers .char-card-header { height:280px; }
+.explorers .char-card:not(.kid) .char-card-header img { width:100%; height:100%; object-fit:contain; object-position:bottom center; mix-blend-mode:multiply; filter:none; padding:18px 12px 6px; }
+@media (max-width:600px) { .explorers .char-card-header { height:300px; } }
 .chars-row.explorers { grid-template-columns:repeat(4,1fr); gap:22px; margin-top:52px; }
-.explorers .char-card-header { height:240px; }
 .explorers .char-card-body { padding:20px 22px 26px; text-align:center; }
 .explorers .char-card-name { font-size:21px; }
 .explorers .char-card-role { font-size:10px; letter-spacing:0.6px; margin-bottom:12px; white-space:nowrap; }
@@ -1966,7 +1968,7 @@ footer {
     <div class="chars-row explorers">
       <div class="char-card valentina reveal d1">
         <div class="char-card-header">
-          <img src="https://lh3.googleusercontent.com/d/13bsUBjPq0mDKGUxoQmjPh5RoUJ1_PIIA" alt="Valentina" loading="lazy" onerror="this.style.opacity='0'"/>
+          <img src="img/valentina.webp" alt="Valentina" width="403" height="750" loading="lazy" onerror="this.style.opacity='0'"/>
         </div>
         <div class="char-card-body">
           <div class="char-card-name">Valentina</div>
@@ -1976,7 +1978,7 @@ footer {
       </div>
       <div class="char-card tomas reveal d2">
         <div class="char-card-header">
-          <img src="https://lh3.googleusercontent.com/d/1WGnnTVjcFHQRsX2veZs0fAmMtfy5GMlJ" alt="Tomás" loading="lazy" onerror="this.style.opacity='0'"/>
+          <img src="img/tomas.webp" alt="Tomás" width="441" height="750" loading="lazy" onerror="this.style.opacity='0'"/>
         </div>
         <div class="char-card-body">
           <div class="char-card-name">Tomás</div>
@@ -1986,7 +1988,7 @@ footer {
       </div>
       <div class="char-card coco reveal d3">
         <div class="char-card-header">
-          <img src="https://lh3.googleusercontent.com/d/1OAiwip7c7vQ5KhDcP_hTDUPotYEe-LYM" alt="Coco" loading="lazy" onerror="this.style.opacity='0'"/>
+          <img src="img/coco.webp" alt="Coco" width="537" height="750" loading="lazy" onerror="this.style.opacity='0'"/>
         </div>
         <div class="char-card-body">
           <div class="char-card-name">Coco</div>
