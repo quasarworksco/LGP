@@ -323,7 +323,7 @@ body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
           <span class="check-title">Sistema de inscripción / mailing list</span>
           <span class="badge complete">✅ Completado</span>
         </div>
-        <p class="check-desc">Formulario de inscripción y lista de espera activos. Datos guardados en Firebase (colecciones: <code>inscripciones</code>, <code>lista_espera</code>). Emails automáticos vía EmailJS.</p>
+        <p class="check-desc">Formulario único de solicitud de plaza: las primeras 40 familias seleccionadas entran al piloto y el resto queda en lista de espera. Datos guardados en Firebase (colección <code>inscripciones</code>, con estado de la solicitud) y suscripción a novedades (<code>newsletter</code>). Emails automáticos vía EmailJS.</p>
       </div>
     </div>
 
@@ -400,7 +400,7 @@ body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
       </div>
       <div class="summary-row">
         <span class="summary-label">Backend</span>
-        <span class="summary-value">Firebase Firestore — colecciones: <code>inscripciones</code>, <code>lista_espera</code>, <code>respuestas_cuestionario</code>, <code>usuarios_programa</code></span>
+        <span class="summary-value">Firebase Firestore — colecciones: <code>inscripciones</code>, <code>newsletter</code>, <code>respuestas_cuestionario</code>, <code>usuarios</code></span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Emails automáticos</span>
