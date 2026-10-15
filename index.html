@@ -986,8 +986,6 @@ footer {
 /* Form trust note */
 .form-trust-note { text-align:center;font-size:12.5px;color:var(--text-m);margin-top:14px;font-weight:600;line-height:1.6; }
 
-/* Waitlist section */
-.waitlist-section { background:var(--cream); }
 
 /* ── Newsletter strip ── */
 .newsletter { background:linear-gradient(135deg,#1B2F6B,#2E4DAE);padding:clamp(48px,5vw,72px) clamp(16px,4vw,64px); }
@@ -1771,7 +1769,7 @@ footer {
     <div class="hero-btns">
       <a href="#inscripcion" class="btn-green-hero">
         <svg width="15" height="15" style="color:white;flex-shrink:0;"><use href="#ico-bolt"/></svg>
-        Reservar plaza gratuita
+        Solicitar plaza gratuita
       </a>
       <a href="#como" class="btn-outline-hero">
         Cómo funciona
@@ -1850,7 +1848,7 @@ footer {
       <div style="text-align:center;margin-top:22px;">
         <a href="#inscripcion" class="btn-green-hero" style="display:inline-flex;">
           <svg width="15" height="15" style="color:white;flex-shrink:0;"><use href="#ico-bolt"/></svg>
-          Reservar plaza gratuita
+          Solicitar plaza gratuita
         </a>
       </div>
     </div>
@@ -2352,17 +2350,18 @@ footer {
 <section class="inscription" id="inscripcion">
   <div class="inscription-inner">
     <div class="inscription-header reveal">
-      <div class="eyebrow" style="justify-content:center;">Inscripción a la prueba piloto</div>
-      <h2 class="section-title" style="text-align:center;">Reserva tu plaza gratuita</h2>
-      <p class="section-sub" style="margin:0 auto;text-align:center;">Completa este formulario y te enviaremos la información para participar en la primera edición piloto de Español de Herencia.</p>
+      <div class="eyebrow" style="justify-content:center;">Solicitud de plaza</div>
+      <h2 class="section-title" style="text-align:center;">Solicitud de plaza para el <span class="green">piloto gratuito</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center;">Completa el formulario para solicitar una plaza en la primera edición piloto de Español de Herencia.</p>
+      <p class="section-sub" style="margin:14px auto 0;text-align:center;">Las primeras 40 familias seleccionadas accederán al piloto gratuito. Si las plazas ya están completas o tu hijo/a no entra en esta edición, quedaremos en contacto contigo para próximas plazas, nuevas misiones y futuras ediciones.</p>
     </div>
 
     <!-- FORM -->
     <div class="insc-form reveal" id="insc-form-wrap">
       <div id="form-success" class="form-success">
         <div class="form-success-icon"><svg width="36" height="36" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-check"/></svg></div>
-        <h3 style="font-family:'Montserrat';font-weight:900;font-size:24px;color:var(--blue);margin-bottom:10px;" id="success-title">¡Inscripción completada!</h3>
-        <p style="font-size:15px;color:var(--text-m);line-height:1.7;max-width:440px;margin:0 auto;" id="success-desc">Hemos recibido tu inscripción. En breve recibirás un email de confirmación con los accesos a la plataforma.</p>
+        <h3 style="font-family:'Montserrat';font-weight:900;font-size:24px;color:var(--blue);margin-bottom:10px;" id="success-title">¡Solicitud recibida!</h3>
+        <p style="font-size:15px;color:var(--text-m);line-height:1.7;max-width:440px;margin:0 auto;" id="success-desc">Hemos recibido tu solicitud. Te escribiremos por email con los próximos pasos.</p>
       </div>
 
       <form id="insc-form" novalidate>
@@ -2411,95 +2410,10 @@ footer {
         </div>
 
         <button type="submit" class="submit-btn" id="submit-btn">
-          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Reservar mi plaza gratuita
+          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Solicitar plaza gratuita
         </button>
-        <p class="form-trust-note">El piloto es gratuito. No pedimos tarjeta de crédito. Los datos se utilizarán únicamente para gestionar la participación en el piloto y enviar información relacionada con Español de Herencia.</p>
+        <p class="form-trust-note">El piloto es gratuito y no pedimos tarjeta de crédito. Las solicitudes que no entren en esta primera edición quedarán en lista de espera para próximas plazas y futuras rutas de Español de Herencia.</p>
       </form>
-    </div>
-  </div>
-</section>
-
-<!-- WAITLIST -->
-<section class="section waitlist-section" id="lista-espera">
-  <div class="container">
-    <div class="reveal" style="max-width:640px;margin:0 auto;text-align:center;">
-      <div class="eyebrow" style="justify-content:center;">Lista de espera</div>
-      <h2 class="section-title" style="text-align:center;">¿Tu hijo/a no entra en esta primera edición piloto?</h2>
-      <p class="section-sub" style="text-align:center;margin:0 auto;">Déjanos tu email y te avisaremos cuando abramos nuevas plazas o nuevas rutas por edad.</p>
-      <p class="section-sub" style="text-align:center;margin:10px auto 0;">La primera edición piloto está dirigida a niños y niñas de 6 a 8 años, pero próximamente abriremos rutas para 3–5, 9–11 y 12–14 años.</p>
-      <p class="section-sub" style="text-align:center;margin:10px auto 0;">También recibirás recursos e ideas para acompañar el español en casa.</p>
-    </div>
-
-    <div class="insc-form reveal" style="max-width:640px;margin:36px auto 0;">
-      <div id="waitlist-success" class="form-success">
-        <div class="form-success-icon"><svg width="36" height="36" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-check"/></svg></div>
-        <h3 style="font-family:'Montserrat';font-weight:900;font-size:22px;color:var(--blue);margin-bottom:10px;">¡Listo! Te avisaremos pronto</h3>
-        <p style="font-size:14px;color:var(--text-m);line-height:1.7;max-width:420px;margin:0 auto;">Hemos recibido tus datos. Te contactaremos cuando abramos nuevas plazas o rutas por edad.</p>
-      </div>
-
-      <form id="waitlist-form" novalidate>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">Nombre del adulto responsable *</label>
-            <input class="form-input" type="text" id="wl-name" placeholder="Nombre y apellido" required/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email *</label>
-            <input class="form-input" type="email" id="wl-email" placeholder="email@ejemplo.com" required/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">País de residencia *</label>
-            <select class="form-input form-select" id="wl-country" required>
-              <option value="">Selecciona un país</option>
-              <option>Alemania</option><option>Australia</option><option>Bélgica</option>
-              <option>Canadá</option><option>Chile</option><option>Colombia</option>
-              <option>Costa Rica</option><option>Ecuador</option><option>España</option>
-              <option>Estados Unidos</option><option>Francia</option><option>Italia</option>
-              <option>México</option><option>Países Bajos</option><option>Portugal</option>
-              <option>Reino Unido</option><option>Suecia</option><option>Suiza</option>
-              <option>Uruguay</option><option>Venezuela</option><option>Otro</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Edad del niño/a *</label>
-            <input class="form-input" type="number" min="0" max="17" id="wl-age" placeholder="Ej: 4" required/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Ruta de interés *</label>
-            <select class="form-input form-select" id="wl-route" required>
-              <option value="">Selecciona una ruta</option>
-              <option>3–5 años</option><option>6–8 años</option><option>9–11 años</option><option>12–14 años</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="privacy-check">
-          <input type="checkbox" id="wl-privacy" required/>
-          <label for="wl-privacy">He leído y acepto la <a href="privacidad.html" target="_blank">política de privacidad</a> *</label>
-        </div>
-
-        <button type="submit" class="submit-btn" id="wl-submit-btn">
-          <svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Unirme a la lista de espera
-        </button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="newsletter">
-  <div class="newsletter-inner reveal">
-    <div style="display:flex;justify-content:center;margin-bottom:16px;"><svg width="28" height="28" style="color:rgba(255,255,255,0.7);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-message"/></svg></div>
-    <h2>Mantente informada</h2>
-    <p>Recibe novedades del programa, recursos para familias bilingües y los anuncios de próximas ediciones.</p>
-    <form class="newsletter-form" id="newsletter-standalone-form">
-      <input class="newsletter-input" type="email" id="nl-email" placeholder="tu@email.com" required/>
-      <button type="submit" class="newsletter-btn"><svg width="14" height="14" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Suscribirse</button>
-    </form>
-    <div id="nl-success" style="display:none;color:#4ADE80;font-weight:700;margin-top:12px;font-size:14px;">✓ ¡Suscrito! Te mantendremos informado.</div>
-    <div style="margin-top:20px;display:flex;justify-content:center;gap:20px;">
-      <a href="https://www.instagram.com/lenguadeherenciaespanol" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><svg width="16" height="16" style="color:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-instagram"/></svg> @lenguadeherenciaespanol</a>
-      <a href="https://www.facebook.com/lenguadeherenciaespanol" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><svg width="16" height="16" style="color:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-facebook"/></svg> lenguadeherenciaespanol</a>
     </div>
   </div>
 </section>
@@ -2541,13 +2455,31 @@ footer {
   </div>
 </section>
 
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-inner reveal">
+    <div style="display:flex;justify-content:center;margin-bottom:16px;"><svg width="28" height="28" style="color:rgba(255,255,255,0.7);flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-message"/></svg></div>
+    <h2>Mantente informada</h2>
+    <p>Recibe novedades del programa, recursos para familias bilingües y los anuncios de próximas ediciones.</p>
+    <form class="newsletter-form" id="newsletter-standalone-form">
+      <input class="newsletter-input" type="email" id="nl-email" placeholder="tu@email.com" required/>
+      <button type="submit" class="newsletter-btn"><svg width="14" height="14" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Suscribirse</button>
+    </form>
+    <div id="nl-success" style="display:none;color:#4ADE80;font-weight:700;margin-top:12px;font-size:14px;">✓ ¡Suscrito! Te mantendremos informado.</div>
+    <div style="margin-top:20px;display:flex;justify-content:center;gap:20px;">
+      <a href="https://www.instagram.com/lenguadeherenciaespanol" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><svg width="16" height="16" style="color:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-instagram"/></svg> @lenguadeherenciaespanol</a>
+      <a href="https://www.facebook.com/lenguadeherenciaespanol" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'"><svg width="16" height="16" style="color:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-facebook"/></svg> lenguadeherenciaespanol</a>
+    </div>
+  </div>
+</section>
+
 <!-- FINAL CTA -->
 <section class="final-cta">
   <div style="position:relative;z-index:1;">
     <div style="display:flex;justify-content:center;margin-bottom:20px;"><svg width="52" height="52" style="color:#4ADE80;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-sparkle"/></svg></div>
     <h2>Tu hijo ya tiene el español.<br/>Solo necesita un espacio para <span class="green">vivirlo.</span></h2>
     <p>Inscríbelo hoy en la prueba piloto <strong style="color:#4ADE80;">totalmente gratuita</strong> y sé parte de algo que puede cambiar cómo los niños se relacionan con su lengua de herencia.</p>
-    <a href="#inscripcion" class="btn-green-hero" style="font-size:17px;padding:16px 44px;position:relative;z-index:1;"><svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Reservar plaza gratuita</a>
+    <a href="#inscripcion" class="btn-green-hero" style="font-size:17px;padding:16px 44px;position:relative;z-index:1;"><svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Solicitar plaza gratuita</a>
     <p style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.55);position:relative;z-index:1;">Solo quedan plazas disponibles para las primeras 40 familias.</p>
   </div>
 </section>
@@ -2601,7 +2533,6 @@ footer {
 // IMPORTANT: Replace EMAILJS_PUBLIC_KEY with your actual Public Key from EmailJS dashboard
 const EMAILJS_SERVICE_ID   = 'service_rbenpmm';
 const EMAILJS_TPL_CONFIRM  = 'template_95f131j';  // Inscripción confirmada
-const EMAILJS_TPL_WAITLIST = 'template_7hubkyq';  // Lista de espera
 const EMAILJS_PUBLIC_KEY   = 'ewr3ARCAZ19qILGYX';
 
 (function() {
@@ -2617,7 +2548,7 @@ async function sendConfirmationEmail(data) {
     child_age:            childAge,
     dominant_lang:        dominantLang,
     understands_spanish:  understandsSpanish,
-    status:               'Confirmada',
+    status:               'Solicitud recibida',
     program_link:         'https://quasarworksco.github.io/LGP/programa',
     reply_to:             'lenguadeherenciaespanol@gmail.com',
   };
@@ -2643,7 +2574,7 @@ async function sendAdminNotification(data) {
       child_age:            childAge,
       dominant_lang:        dominantLang,
       understands_spanish:  understandsSpanish,
-      status:               '✅ CONFIRMADA',
+      status:               '📝 NUEVA SOLICITUD',
       parent_name:          parentName,
       parent_email:         parentEmail,
       parent_country:       parentCountry,
@@ -2652,35 +2583,6 @@ async function sendAdminNotification(data) {
     });
   } catch(err) {
     console.warn('Admin notification error:', err);
-  }
-}
-
-async function sendWaitlistEmail(data) {
-  const { parentName, parentEmail, parentCountry, childAge, route } = data;
-
-  try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_WAITLIST, {
-      to_name:        parentName,
-      to_email:       parentEmail,
-      parent_country: parentCountry,
-      child_age:      childAge,
-      route:          route,
-      status:         'Lista de espera',
-      reply_to:       'lenguadeherenciaespanol@gmail.com',
-    });
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_WAITLIST, {
-      to_name:        'Equipo EH',
-      to_email:       'lenguadeherenciaespanol@gmail.com',
-      parent_name:    parentName,
-      parent_email:   parentEmail,
-      parent_country: parentCountry,
-      child_age:      childAge,
-      route:          route,
-      status:         '📋 NUEVA LISTA DE ESPERA',
-      reply_to:       parentEmail,
-    });
-  } catch(err) {
-    console.warn('Waitlist email error:', err);
   }
 }
 
@@ -2722,7 +2624,7 @@ document.getElementById('insc-form').addEventListener('submit', async function(e
 
   const data = {
     parentName, parentEmail, parentCountry, childAge, dominantLang, understandsSpanish,
-    status: 'confirmed',
+    status: 'pendiente',
     createdAt: new Date().toISOString(),
   };
 
@@ -2731,7 +2633,7 @@ document.getElementById('insc-form').addEventListener('submit', async function(e
     await db.collection('inscripciones').add(data);
 
     // 2. Send confirmation email to parent
-    btn.textContent = 'Enviando confirmación...';
+    btn.textContent = 'Enviando...';
     await sendConfirmationEmail({ parentName, parentEmail, childAge, dominantLang, understandsSpanish });
 
     // 3. Send admin notification
@@ -2740,52 +2642,12 @@ document.getElementById('insc-form').addEventListener('submit', async function(e
     // 4. Show success screen
     document.getElementById('insc-form').style.display = 'none';
     document.getElementById('form-success').classList.add('visible');
-    document.getElementById('success-desc').textContent = 'Hemos recibido tu inscripción gratuita. En breve recibirás un email de confirmación en ' + parentEmail + ' con los próximos pasos y el acceso a la plataforma. ¡Bienvenida al piloto!';
+    document.getElementById('success-desc').textContent = 'Hemos recibido tu solicitud. Te escribiremos a ' + parentEmail + ' para confirmarte si tu familia entra en esta primera edición o queda en lista de espera para las próximas plazas.';
   } catch(err) {
     console.error(err);
-    alert('Hubo un error al procesar tu inscripción. Por favor intenta de nuevo o escríbenos a lenguadeherenciaespanol@gmail.com');
+    alert('Hubo un error al enviar tu solicitud. Por favor intenta de nuevo o escríbenos a lenguadeherenciaespanol@gmail.com');
     btn.disabled = false;
-    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Reservar mi plaza gratuita`;
-  }
-});
-
-// ── Waitlist form submit ──
-document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('wl-submit-btn');
-
-  const parentName = document.getElementById('wl-name').value.trim();
-  const parentEmail = document.getElementById('wl-email').value.trim();
-  const parentCountry = document.getElementById('wl-country').value;
-  const childAge = document.getElementById('wl-age').value.trim();
-  const route = document.getElementById('wl-route').value;
-  const privacyAccepted = document.getElementById('wl-privacy').checked;
-
-  if (!parentName || !parentEmail || !parentCountry || !childAge || !route) {
-    alert('Por favor completa todos los campos obligatorios.');
-    return;
-  }
-  if (!privacyAccepted) {
-    alert('Debes aceptar la política de privacidad para continuar.');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Procesando...';
-
-  const data = { parentName, parentEmail, parentCountry, childAge, route, createdAt: new Date().toISOString() };
-
-  try {
-    await db.collection('lista_espera').add(data);
-    await sendWaitlistEmail({ parentName, parentEmail, parentCountry, childAge, route });
-
-    document.getElementById('waitlist-form').style.display = 'none';
-    document.getElementById('waitlist-success').classList.add('visible');
-  } catch(err) {
-    console.error(err);
-    alert('Hubo un error al procesar tu solicitud. Por favor intenta de nuevo o escríbenos a lenguadeherenciaespanol@gmail.com');
-    btn.disabled = false;
-    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-arrow-right"/></svg> Unirme a la lista de espera`;
+    btn.innerHTML = `<svg width="18" height="18" style="color:white;flex-shrink:0;display:inline-block;vertical-align:middle;"><use href="#ico-bolt"/></svg> Solicitar plaza gratuita`;
   }
 });
 
