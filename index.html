@@ -500,50 +500,6 @@ footer {
   background: #01030C;
 }
 
-/* Bloque de foto */
-.hero-photo-col {
-  position: relative;
-  overflow: hidden;
-  height: 520px;
-  flex-shrink: 0;
-  width: 100%;
-}
-.hero-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-  display: block;
-}
-/* Degradé: funde el borde superior con el fondo oscuro del texto */
-.hero-photo-col::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    #01030C 0%,
-    rgba(1,3,12,0.5) 18%,
-    transparent 40%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-/* Degradé lateral sutil para dar profundidad */
-.hero-photo-col::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(1,3,12,0.35) 0%,
-    transparent 40%,
-    rgba(1,3,12,0.2) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
 /* Eyebrow pill — refinado */
 .hero-tag {
   display: inline-flex;
@@ -1069,7 +1025,6 @@ nav { position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,25
   .testi-pair-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .hero-photo-col{height:280px;width:100%}
   .hero-inner{padding:88px 20px 28px;box-sizing:border-box;align-items:flex-start;text-align:left}
   .hero h1{font-size:clamp(26px,7.5vw,38px);letter-spacing:-1px}
   .hero p{font-size:14px;line-height:1.65;max-width:100%}
@@ -1686,6 +1641,57 @@ footer {
   .problem-figure { margin-top:28px; border-radius:22px; }
   .problem-text { margin-top:32px; }
 }
+
+/* ══ Hero ilustrado (bloque 1) ══ */
+.hero { position:relative; display:flex; flex-direction:column; min-height:0; padding:0; background:linear-gradient(180deg,#FFF8EA 0%,#FDF0D6 100%); overflow:hidden; }
+.hero::before, .hero::after, .hero-inner::before, .hero-inner::after { content:none; display:none; }
+.hero-inner { background:transparent; align-items:flex-start; text-align:left; padding:112px clamp(20px,5vw,64px) 40px; max-width:none; margin:0; }
+.hero-art { display:block; margin:0; }
+.hero-art img { display:block; width:100%; height:auto; }
+.hero-tag { background:rgba(255,255,255,0.82); border:1.5px solid rgba(15,160,70,0.35); color:var(--green-d); box-shadow:0 4px 18px rgba(27,47,107,0.08); backdrop-filter:blur(6px); }
+.hero h1 { color:var(--blue); text-shadow:0 1px 0 rgba(255,255,255,0.6); }
+.hero h1 .green { color:var(--green-d); }
+.hero-rule { margin:22px 0; background:linear-gradient(90deg,var(--green),rgba(22,197,83,0.25)); }
+.hero p { color:#2F3D6E; max-width:540px; }
+.hero-features { justify-content:flex-start; }
+.hero-feature { background:rgba(255,255,255,0.8); border:1px solid rgba(27,47,107,0.1); color:var(--blue); box-shadow:0 2px 10px rgba(27,47,107,0.06); }
+.hero-feature-icon { color:var(--green-d); }
+.hero-btns { justify-content:flex-start; }
+.btn-outline-hero { background:rgba(255,255,255,0.85); border:1.5px solid rgba(27,47,107,0.22); color:var(--blue); box-shadow:0 4px 16px rgba(27,47,107,0.08); }
+.btn-outline-hero:hover { background:white; border-color:rgba(27,47,107,0.4); }
+.hero-proof { justify-content:flex-start; border-top:1px solid rgba(27,47,107,0.12); }
+.hero-proof-item { color:#4A5784; border-right-color:rgba(27,47,107,0.14); }
+.hero-proof-dot { background:var(--green); }
+
+@media (min-width:1400px) {
+  .hero { min-height:clamp(680px,56.25vw,960px); justify-content:center; align-items:flex-start; background:#FFF6E2; }
+  .hero-art { position:absolute; inset:0; z-index:0; }
+  .hero-art img { width:100%; height:100%; object-fit:cover; object-position:100% 70%; }
+  .hero::before { content:''; display:block; position:absolute; inset:0; width:auto; height:auto; border-radius:0; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, rgba(255,249,236,0.95) 0%, rgba(255,249,236,0.9) 30%, rgba(255,249,236,0.55) 40%, rgba(255,249,236,0) 50%); }
+  .hero-inner { position:relative; z-index:2; width:min(42%,600px); padding:104px 0 48px clamp(40px,5vw,96px); }
+  .hero-tag { margin-bottom:20px; }
+  .hero h1 { font-size:clamp(34px,3.1vw,52px); letter-spacing:-1.5px; line-height:1.06; }
+  .hero-rule { margin:18px 0; }
+  .hero p { font-size:16px; line-height:1.7; margin-bottom:20px; }
+  .hero-features { margin-bottom:22px; }
+  .hero-proof { margin-top:22px; padding-top:16px; row-gap:8px; }
+}
+@media (min-width:1100px) and (max-width:1399px) {
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); align-items:center; background:linear-gradient(90deg,#FFF9EC 0%,#FFF4DE 100%); }
+  .hero-inner { padding:104px 0 48px clamp(40px,5vw,72px); }
+  .hero h1 { font-size:clamp(34px,3.3vw,44px); letter-spacing:-1.5px; line-height:1.06; }
+  .hero p { font-size:16px; line-height:1.7; }
+  .hero-art { align-self:end; padding-top:80px; }
+  .hero-art img { -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 14%),linear-gradient(180deg,transparent 0%,#000 16%); -webkit-mask-composite:source-in; mask-image:linear-gradient(90deg,transparent 0%,#000 14%),linear-gradient(180deg,transparent 0%,#000 16%); mask-composite:intersect; }
+}
+@media (max-width:1099px) {
+  .hero-inner { padding-bottom:28px; }
+  .hero-art img { -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%); mask-image:linear-gradient(180deg,transparent 0%,#000 12%); }
+}
+@media (max-width:767px) {
+  .hero-inner { padding:96px 20px 28px; }
+}
 </style>
 </head>
 <body>
@@ -1801,9 +1807,11 @@ footer {
     </div>
 
   </div>
-  <div class="hero-photo-col">
-    <img src="https://lh3.googleusercontent.com/d/1Lj0DjrQUPqMOsA5f3qk0bfUdzPfRYzXx" alt="" class="hero-photo">
-  </div>
+  <picture class="hero-art">
+    <source media="(max-width:767px)" srcset="img/hero-movil.webp" width="800" height="1200">
+    <source media="(min-width:1100px) and (max-width:1399px)" srcset="img/hero-personajes.webp" width="1000" height="941">
+    <img src="img/hero.webp" srcset="img/hero-1000.webp 1000w, img/hero.webp 1672w" sizes="100vw" width="1672" height="941" fetchpriority="high" alt="Valentina, Tomás y Coco, los exploradores de Español de Herencia, en un paisaje latinoamericano con un mapa y una brújula.">
+  </picture>
 </section>
 
 <!-- PROBLEM -->
